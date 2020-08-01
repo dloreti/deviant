@@ -1,0 +1,32 @@
+% !TEX root = ../deviant.tex
+
+\section{Introduction}
+\label{sec:intro}
+Process discovery \tododl{DSS page limit: 34} is an important research field of process mining \cite{2012-Aalst}. It encompasses techniques to automatically learn a business process model from a given set of execution cases, usually recorded in a log file.
+The model going to be learned must rely on a shared language to express the possible evolutions of business cases; just as the log file must have a clear, unambiguous syntax to express the relevant events occurred during the business process.
+
+Process discovery algorithms are usually classified into two categories, procedural and declarative, according to the language they employ to represent the output process model.
+Procedural techniques envisage the process model as a synthetic description of all possible sequence of actions that the business allows from a certain beginning to an end. Declarative discovery algorithms---which are the subject of this work---return the model as a set of constraints which must be fulfilled by the business execution cases. 
+
+Albeit extremely intuitive in some cases, procedural discovery may show poor results when the business process is unstructured and characterised by high variability \cite{2009-Fahland}. 
+In that case, forcing the vision of the business process towards the template of a begin-to-end sequence of activities, may result in a so-called ``spaghetti'' model \cite{2018b-Maggi}. Declarative approaches are preferable in these situations because allow expressing the model as a simple elicitation of permitted and prohibited behaviours.
+
+
+Besides the declarative/procedural classification, the process discovery approaches can be also divided into two categories according to their vision on the model-extraction task. 
+The vast majority of works \cite{2004-Aalst,2003-Weijters,2007-Gunther,2010-Aalst} intend discovery as an unsupervised classification task, where the set of traces in the input log must be analysed to extract valuable information about the frequency of occurrence of certain behavioural templates. This information is then used to build the execution model. Typically, the approaches in this category make use of thresholds, and language biases to drive the discovery task. 
+A smaller number of works \cite{2015-Guo,2007-Lamma,2009-Chesani} intend the model-extraction task as an inductive-learning process, where a set of logical clauses is produced by the analysis of the input log. 
+ 
+Both the categories have their advantages and shortcomings. Differently from induction-based techniques which do not usually stand out for their performance, classification-oriented discovery has reached high performance and effectiveness---provided that suitable metrics (e.g., constraint support, coverage, etc.) are defined to clearly assess the quality of the extracted model. 
+Furthermore, while inductive-learning approaches have a solid theoretical background because inductive reasoning has been studied since the dawning of artificial intelligence, classification-oriented techniques do not seek perfection, but just a good approximation of the most common behaviours.
+Depending on the values assigned to parameters such as thresholds on support and coverage, classification-oriented approaches can provide completely different results. In general, the tuning of these parameters is not a straightforward task: the thresholds and language biases defined for a certain model extraction task, might not be suitable for a different use case. 
+On the other hand, inductive-learning approaches need both \emph{positive} and \emph{negative} examples to properly work, i.e. business execution cases that are compliant with the model going to be discovered are necessary as well as non-compliant cases. Classification-oriented discovery instead, works on positive examples only and discards as noise the negative ones, whenever they are present in the log. %This situation is pretty rare because real life event logs hardly come with labelled cases. Classification-oriented discovery easily overcome this issue through metrics and thresholds.
+In particular, we can say that the availability of labelled positive and negative business execution examples is a crucially discriminative factor to opt for one process discovery view or the other.  Some studies endorse the thesis that, since in most of the real-life situations we cannot distinguish positive and negative cases in the input log, we should work as if the latter do not exist. Nonetheless, it is indisputable that, for each (meaningful) discovered business process model, there is a set of traces that are necessarily excluded because they are not compliant with the model. Such set constitutes a sort of ``upside-down world'', specular to the real world of positive, common and allowed cases. 
+
+
+In this work, we propose a view on process discovery that deviates from the two presented so far. 
+Like allowed traces can be exploited to extract information about the usual process model, we explore the possibility that the ``upside-down world'' of negative execution traces could be used---if it was accessible---to understand the reasons why deviations from the common process model occur. This information would be useful not only to better clarify what should be deemed compliant with the model and what should not, but also to specify parts of the business process in a more synthetic and effective way---by converting for example, a set of positive execution constraints into a single negative one.  
+
+Our work envisage the process discovery task as a \emph{satisfiability problem} and intertwines the constructive elements of both classification- and inductive-logic-oriented approaches into a single technique able to discover declarative process models by actively making use of both the positive traces and the ``upside-down world'' of deviant and negative examples---whenever they are available in the log. %\tododl{To say so, we'd need to put thresholds in the selection algorithm or propose an alternative version with thresholds. As for language bias, can we express it though the choice of $D$?}
+
+\tcolor{blue}{This attempt yields higher efficiency and efficacy avoiding the known drawbacks of the two most common views of process discovery.} \tododl{Refine once our performance are known.}
+

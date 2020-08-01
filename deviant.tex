@@ -1,0 +1,121 @@
+\documentclass[review]{elsarticle}
+
+\usepackage{lineno,hyperref}
+\modulolinenumbers[5]
+
+\journal{Decision Support Systems}
+
+
+\usepackage[font=footnotesize]{subfig, caption}
+  \graphicspath{{./img/}}
+  \DeclareGraphicsExtensions{.pdf,.jpeg,.png,.jpg}
+
+\usepackage{todonotes}
+\newcommand{\tododl}[1]{\todo[backgroundcolor=pink,size=\tiny]{DL: #1}}
+\newcommand{\todoindl}[1]{\todo[inline,backgroundcolor=pink]{DL: #1}}
+
+\usepackage{xcolor}
+\newcommand{\tcolor}[2]{\color{#1}{#2}\color{black}}
+
+\usepackage{outlines}
+\usepackage[nolist]{acronym}
+\usepackage{amssymb}
+
+\usepackage{algorithm}%,algorithmic}
+\usepackage{algpseudocode}
+\algdef{SE}[SUBALG]{Indent}{EndIndent}{}{\algorithmicend\ }%
+\algtext*{Indent}
+\algtext*{EndIndent}
+
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%% Elsevier bibliography styles
+%%%%%%%%%%%%%%%%%%%%%%%
+%% To change the style, put a % in front of the second line of the current style and
+%% remove the % from the second line of the style you would like to use.
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Numbered
+%\bibliographystyle{model1-num-names}
+
+%% Numbered without titles
+%\bibliographystyle{model1a-num-names}
+
+%% Harvard
+%\bibliographystyle{model2-names.bst}\biboptions{authoryear}
+
+%% Vancouver numbered
+%\usepackage{numcompress}\bibliographystyle{model3-num-names}
+
+%% Vancouver name/year
+%\usepackage{numcompress}\bibliographystyle{model4-names}\biboptions{authoryear}
+
+%% APA style
+%\bibliographystyle{model5-names}\biboptions{authoryear}
+
+%% AMA style
+%\usepackage{numcompress}\bibliographystyle{model6-num-names}
+
+%% `Elsevier LaTeX' style
+\bibliographystyle{elsarticle-num}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{On deviant traces and other stranger things}
+
+\author[disi]{Federico Chesani}
+\author[fbk]{Chiara Di Francescomarino}
+\author[fbk]{Chiara Ghidini}
+\author[disi]{Daniela Loreti\corref{mycorrespondingauthor}}
+\cortext[mycorrespondingauthor]{Corresponding author}
+\ead{daniela.loreti@unibo.it}
+
+\author[unibz]{Fabrizio Maria Maggi}
+\author[disi]{Paola Mello}
+\author[unibz]{Marco Montali}
+\author[unibz]{Sergio Tessaris}
+
+\address[disi]{DISI - University of Bologna, Italy}
+\address[fbk]{Fondazione Bruno Kessler, Trento, Italy}
+\address[unibz]{Free University of Bozen/Bolzano, Italy}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{abstract}
+\tcolor{blue}{abstract goes here}
+\end{abstract}
+
+\begin{keyword}
+Process mining\sep Process discovery\sep Declarative process models\sep Deviant traces
+\end{keyword}
+
+\end{frontmatter}
+
+\linenumbers
+
+\input{sections/introduction}
+\input{sections/motivations}
+
+\input{sections/approach}
+\input{sections/evaluation}
+\input{sections/related}
+\input{sections/discuss}
+\input{sections/conclusion}
+
+
+
+\section*{References}
+
+\bibliography{deviant}
+\input{sections/acronyms}
+\end{document}

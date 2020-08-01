@@ -1,0 +1,59 @@
+This is BibTeX, Version 0.99d (TeX Live 2017)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: deviant.aux
+The style file: elsarticle-num.bst
+Database file #1: deviant.bib
+Repeated entry---line 495 of file deviant.bib
+ : @article{2016-Nguyen
+ :                     ,
+I'm skipping whatever remains of this entry
+Warning--string name "dblp:books/daglib/0027363" is undefined
+--line 505 of file deviant.bib
+Warning--string name "dblp:conf/caise/fahlandlmrwwz09" is undefined
+--line 513 of file deviant.bib
+Warning--string name "dblp:journals/is/maggicfk18" is undefined
+--line 534 of file deviant.bib
+Warning--I didn't find a database entry for "?"
+Warning--empty pages in 2010-Bellodi
+You've used 57 entries,
+            2937 wiz_defined-function locations,
+            1066 strings with 16857 characters,
+and the built_in function-call counts, 22819 in all, are:
+= -- 2089
+> -- 853
+< -- 51
++ -- 322
+- -- 265
+* -- 1659
+:= -- 2912
+add.period$ -- 58
+call.type$ -- 57
+change.case$ -- 56
+chr.to.int$ -- 0
+cite$ -- 58
+duplicate$ -- 815
+empty$ -- 2515
+format.name$ -- 315
+if$ -- 5902
+int.to.chr$ -- 0
+int.to.str$ -- 57
+missing$ -- 56
+newline$ -- 180
+num.names$ -- 59
+pop$ -- 485
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 1508
+stack$ -- 0
+substring$ -- 1417
+swap$ -- 312
+text.length$ -- 51
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 1
+while$ -- 189
+width$ -- 59
+write$ -- 517
+(There was 1 error message)
