@@ -3,35 +3,43 @@
 \label{sec:pre}
 
 Our technique relays on the key concept of \emph{event log}, intending it as a set of observed business process executions, logged into a file in terms of all the occurred events. Each event is related to a specific process \emph{instance}, and describes the occurrence of a well-defined step in the process, namely an \emph{activity}. The logged set of events composing a process instance is addressed as \emph{trace} or \emph{case}. 
-From the analysis of the \emph{event log}, we want to extract a Declare \cite{?} \emph{model} of the business process (or refine a preexisting one), able to represent the logged traces in a synthetic way, trough a set of constraints.
-In particular, we assume some of the logged traces are \emph{positive}, i.e. they fulfil all the constraints in the business model, whereas others are \emph{negative} in the sense that they diverge from the expected behaviour by violating at least one constraint in the model. 
+From the analysis of the \emph{event log}, we want to extract a Declare \cite{?} \emph{model}\footnote{In this context we'll use \emph{model} to indicate a set of Declare constraints.} of the business process (or refine a preexisting one), able to represent the logged traces in a synthetic way, trough a set of constraints.
+In particular, we assume some of the logged traces are \emph{positive}, i.e. they fulfil all the constraints in the business model, whereas others are \emph{negative} in the sense that they diverge from the expected behaviour by violating at least one constraint in the (intended) model. 
 We denote with $L^+$ the set of positive traces in the input event log, and with $L^-$ the set of the negative ones.
-We also consider a set $P$ of Declare constraints that are known to be valid on the positive traces. Such set can be the expression of domain knowledge or the result of a classification-oriented discovery algorithm previously applied to $L^+$. Obviously, $P$ can be also the empty set.
 
-Given a set of Declare templates $D$ and activities $A$, we identify with $D[A]$ the set of all possible grounding of templates in $D$ w.r.t. $A$, i.e. all the constraints that can be built using the given activities. 
-Our technique makes use of the concept of \emph{closure} to account for deduction over a set of Declare constraints.
-%
-For example, if we consider a set of constraints $D=\{\mathsf{INIT(a)}\}$, the closure of such simple set is $D=\{\mathsf{INIT(a), EXISTENCE(a)}\}$, because the fact that the process must start with an activity \textsf{a} implies that all process instances must contain \textsf{a}.
-%
-Since we do not have a complete calculus for the language of conjunctions of Declare constraints we impose just correctness; that is we require that for any closure ${cl}: 2^{D[A]} \rightarrow 2^{D[A]}$ the set of traces compliant with $C \subseteq D[A]$ is the same as the ones compliant with ${cl}(C)$, i.e.\tododl{siamo sicuri della doppia implicazione?}
-\begin{equation}
-\forall C,t  | C \subseteq D[A], t \models C \iff t \models {cl}(C)
-\end{equation}
+\paragraph{Language bias} Given a set of Declare templates $D$ and activities $A$, we identify with $D[A]$ the set of all possible grounding of templates in $D$ w.r.t. $A$, i.e. all the constraints that can be built using the given activities.
 
+\paragraph{Logs and traces} We assume that a trace $t$ is a \emph{finite} word over the set of activities (i.e.\ $t\in A^*$), and a log is a \emph{finite} set of traces. The consequences of this choice is that we don't consider parallel events and multiple occurrences of the same trace won't affect our discovery process.\todo{ST: this might be relaxed}
 
-The goal of our technique is therefore to refine a previously learned (possibly empty) model $P$ by selecting a set of Declare constraints such that all positive traces and none of the negative are compliant\footnote{The conditions on all the positives and none of the negatives can be relaxed requiring a percentage of them; but this is outside the focus of the present work, and left for future investigation}, (where a trace is compliant with the set of constraints iff each constraint is satisfied by the trace).
-Clearly, there can be several sets satisfying these conditions and we need to introduce a notion of fitness to select the preferred ones. 
+\paragraph{Trace compliance} The role of \emph{compliance} of a trace w.r.t.\ a set of Declare constraints is pivotal in our approach. We assume the standard Declare semantics as detailed in~\cite{???}. Given a trace $t\in A^*$ and a set of constraints $C\subseteq D[A]$, in the following we will use the notation $t\models C$ to indicate that none of the constraints in $C$ are violated in $t$.
+
+\paragraph{Generality of models} The notion of compliance naturally introduces the relation of \emph{generality} (or the converse specificity) between models. We say that a model $M\subseteq D[A]$ is \emph{more general} than $M'\subseteq D[a]$ when for any $t\in A^*$, $t\models M' \Rightarrow t\models M$ (written as $M' \preceq M$ ), and \emph{strictly} more general if there is a $t'\in A^*$ s.t.\ $t'\not\models M'$ and $t'\models M$ (written as $M' \prec M$).
+
+In general, the goal of our technique is to select one, or more, sets of Declare constraints such that all positive traces and none of the negative are compliant.\footnote{The conditions on all the positives and none of the negatives can be relaxed requiring a percentage of them; but this is outside the focus of the present work, and left for future investigation}
+
+A wide body of research has been devoted to techniques to mine declarative process models that characterise a given event log (our positive traces). We are interested in leveraging these techniques and refine those results by taking into account the negative examples as well. To this end we consider a -- possibly empty -- set $P$ of Declare constraints that are known to characterise the positive traces. Such set can be the expression of domain knowledge or the result of a classification-oriented discovery algorithm previously applied to $L^+$. To apply our technique we only require that all the positive traces are compliant with all the constraints in $P$. We are aware of the fact that often this is not guaranteed by state of the art algorithms; in these cases we assume that the positive traces are a subset $L'^+$ of the original $L^+$, that is including only the traces compliant with $P$; i.e.\ $L'^+ = \{ t\in L^+\mid t\models P\}$.
+
+Given the above model $P$, a candidate solution is any subset $S\subseteq D[A]$ s.t.
+\begin{enumerate}
+  \item $P\subseteq S$,
+  \item for all $t\in L^+$ $t\models S$, and
+  \item for all $t\in L^-$ $t\not\models S$
+\end{enumerate}
+Clearly, there can be several sets satisfying these conditions and we need to introduce a notion of \emph{fitness} to identify the preferred ones. 
 
 In some context, \emph{generality} can be the fitness measure, that is we want to identify the set that is less committing in terms of restricting the admitted traces. In some other context on the contrary, we might be interested in the identification of a more \emph{specific} model. So besides allowing all traces in $L^+$ and forbidding all traces in $L^-$, the choice between a general or specific model, obviously affects the classification of the unknown traces.
 
-Intuitively, a model $M$ is more general than another $M'$ if $M$ allows a superset of the traces accepted by $M'$, i.e. defining $\mathcal{C}_M$ the set of all traces compliant with $M$, 
+If we consider generality as the fitness measure then we focus on the subset minimal sets $S$ satisfying the above properties and s.t.\ there is no $S'\subseteq D[A]$ satisfying the properties and strictly more general than $S$ (that is $S\prec S'$).
 
-\theoremstyle{definition}
-\begin{definition}{\emph{Model generality/specificity}.}
-A model $M$ is more general than another $M'$---and symmetrically $M'$ is more specific than $M$---if and only if $\mathcal{C}_{M'} \subset \mathcal{C}_M$.
-\end{definition}
+Although testing for strict generality between two set of constraints is a decidable problem, its worst case complexity makes an exact algorithm unfeasible\todo{ST: here we need a citation}. For this reason we make use of an approximate technique based on comparing the ``deductive'' closure of the candidate models. 
+%
+To provide an intuition let us consider two possible candidates $S' = \{\mathsf{INIT(a)}\}$ and $S = \{\mathsf{EXISTENCE(a)}\}$. It's easy to see that any trace compliant with $\mathsf{INIT(a)}$ must be compliant also with $\mathsf{EXISTENCE(a)}$, therefore $\{\mathsf{INIT(a), EXISTENCE(a)}\}$ is equivalent to $S'$. If we compare the deductive closure of the two sets we can conclude that $S$ is more general that $S'$.\footnote{Not necessarily \emph{strictly} more general.}
 
-Obviously, testing the generality of a model according to this definition is not feasible, because it requires considering all the allowed/disallowed traces. The closure operator can be employed for such purpose. The two methods---comparing the set of traces $\mathcal{C}_M$ and $\mathcal{C}_{M'}$, or comparing their closures ${cl}(M)$ and ${cl}(M')$---are not equivalent because the deductive system deriving from the Declare language is not complete. Nonetheless, as the system is correct, the closure operator can be used to identify which model is more general/specific.
+Unfortunately, due to the nature of the Declare language we cannot provide a complete calculus\todo{Here we need more details}, therefore we will resort to a set of \emph{correct} deduction rules; e.g.\ the rules introduced in~\cite{???}. To this end we introduce the notion of a (correct) deductive closure operator\todo{ST: I don't know whether it'a a good name} for the Declare language.
+
+\paragraph{Closure operator} In this context a \emph{deductive closure operator} is a function $cl: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$ satisfying the properties of extensivity, monotonicity, and idempotence; moreover it should be ``correct'' w.r.t.\ deduction in Declare, that is for any $C\subseteq D[A]$ and $t\in A^*$, $t\models C$ iff $t\models cl(C)$.
+
+Because of the ``correctness'' requirement of $cl$ we can guarantee that for any pair of sets $C, C'\subseteq D[A]$, $cl(C)\subseteq C'$ implies that $C$ is more general than $C'$ ($C'\preceq C$). Unfortunately, we cannot guarantee neither the other way around, nor the strictness. However, the use of specific classes of operators enable the use of off the shelf finite domain optimisers, as we will show in the following section. 
 
 \section{The approach}
 \label{sec:approach}
