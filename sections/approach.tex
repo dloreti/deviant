@@ -44,16 +44,48 @@ Because of the ``correctness'' requirement of $cl$ we can guarantee that for any
 \section{The approach}
 \label{sec:approach}
 
-For the sake of modularity and easiness of experimenting with different hypotheses and parameters, we divide our algorithm into two clearly separate stages: one to identify the candidate models, and one to asses which is the best according the fitness measure we decide to apply. However these two steps can be merged into a single monolithic search-based algorithm.
+In this section we introduce the actual algorithm based on the closure operator and its implementation. The parameters of the problem are the following
+\begin{description}
+  \item[$D$] set of Declare templates (language bias)
+  \item[$A$] set of activities
+  \item[$cl$] closure operator $cl: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$
+  \item[$L^+$] positive traces $L^+ \subseteq A^*$
+  \item[$L^-$] negative traces $L^- \subseteq A^*$
+  \item[$P$] base model $P\subseteq \{c\in D[A]| \forall t\in L^+\, t\models c\}$
+\end{description}
 
+For the sake of modularity and easiness of experimenting with different hypotheses and parameters, we divide our algorithm into two clearly separate stages: the first identifies the candidate constraints, and a second optimisation stage which selects the solutions. However these two steps can be merged into a single monolithic search-based algorithm. The solutions can be further ordered according any preference relation (e.g.\ the smaller solution first).
 
-As regards the first step, we are interested in the subsets $S$ of $D[A]$ satisfying the conditions:
-\begin{enumerate}
-\item $\forall t \in L^+, t \models S$, i.e. all positive traces are compliant with $S$;
-\item $\forall t \in L^-, t \not\models (S \cup P)$, i.e. none of the negative traces is compliant with the union of $S$ and $P$.
-\end{enumerate}
-%
-Algorithm \ref{alg:cand} reports the procedure to generate all possible candidate models satisfying these two conditions.
+Starting from the set of all constraints $D[A]$, the first stage identifies for any trace $t$ in $L^-$ the set of constraints for which all traces in $L^+$ are compliant and $t$ is not compliant. The result is therefore a function $choice$ with the domain $L^-$ and co-domain $\mathcal{P}(D[A])$ s.t.:
+\begin{subequations}
+  \begin{align}
+    \bigcup_{t\in L^-} choices(t) \subseteq \{c\in D[A]| \forall t\in L^+ t\models c\} \\
+    \forall t\in L^-\quad choices(t)\subseteq \{c\in D[A]| t\not\models c\}
+ \end{align}
+\end{subequations}
+
+Let $\mathcal{C} = \bigcup_{t\in L^-} choices(t)$ and $\mathcal{S}=\{C\in\mathcal{P}(\mathcal{C})\mid \forall t\in L^-\quad cl(C\cup P)\cap choices(t)\neq \emptyset\}$ be all the subsets of $\mathcal{C}$ that ``violate'' all the negative traces. Then the second (optimisation) stage selects the solutions $S\in \mathcal{S}$ s.t.
+\begin{subequations}
+  \begin{align}
+    \text{there's no $S'\in\mathcal{S}$ s.t. } cl(S'\cup P)\subset cl(S\cup P)\\
+    \text{there's no $S'\subset S$ s.t. } cl(S'\cup P)=cl(S\cup P)
+  \end{align}
+\end{subequations}
+
+We also experimented with an alternative optimisation formulation taking into account cardinality instead of subset relation. The idea is to select the ``minimum causes'' for the rejection of all negative traces. This formulation can be expressed by the properties:
+\begin{subequations}
+  \begin{align}
+    \text{there's no $S'\in\mathcal{S}$ s.t. } |cl(S'\cup P)| < |cl(S\cup P)|\\
+    \text{there's no $S'\in\mathcal{S}$ s.t. } |cl(S'\cup P)|=|cl(S\cup P)| \text{ and } |S'| < |S|
+  \end{align}
+\end{subequations}
+The solutions of the ``cardinality-based'' are also ``subset-based'' solutions; but not the other way around, as shown by the following example. For the sake of simplicity let's assume that $P$ is empty and $cl$ is the identity function\footnote{This may also be the case when the constraints selected in the first stage are logically independent.}; consider two negative traces $t_1, t_2$ and a $choice$ function like $\{t_1\mapsto\{c_1, c_2\}, t_1\mapsto\{c_1, c_3\}\}$. The ``subset-based'' solutions are $\{c_1\}, \{c_2, c_3\}$, while $\{c_1\}$ would be the only ``cardinality-based'' solution.
+
+\subsection*{Implementation}
+
+To perform our experiments we decided to separate the implementation of the two stages by reusing as much as possible existing systems.
+
+The first stage is implemented via the ``brute-force'' Algorithm~\ref{alg:cand} that first collects the set of all the constraints that are satisfied by all the positive traces (Line \ref{alg:cand:candidates}). Subsequently, each negative trace is associated (by means of the function ${choices}$) with the subset of those constraints that are not satisfied by the trace  (Line \ref{alg:cand:choices}).
 %
 \begin{algorithm}
     \caption{Generation of all possible models allowing all traces in $L^+$ and disallowing at least one trace in $L^-$.}
@@ -64,35 +96,45 @@ Algorithm \ref{alg:cand} reports the procedure to generate all possible candidat
 	%
 	\begin{algorithmic}[1] 
    \Procedure{CandidateGeneration}{$D[A], L^+, L^-$} 
-   	\State ${compatibles}= \{c \in D[A] | \forall t \in L^+ \models c\}$ \label{alg:cand:candidates}
+   	\State ${compatibles}= \{c \in D[A] | \forall t \in L^+\, \Call{compliant}{t,c} = \texttt{True}\}$ \label{alg:cand:candidates}
 	\For {$t \in L^-$}
-		\State ${choices}(t) = \{c \in {compatibles} | t \not\models c\}$\label{alg:cand:choices}
+		\State ${choices}(t) = \{c \in {compatibles} | \Call{compliant}{t,c} = \texttt{False}\}$\label{alg:cand:choices}
 	\EndFor
 	\State \Return ${compatibles}, {choices}$
     \EndProcedure
     \end{algorithmic}
 \end{algorithm}
+
+The implementation of the compliance verification \textproc{compliant} (i.e.\ $t\models c$) leverages the semantics of Declare patterns defined by means of regular expressions \cite{2017-DiCiccio} to verify the compliance of the traces. It is implemented in Go language employing a regexp implementation that is guaranteed to run in time linear in the size of the input\footnote{For more details, see the Go package regexp documentation at https://golang.org/pkg/regexp/}. 
+
+\lstset{language=Prolog}
+
+The second optimisation stage has been implemented using the \ac{ASP} system \textsc{Clingo}~\cite{DBLP:journals/corr/GebserKKS14}. The main reason for selecting an \ac{ASP} system for finite domain optimisation is that rules provide an effective and intuitive framework to implement a large class of closure operators. In fact, all the deductive systems for Declare that we analysed in the literature (see e.g.~\cite{2016-Bernardi,2017-DiCiccio}) can be recasted as Normal Logic Programs~\cite{2008-Lifschitz} by exploiting the assumption that the set of activities is finite and known in advance.
 %
-It is implemented via a brute force strategy that first collects the set of all the constraints that are satisfied by all the positive traces (Line \ref{alg:cand:candidates}). Subsequently, each negative trace is associated (by means of the function ${choices}$) with the subset of those constraints that are not satisfied by the trace  (Line \ref{alg:cand:choices}). 
-From the point of view of the implementation, the algorithm leverages the semantics of Declare patterns defined by means of regular expressions \cite{2017-DiCiccio} to verify the compliance of the traces. It is implemented in Go language employing a regexp implementation that is guaranteed to run in time linear in the size of the input\footnote{For more details, see the Go package regexp documentation at https://golang.org/pkg/regexp/}. 
+For example the valid formula $\textsc{Init}(a)\implies\textsc{Precedence}(a,b)$ that holds for any pair of activities $a, b$ can be written as the rule
+\begin{lstlisting}
+  precedence(A,B) :- init(A), activity(B).
+\end{lstlisting}
+using a specific predicate (\lstinline{activity}) holding the set of activities.
 
+Note that the selection of the optimal stable models does not require the compliance verification on the traces, which are therefore not necessary as input. The required parameters, properly encoded as an \ac{ASP} program, are the closure operator, the base model $P$, and the $choice$ function.
 
+\todo[inline]{ST: I'd drop most of the part below, already described in the preliminaries}
 
-Concerning the second step, we use an approximation algorithm (see Algorithm \ref{alg:select}) that makes use of the closure operator to guide the search of the optimal solution over the set of constraints. 
-%
-In practice, the algorithm uses the \ac{ASP} \cite{2008-Lifschitz} system clingo as an optimisation engine. The selection of the optimal stable model does not require the compliance verification on the traces, which are therefore not necessary as input. The candidate set and the positive discovery model are encoded as facts, while the closure operator is implemented as a set of \ac{ASP} rules.
+\tododl{nella linea \ref{alg:subsetC} avrei potuto dire $S \subseteq C$ dove $C = \{c \in D[A] ~|~ \exists t \in L^-, c \in {choices}(t)\}$, sarebbe stata un'ottimizzazione, ma non so se sarebbe valida anche per la ricerca del modello massimale}
 
 \begin{algorithm}
     \caption{Selection of the best model according to custom model fitness.}
     \label{alg:select}
     %
-    \textbf{Input:}  ${choices} : L^- \rightarrow 2^{D[A]}$, ${compatibles}$, $A, D[A], P, {cl}: 2^{D[A]} \rightarrow 2^{D[A]}$\\
+    \textbf{Parameters:} $A, {cl}: 2^{D[A]} \rightarrow 2^{D[A]}$\\
+    \textbf{Input:}  ${choices} : L^- \rightarrow 2^{D[A]}, P$\\
     \textbf{Output:} $S \subseteq D[A]$
 	%
 	\begin{algorithmic}[1] 
-   \Procedure{Selection}{${compatibles}, {choices},A, D[A], P, {cl}$} 
+   \Procedure{Selection}{${choices}, P$} 
   	%\State $C = \{c \in D[A] ~|~ \exists t \in L^-, c \in {choices}(t)\}$
-	\State \textbf{select} $S \subseteq {compatibles}$ \textbf{s.t.} \label{alg:subsetC}
+	\State \textbf{select} $S \subseteq \bigcup_{t\in L^-} {choices}(t)$ \textbf{s.t.} \label{alg:subsetC}
 	\Indent
 		\State 1. $\forall t \in L^-, {choices}(t) \cap {cl}(S \cup P) \neq \varnothing$ 	\label{alg:select:1}
 		\State 2. $is\_optimal(S)$									\label{alg:select:2}
@@ -101,7 +143,8 @@ In practice, the algorithm uses the \ac{ASP} \cite{2008-Lifschitz} system clingo
 	\State \Return $S$
     \EndProcedure
     \end{algorithmic}
-\end{algorithm}\tododl{nella linea \ref{alg:subsetC} avrei potuto dire $S \subseteq C$ dove $C = \{c \in D[A] ~|~ \exists t \in L^-, c \in {choices}(t)\}$, sarebbe stata un'ottimizzazione, ma non so se sarebbe valida anche per la ricerca del modello massimale}
+\end{algorithm}
+
 
 %The algorithm starts be defining the set $C$ of the constraints allowing all traces in $L^+$ and disallowing at least one trace in $L^-$.
 
@@ -119,7 +162,8 @@ On the other hand, if we want to find the most specific set of constraints---i.e
 
 Finally, the last selecting condition (Line \ref{alg:select:3}) allows reducing the redundancy of the extracted model. This condition is desirable because---even when the user is interested in the most specific model---redundancy compromises the readability of the solution, without adding any value. Nonetheless, it is important to notice that the condition of Line \ref{alg:select:3} may not be sufficient to completely avoid redundancy because we do not have a complete calculus for the language of conjunction of Declare constraints.
 
-Note that the set of activities $A$ is required as input to Algorithm \ref{alg:select} because the closure operator might generate constraints which range over all existing activities. For example, the constraint  $\textsf{INIT(a)}$ implies any constraint $\textsf{PRECEDENCE(a,X)}$ where \textsf{X} is an arbitrary activity.
+\todo[inline]{ST: end of dropped part}
+
 
 Even if Algorithm \ref{alg:select} reduces the number of candidate solutions by excluding all those non fulfilling conditions 1., 2., and 3., it is not guaranteed to return a unique solution. If the number of solutions provided by the procedure is too high for human intelligibility, the optimality condition could be further refined by inducing a preference order in the returned solution. For example, one can be interested in being reported first the solutions with the lower number of constraints, or with certain Declare templates. The advantage of our approach is precisely in the possibility to implement off-the-shelves optimisation strategies, where---adapting the $is\_optimal(S)$ function or even the definition of the closure operator---the developer can easily experiment with different model fitness functions.
 
