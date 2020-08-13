@@ -29,17 +29,17 @@ Clearly, there can be several sets satisfying these conditions and we need to in
 
 In some context, \emph{generality} can be the fitness measure, that is we want to identify the set that is less committing in terms of restricting the admitted traces. In some other context on the contrary, we might be interested in the identification of a more \emph{specific} model. So besides allowing all traces in $L^+$ and forbidding all traces in $L^-$, the choice between a general or specific model, obviously affects the classification of the unknown traces.
 
-If we consider generality as the fitness measure then we focus on the subset minimal sets $S$ satisfying the above properties and s.t.\ there is no $S'\subseteq D[A]$ satisfying the properties and strictly more general than $S$ (that is $S\prec S'$).
+If we consider generality as the fitness measure then we focus on the minimal sets $S$ satisfying the above properties and s.t.\ there is no $S'\subseteq D[A]$ satisfying the properties and strictly more general than $S$ (that is $S\prec S'$).
 
 Although testing for strict generality between two set of constraints is a decidable problem, its worst case complexity makes an exact algorithm unfeasible\todo{ST: here we need a citation}. For this reason we make use of an approximate technique based on comparing the ``deductive'' closure of the candidate models. 
 %
 To provide an intuition let us consider two possible candidates $S' = \{\mathsf{INIT(a)}\}$ and $S = \{\mathsf{EXISTENCE(a)}\}$. It's easy to see that any trace compliant with $\mathsf{INIT(a)}$ must be compliant also with $\mathsf{EXISTENCE(a)}$, therefore $\{\mathsf{INIT(a), EXISTENCE(a)}\}$ is equivalent to $S'$. If we compare the deductive closure of the two sets we can conclude that $S$ is more general that $S'$.\footnote{Not necessarily \emph{strictly} more general.}
 
-Unfortunately, due to the nature of the Declare language we cannot provide a complete calculus\todo{Here we need more details}, therefore we will resort to a set of \emph{correct} deduction rules; e.g.\ the rules introduced in~\cite{???}. To this end we introduce the notion of a (correct) deductive closure operator\todo{ST: I don't know whether it'a a good name} for the Declare language.
+Unfortunately, due to the nature of the Declare language we cannot provide a complete calculus\todo{Here we need more details}, therefore we will resort to a set of \emph{correct} deduction rules; e.g.\ the rules introduced in~\cite{???}. To this end we introduce the notion of a (correct) deductive closure operator\todo{ST: I don't know whether it'a a good name}~for the Declare language.
 
 \paragraph{Closure operator} In this context a \emph{deductive closure operator} is a function $cl: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$ satisfying the properties of extensivity, monotonicity, and idempotence; moreover it should be ``correct'' w.r.t.\ deduction in Declare, that is for any $C\subseteq D[A]$ and $t\in A^*$, $t\models C$ iff $t\models cl(C)$.
 
-Because of the ``correctness'' requirement of $cl$ we can guarantee that for any pair of sets $C, C'\subseteq D[A]$, $cl(C)\subseteq C'$ implies that $C$ is more general than $C'$ ($C'\preceq C$). Unfortunately, we cannot guarantee neither the other way around, nor the strictness. However, the use of specific classes of operators enable the use of off the shelf finite domain optimisers, as we will show in the following section. 
+Because of the ``correctness'' requirement of $cl$ we can guarantee that for any pair of sets $C, C'\subseteq D[A]$, $cl(C)\subseteq C'$ implies that $C$ is more general than $C'$ ($C'\preceq C$). Unfortunately, we cannot guarantee neither the other way around, nor the strictness\tododl{forse va spiegato con pi\`u dettagli il perche non possiamo?}. However, the use of specific classes of operators enable the use of off the shelf finite domain optimisers, as we will show in the following section. 
 
 \section{The approach}
 \label{sec:approach}
@@ -54,7 +54,7 @@ In this section we introduce the actual algorithm based on the closure operator 
   \item[$P$] base model $P\subseteq \{c\in D[A]| \forall t\in L^+\, t\models c\}$
 \end{description}
 
-For the sake of modularity and easiness of experimenting with different hypotheses and parameters, we divide our algorithm into two clearly separate stages: the first identifies the candidate constraints, and a second optimisation stage which selects the solutions. However these two steps can be merged into a single monolithic search-based algorithm. The solutions can be further ordered according any preference relation (e.g.\ the smaller solution first).
+For the sake of modularity and easiness of experimenting with different hypotheses and parameters, we divide our algorithm into two clearly separate stages: the first which identifies the candidate constraints, and a second optimisation stage which selects the solutions. However these two steps can be merged into a single monolithic search-based algorithm. The solutions can be further ordered according any preference relation (e.g.\ the smaller solution first).
 
 Starting from the set of all constraints $D[A]$, the first stage identifies for any trace $t$ in $L^-$ the set of constraints for which all traces in $L^+$ are compliant and $t$ is not compliant. The result is therefore a function $choice$ with the domain $L^-$ and co-domain $\mathcal{P}(D[A])$ s.t.:
 \begin{subequations}
@@ -120,8 +120,8 @@ using a specific predicate (\lstinline{activity}) holding the set of activities.
 Note that the selection of the optimal stable models does not require the compliance verification on the traces, which are therefore not necessary as input. The required parameters, properly encoded as an \ac{ASP} program, are the closure operator, the base model $P$, and the $choice$ function.
 
 \todo[inline]{ST: I'd drop most of the part below, already described in the preliminaries}
+\todoindl{Io lo lascerei per ora. Mi pare pi\`u chiaro, pero' possiamo limare il contenuto in seguito se non riusciamo a stare nelle 34 facciate.}
 
-\tododl{nella linea \ref{alg:subsetC} avrei potuto dire $S \subseteq C$ dove $C = \{c \in D[A] ~|~ \exists t \in L^-, c \in {choices}(t)\}$, sarebbe stata un'ottimizzazione, ma non so se sarebbe valida anche per la ricerca del modello massimale}
 
 \begin{algorithm}
     \caption{Selection of the best model according to custom model fitness.}
@@ -148,9 +148,10 @@ Note that the selection of the optimal stable models does not require the compli
 
 %The algorithm starts be defining the set $C$ of the constraints allowing all traces in $L^+$ and disallowing at least one trace in $L^-$.
 
-The first condition of Algorithm \ref{alg:select} (Line \ref{alg:select:1}) specifies that $S$ must be a subset of ${compatibles}$ able to discard all traces in $L^-$ as non-compliant.
+The optimisation stage is implemented as described in Algorithm \ref{alg:select}\tododl{nella linea \ref{alg:subsetC} avrei potuto dire $S \subseteq C$ dove $C = \{c \in D[A] ~|~ \exists t \in L^-, c \in {choices}(t)\}$, sarebbe stata un'ottimizzazione, ma non so se sarebbe valida anche per la ricerca del modello massimale}
+. In particular, the first condition (Line \ref{alg:select:1}) specifies that $S$ must be a subset of ${compatibles}$ able to discard all traces in $L^-$ as non-compliant.
 
-The second condition (Line \ref{alg:select:2}) accounts for the model fitness function, which can be customized according to the specific needs. For example, we could consider \emph{generality} as a fitness measure. 
+The second condition (Line \ref{alg:select:2}) accounts for the model fitness function, which can be customised according to the specific needs. For example, we could consider \emph{generality} as a fitness measure. 
 %
 %Intuitively, a model $M$ is more general than another $M'$ if $M$ allows a superset of the traces accepted by $M'$, i.e. defining ${comp(M)}$ the set of all traces compliant with $M$, $M$ is more general than $M'$---and symmetrically $M'$ is more specific than $M$---if ${comp}(M') \subset {comp}(M)$.\tododl{forse \`e meglio evidenziare questo paragrafo come una definizione?}
 
@@ -168,28 +169,28 @@ Finally, the last selecting condition (Line \ref{alg:select:3}) allows reducing 
 Even if Algorithm \ref{alg:select} reduces the number of candidate solutions by excluding all those non fulfilling conditions 1., 2., and 3., it is not guaranteed to return a unique solution. If the number of solutions provided by the procedure is too high for human intelligibility, the optimality condition could be further refined by inducing a preference order in the returned solution. For example, one can be interested in being reported first the solutions with the lower number of constraints, or with certain Declare templates. The advantage of our approach is precisely in the possibility to implement off-the-shelves optimisation strategies, where---adapting the $is\_optimal(S)$ function or even the definition of the closure operator---the developer can easily experiment with different model fitness functions.
 
 In order to better clarify the approach, we apply it to a very simple example.  
-Consider the sets of positive and negative traces composed by only one trace each: $L^+=\{\textsf{bac}\}$ and $L^-=\{\textsf{ab}\}$. The alphabet of activities is clearly just $A=\{\textsf{a, b, c}\}$. Suppose we want to learn the most general model composed by only the Declare templates $D=\{\textsf{EXISTS, INIT}\}$\tododl{non ho inserito TRUE perch\`e non vorrei confondesse le idee quando si arriva a sceglie il set minimale}.
+Consider the sets of positive and negative traces composed by only one trace each: $L^+=\{\textsf{bac}\}$ and $L^-=\{\textsf{ab}\}$. The alphabet of activities is clearly just $A=\{\textsf{a, b, c}\}$. Suppose we want to learn the most general model composed by only the Declare templates $D=\{\textsf{EXISTENCE, INIT}\}$\tododl{non ho inserito TRUE perch\`e non vorrei confondesse le idee quando si arriva a sceglie il set minimale}.
 
-In this case, the set $D[A]$ can be easily elicited: $D[A]=\{ \textsf{EXISTS(a)}$, $\textsf{EXISTS(b)}$, $\textsf{EXISTS(c)}$, $\textsf{INIT(a)}$, $\textsf{INIT(b)}$, $\textsf{INIT(c)} \}$. Algorithm \ref{alg:cand} elects the following compatible constraints: ${compatibles}=$$\{ \textsf{EXISTS(a)}$, $\textsf{EXISTS(b)}$, $\textsf{EXISTS(c)}$, $\textsf{INIT(b)}\}$, and emits ${choices}(\textsf{ab})=$$\{ \textsf{EXISTS(c)}$, $\textsf{INIT(b)}\}$.
+In this case, the set $D[A]$ can be easily elicited: $D[A]=\{ \textsf{EXISTENCE(a)}$, $\textsf{EXISTENCE(b)}$, $\textsf{EXISTENCE(c)}$, $\textsf{INIT(a)}$, $\textsf{INIT(b)}$, $\textsf{INIT(c)} \}$. Algorithm \ref{alg:cand} elects the following compatible constraints: ${compatibles}=$$\{ \textsf{EXISTENCE(a)}$, $\textsf{EXISTENCE(b)}$, $\textsf{EXISTENCE(c)}$, $\textsf{INIT(b)}\}$, and emits ${choices}(\textsf{ab})=$$\{ \textsf{EXISTENCE(c)}$, $\textsf{INIT(b)}\}$.
 
-%Algorithm \ref{alg:select} easily computes the set $C$ of all constraints excluding at least one negate traces as $C=$$\{ \textsf{EXISTS(c)}$, $\textsf{INIT(b)}\}$. In this simple case, the subsets of $C$ satisfying the first condition (Line \ref{alg:select:1} of Algorithm \ref{alg:select}) are: $\{\textsf{EXISTS(c)}\}$, $\{\textsf{INIT(b)}\}$, and $\{\textsf{EXISTS(c)}$,$\textsf{INIT(b)}\}$. As we are interested in the most general model, both the solutions $S=$$\{\textsf{EXISTS(c)}\}$ and $S=$$\{\textsf{INIT(b)}\}$ are valid. Note that 
+%Algorithm \ref{alg:select} easily computes the set $C$ of all constraints excluding at least one negate traces as $C=$$\{ \textsf{EXISTENCE(c)}$, $\textsf{INIT(b)}\}$. In this simple case, the subsets of $C$ satisfying the first condition (Line \ref{alg:select:1} of Algorithm \ref{alg:select}) are: $\{\textsf{EXISTENCE(c)}\}$, $\{\textsf{INIT(b)}\}$, and $\{\textsf{EXISTENCE(c)}$,$\textsf{INIT(b)}\}$. As we are interested in the most general model, both the solutions $S=$$\{\textsf{EXISTENCE(c)}\}$ and $S=$$\{\textsf{INIT(b)}\}$ are valid. Note that 
 
 In this simple case, the subsets of ${compatibles}$ satisfying the first condition (Line \ref{alg:select:1}) of Algorithm \ref{alg:select} would be: 
 \[
 \begin{array}{cl}
- S_1= &  \{\textsf{EXISTS(c)}\}  \\
+ S_1= &  \{\textsf{EXISTENCE(c)}\}  \\
  S_2= &  \{\textsf{INIT(b)}\}   \\
- S_3= &  \{\textsf{EXISTS(c)}, \textsf{INIT(b)}\} \\
- S_4= & \{\textsf{EXISTS(c)}, \textsf{EXISTS(a)}\} \\
+ S_3= &  \{\textsf{EXISTENCE(c)}, \textsf{INIT(b)}\} \\
+ S_4= & \{\textsf{EXISTENCE(c)}, \textsf{EXISTENCE(a)}\} \\
   ... & \\
- S_n= & \{\textsf{EXISTS(c)}, \textsf{INIT(b)}, \textsf{EXISTS(a)}\} \\
+ S_n= & \{\textsf{EXISTENCE(c)}, \textsf{INIT(b)}, \textsf{EXISTENCE(a)}\} \\
  ... &
 \end{array}
 \]
 
-As we are interested in the most general model, both the solutions $S_1=$ $\{\textsf{EXISTS(c)}\}$ and $S_2=$$\{\textsf{INIT(b)}\}$ are valid. Note that these two solutions cannot be compared according to the definitions of generality or specificity because there exist traces (such as the unknown trace $\textsf{b}$) compliant with $S_2$ and non-compliant with $S_1$, i.e. there is no subset relation between $\mathcal{C}_{S_1}$ and $\mathcal{C}_{S_2}$.
+As we are interested in the most general model, both the solutions $S_1=$ $\{\textsf{EXISTENCE(c)}\}$ and $S_2=$$\{\textsf{INIT(b)}\}$ are valid. Note that these two solutions cannot be compared according to the definitions of generality or specificity because there exist traces (such as the unknown trace $\textsf{b}$) compliant with $S_2$ and non-compliant with $S_1$, i.e. there is no subset relation between $\mathcal{C}_{S_1}$ and $\mathcal{C}_{S_2}$.
 
-On the contrary, if we are interested in the most specific set of constraints, the ${is\_optimal}(S)$ operation must return the maximal model $\{\textsf{EXISTS(a)}$, $\textsf{EXISTS(b)}$, $\textsf{EXISTS(c)}$, $\textsf{INIT(b)}\}$. Finally, the redundancy check operated by the third selecting condition discards the constraint $\textsf{EXISTS(b)}$, and correctly return the set $S=$$\{\textsf{EXISTS(a)}$, $\textsf{EXISTS(c)}$, $\textsf{INIT(b)}\}$. According to this model, the unknown trace \textsf{b} is negative and \textsf{bca} is positive. 
+On the contrary, if we are interested in the most specific set of constraints, the ${is\_optimal}(S)$ operation must return the maximal model $\{\textsf{EXISTENCE(a)}$, $\textsf{EXISTENCE(b)}$, $\textsf{EXISTENCE(c)}$, $\textsf{INIT(b)}\}$. Finally, the redundancy check operated by the third selecting condition discards the constraint $\textsf{EXISTENCE(b)}$, and correctly return the set $S=$$\{\textsf{EXISTENCE(a)}$, $\textsf{EXISTENCE(c)}$, $\textsf{INIT(b)}\}$. According to this model, the unknown trace \textsf{b} is negative and \textsf{bca} is positive. 
 
 
 %
