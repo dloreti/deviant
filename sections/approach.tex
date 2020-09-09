@@ -1,180 +1,348 @@
 % !TEX root = ../deviant.tex
-\section{Preliminaries}
-\label{sec:pre}
-
-Our technique relays on the key concept of \emph{event log}, intending it as a set of observed business process executions, logged into a file in terms of all the occurred events. Each event is related to a specific process \emph{instance}, and describes the occurrence of a well-defined step in the process, namely an \emph{activity}. The logged set of events composing a process instance is addressed as \emph{trace} or \emph{case}. 
-From the analysis of the \emph{event log}, we want to extract a Declare \cite{?} \emph{model}\footnote{In this context we'll use \emph{model} to indicate a set of Declare constraints.} of the business process (or refine a preexisting one), able to represent the logged traces in a synthetic way, trough a set of constraints.
-In particular, we assume some of the logged traces are \emph{positive}, i.e. they fulfil all the constraints in the business model, whereas others are \emph{negative} in the sense that they diverge from the expected behaviour by violating at least one constraint in the (intended) model. 
-We denote with $L^+$ the set of positive traces in the input event log, and with $L^-$ the set of the negative ones.
-
-\paragraph{Language bias} Given a set of Declare templates $D$ and activities $A$, we identify with $D[A]$ the set of all possible grounding of templates in $D$ w.r.t. $A$, i.e. all the constraints that can be built using the given activities.
-
-\paragraph{Logs and traces} We assume that a trace $t$ is a \emph{finite} word over the set of activities (i.e.\ $t\in A^*$), and a log is a \emph{finite} set of traces. The consequences of this choice is that we don't consider parallel events and multiple occurrences of the same trace won't affect our discovery process.\todo{ST: this might be relaxed}
-
-\paragraph{Trace compliance} The role of \emph{compliance} of a trace w.r.t.\ a set of Declare constraints is pivotal in our approach. We assume the standard Declare semantics as detailed in~\cite{???}. Given a trace $t\in A^*$ and a set of constraints $C\subseteq D[A]$, in the following we will use the notation $t\models C$ to indicate that none of the constraints in $C$ are violated in $t$.
-
-\paragraph{Generality of models} The notion of compliance naturally introduces the relation of \emph{generality} (or the converse specificity) between models. We say that a model $M\subseteq D[A]$ is \emph{more general} than $M'\subseteq D[a]$ when for any $t\in A^*$, $t\models M' \Rightarrow t\models M$ (written as $M' \preceq M$ ), and \emph{strictly} more general if there is a $t'\in A^*$ s.t.\ $t'\not\models M'$ and $t'\models M$ (written as $M' \prec M$).
-
-In general, the goal of our technique is to select one, or more, sets of Declare constraints such that all positive traces and none of the negative are compliant.\footnote{The conditions on all the positives and none of the negatives can be relaxed requiring a percentage of them; but this is outside the focus of the present work, and left for future investigation}
-
-A wide body of research has been devoted to techniques to mine declarative process models that characterise a given event log (our positive traces). We are interested in leveraging these techniques and refine those results by taking into account the negative examples as well. To this end we consider a -- possibly empty -- set $P$ of Declare constraints that are known to characterise the positive traces. Such set can be the expression of domain knowledge or the result of a classification-oriented discovery algorithm previously applied to $L^+$. To apply our technique we only require that all the positive traces are compliant with all the constraints in $P$. We are aware of the fact that often this is not guaranteed by state of the art algorithms; in these cases we assume that the positive traces are a subset $L'^+$ of the original $L^+$, that is including only the traces compliant with $P$; i.e.\ $L'^+ = \{ t\in L^+\mid t\models P\}$.
-
-Given the above model $P$, a candidate solution is any subset $S\subseteq D[A]$ s.t.
-\begin{enumerate}
-  \item $P\subseteq S$,
-  \item for all $t\in L^+$ $t\models S$, and
-  \item for all $t\in L^-$ $t\not\models S$
-\end{enumerate}
-Clearly, there can be several sets satisfying these conditions and we need to introduce a notion of \emph{fitness} to identify the preferred ones. 
-
-In some context, \emph{generality} can be the fitness measure, that is we want to identify the set that is less committing in terms of restricting the admitted traces. In some other context on the contrary, we might be interested in the identification of a more \emph{specific} model. So besides allowing all traces in $L^+$ and forbidding all traces in $L^-$, the choice between a general or specific model, obviously affects the classification of the unknown traces.
-
-If we consider generality as the fitness measure then we focus on the minimal sets $S$ satisfying the above properties and s.t.\ there is no $S'\subseteq D[A]$ satisfying the properties and strictly more general than $S$ (that is $S\prec S'$).
-
-Although testing for strict generality between two set of constraints is a decidable problem, its worst case complexity makes an exact algorithm unfeasible\todo{ST: here we need a citation}. For this reason we make use of an approximate technique based on comparing the ``deductive'' closure of the candidate models. 
-%
-To provide an intuition let us consider two possible candidates $S' = \{\mathsf{INIT(a)}\}$ and $S = \{\mathsf{EXISTENCE(a)}\}$. It's easy to see that any trace compliant with $\mathsf{INIT(a)}$ must be compliant also with $\mathsf{EXISTENCE(a)}$, therefore $\{\mathsf{INIT(a), EXISTENCE(a)}\}$ is equivalent to $S'$. If we compare the deductive closure of the two sets we can conclude that $S$ is more general that $S'$.\footnote{Not necessarily \emph{strictly} more general.}
-
-Unfortunately, due to the nature of the Declare language we cannot provide a complete calculus\todo{Here we need more details}, therefore we will resort to a set of \emph{correct} deduction rules; e.g.\ the rules introduced in~\cite{???}. To this end we introduce the notion of a (correct) deductive closure operator\todo{ST: I don't know whether it'a a good name}~for the Declare language.
-
-\paragraph{Closure operator} In this context a \emph{deductive closure operator} is a function $cl: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$ satisfying the properties of extensivity, monotonicity, and idempotence; moreover it should be ``correct'' w.r.t.\ deduction in Declare, that is for any $C\subseteq D[A]$ and $t\in A^*$, $t\models C$ iff $t\models cl(C)$.
-
-Because of the ``correctness'' requirement of $cl$ we can guarantee that for any pair of sets $C, C'\subseteq D[A]$, $cl(C)\subseteq C'$ implies that $C$ is more general than $C'$ ($C'\preceq C$). Unfortunately, we cannot guarantee neither the other way around, nor the strictness\tododl{forse va spiegato con pi\`u dettagli il perche non possiamo?}. However, the use of specific classes of operators enable the use of off the shelf finite domain optimisers, as we will show in the following section. 
 
 \section{The approach}
 \label{sec:approach}
 
-In this section we introduce the actual algorithm based on the closure operator and its implementation. The parameters of the problem are the following
-\begin{description}
-  \item[$D$] set of Declare templates (language bias)
-  \item[$A$] set of activities
-  \item[$cl$] closure operator $cl: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$
-  \item[$L^+$] positive traces $L^+ \subseteq A^*$
-  \item[$L^-$] negative traces $L^- \subseteq A^*$
-  \item[$P$] base model $P\subseteq \{c\in D[A]| \forall t\in L^+\, t\models c\}$
-\end{description}
+The discovery task must be able to extract a model which correctly classifies the log traces by admitting all cases in $L^+$ and discarding those in $L^-$\footnote{The conditions on all the positives and none of the negatives can be relaxed by requiring only a percentage of them---thus affecting the fitness and precision of the resulting model. \tcolor{red}{See section \ref{} for a discussion on this topic. TODO.}}. Besides that, it is required to perform an abstraction step in order to be able to classify also unknown traces, which are not in the input log. %Generalisation is the measure of how much tolerant or restricting the model is w.r.t unknown traces. 
 
-For the sake of modularity and easiness of experimenting with different hypotheses and parameters, we divide our algorithm into two clearly separate stages: the first which identifies the candidate constraints, and a second optimisation stage which selects the solutions. However these two steps can be merged into a single monolithic search-based algorithm. The solutions can be further ordered according any preference relation (e.g.\ the smaller solution first).
+\subsection{Definitions}
+Before introducing our approach, we hereby provide some preliminary definitions that are relevant for the following explanation.
 
-Starting from the set of all constraints $D[A]$, the first stage identifies for any trace $t$ in $L^-$ the set of constraints for which all traces in $L^+$ are compliant and $t$ is not compliant. The result is therefore a function $choice$ with the domain $L^-$ and co-domain $\mathcal{P}(D[A])$ s.t.:
+
+
+\paragraph{Trace compliance} The role of \emph{compliance} of a trace w.r.t.\ a set of Declare constraints is pivotal in our approach. We assume the standard Declare semantics as detailed in~\cite{2008-Pesic}. 
+Given a trace $t\in A^*$ and a set of constraints $M\subseteq D[A]$, in the following we will use the notation $t\models M$ to indicate that none of the constraints in $M$ are violated in $t$.
+
+%The role of \emph{compliance} of a trace w.r.t.\ a set of Declare constraints is pivotal in our approach. We assume the standard Declare semantics as detailed in~\cite{2008-Pesic}. 
+%\theoremstyle{definition}
+%\begin{definition}{\emph{Trace compliance.}} Given a trace $t\in A^*$ and a set of constraints $M\subseteq D[A]$, in the following we will use the notation $t\models M$ to indicate that none of the constraints in $M$ are violated in $t$.
+%\end{definition}
+
+\paragraph{Model generality} The notion of compliance naturally introduces the relation of \emph{generality} (or the converse \emph{specificity}) between models.
+%
+Intuitively, a model $M$ is more general than another $M'$ if $M$ allows a superset of the traces accepted by $M'$. That is, denoting with $\mathcal{C}_M$ the set of all traces compliant with a model $M$, $M$ is more general than another model $M'$---and symmetrically $M'$ is more specific than $M$---if and only if $\mathcal{C}_{M'} \subset \mathcal{C}_M$. 
+%
+More precisely, we say that 
+\theoremstyle{definition}\label{def:generality}
+\begin{definition}{}
+a model $M\subseteq D[A]$ is \emph{more general} than $M'\subseteq D[A]$ (written as $M \succeq M'$) when for any $t\in A^*$, $t\models M' \Rightarrow t\models M$ , and \emph{strictly} more general (written as $M \succ M'$) if there is a $t'\in A^*$ s.t.\ $t'\not\models M'$ and $t'\models M$.
+\end{definition}
+
+Note that this definition is consistent with that of subsumption between Declare templates provided in Section \ref{sec:back}
+
+\theoremstyle{definition}\label{th:subset-generality}
+\begin{theorem}{}
+For any pair of models $M, M'\subseteq D[A]$, $M\subseteq M'$ implies that $M$ is more general than $M'$ ($M\succeq M'$).
+\end{theorem} 
+\begin{proof}
+A Declare model is a conjunction of constraints, each imposing some restrictions on the set of allowed traces. Consider two sets fulfilling the premise $M\subseteq M'$ such that $M=\{c_1,...c_m\}$ and $M'=\{c_1,...c_m, c_{m'}\}$. There are two possible cases: either the additional $c_{m'}$ in $M'$ excludes other traces w.r.t. $\{c_1,...c_m\}$---i.e. $M \succ M'$---or it does not because the traces $c_{m'}$ rules out are also disallowed by $\{c_1,...c_m\}$. $M\succeq M'$ follows.
+\end{proof}
+
+Unfortunately, the opposite implication is not always true, i.e. if we have $M, M'\subseteq D[A]$ such that $M\succeq M'$, we cannot guarantee that $M\subseteq M'$.
+%a model $M\subseteq D[A]$ is \emph{more general} than $M'\subseteq D[A]$ when for any $t\in A^*$, $t\models M' \Rightarrow t\models M$ (written as $M' \preceq M$ ), and \emph{strictly} more general if there is a $t'\in A^*$ s.t.\ $t'\not\models M'$ and $t'\models M$ (written as $M' \prec M$).
+
+%The notion of compliance naturally introduces the relation of \emph{generality} (or the converse \emph{specificity}) between models.
+%Intuitively, a model $M$ is more general than another $M'$ if $M$ allows a superset of the traces accepted by $M'$. That is, defining $\mathcal{C}_M$ the set of all traces compliant with a model $M$, $M$ is more general than another model $M'$---and symmetrically $M'$ is more specific than $M$---if and only if $\mathcal{C}_{M'} \subset \mathcal{C}_M$; or more precisely,
+%\theoremstyle{definition}
+%\begin{definition}{\emph{Model generality/specificity}.}
+%We say that a model $M\subseteq D[A]$ is \emph{more general} than $M'\subseteq D[A]$ when for any $t\in A^*$, $t\models M' \Rightarrow t\models M$ (written as $M' \preceq M$ ), and \emph{strictly} more general if there is a $t'\in A^*$ s.t.\ $t'\not\models M'$ and $t'\models M$ (written as $M' \prec M$).
+%\end{definition}
+
+
+%\tcolor{red}{**********
+%
+%Obviously, testing the generality of a model according to this definition is not feasible, because it requires considering all the allowed/disallowed traces. The closure operator can be employed for such purpose. The two methods---comparing the set of traces $\mathcal{C}_M$ and $\mathcal{C}_{M'}$, or comparing their closures ${cl}(M)$ and ${cl}(M')$---are not equivalent because the deductive system deriving from the Declare language is not complete. 
+%Nonetheless, as the system is correct, the closure operator can be used to identify which model is more general/specific.}
+
+%\paragraph{Generality of models} The notion of compliance naturally introduces the relation of \emph{generality} (or the converse specificity) between models. We say that a model $M\subseteq D[A]$ is \emph{more general} than $M'\subseteq D[a]$ when for any $t\in A^*$, $t\models M' \Rightarrow t\models M$ (written as $M' \preceq M$ ), and \emph{strictly} more general if there is a $t'\in A^*$ s.t.\ $t'\not\models M'$ and $t'\models M$ (written as $M' \prec M$).
+
+%In general, the goal of our technique is to select one, or more, sets of Declare constraints such that all positive traces and none of the negative are compliant.\footnote{The conditions on all the positives and none of the negatives can be relaxed requiring a percentage of them; but this is outside the focus of the present work, and left for future investigation}
+
+\paragraph{Initial model} A wide body of research has been devoted to techniques to mine declarative process models that characterise a given event log (our positive traces). The goal of our approach is to leverage these techniques and refine their results by taking into account the negative examples as well. To this end we consider a---possibly empty---\emph{initial model} $P$, i.e. a set of Declare constraints that are known to characterise the positive traces. For example, such set can be the expression of domain knowledge or the result of a state-of-the-art discovery algorithm previously applied to $L^+$. To apply our technique we only require that all the positive traces are compliant with all the constraints in $P$. 
+We are aware that often state-of-the-art approaches do not emit a model compliant with all the traces in the input log. In these cases, we consider as positive only the traces that are allowed by $P$.
+%We are aware of the fact that often this is not guaranteed by state-of-the-art approaches; in these cases we assume that the positive traces are a subset $L'^+$ of the original $L^+$ including only the traces compliant with $P$; i.e.\ $L'^+ = \{ t\in L^+\mid t\models P\}$.
+%ho tolto questa formulazione perchè non mi sembra conforme alle definizioni precedenti. Noi abbiamo detto che assumiamo che l'input event log contenga L+ e L- e abbiamo definito L+ come il subset delle positive in input (non come l'event log completo).
+
+\paragraph{Candidate solution} As the goal of our technique is to refine the initial model $P$ taking into account both positive and negative traces, we can define which are the necessary conditions for a set of constraints $S$ to be a candidate solution for our discovery task.
+
+\theoremstyle{definition}\label{def:candidate}
+\begin{definition}{}\label{def:cand}
+Given the initial model $P$, a \emph{candidate solution} for the discovery task is any subset $S\subseteq D[A]$ s.t.
+\begin{enumerate} [label=\textit{(\roman*)}]
+  \item $P\subseteq S$,
+  \item for all $t\in L^+$ $t\models S$, 
+  \item for all $t\in L^-$ $t\not\models S$.
+\end{enumerate}
+\end{definition}
+
+\paragraph{Optimality criterion} Clearly, there can be several sets satisfying these conditions. They differ from the way they classify the unknown traces, which are not in $L^+$, nor in $L^-$. Therefore, we need to introduce some way to compare the multiple output models in order to identify the preferable ones.
+%Clearly, there can be several sets satisfying these conditions and we need to introduce a notion of \emph{fitness} to identify the preferred ones. 
+%
+In some context, \emph{generality} can be a measure of the quality of the solution, i.e. we want to identify the set that is less committing in terms of restricting the admitted traces. In some other context on the contrary, we might be interested in the identification of a more specific model. So besides allowing all traces in $L^+$ and forbidding all traces in $L^-$, the choice between a general or specific model, obviously affects the classification of the unknown traces. Alternatively, one can be interested in the most \emph{simple} solution, i.e. the one that is presumed to be easier to understand irrespectively from the degree of generality/specificity it accomplishes.
+
+Let us focus on \emph{generality} for the moment. In this case, we are interested in the candidate solutions $S$ (i.e. satisfying the properties of definition \ref{def:candidate}) such that there is no other $S'\subseteq D[A]$ candidate solution strictly more general than $S$ (that is $\nexists~ S'$ s.t. $S\prec S'$).
+%If we consider generality as the fitness measure then we focus on the minimal sets $S$ satisfying the above properties and s.t.\ there is no $S'\subseteq D[A]$ satisfying the properties and strictly more general than $S$ (that is $S\prec S'$).
+
+
+Although testing for strict generality between two set of constraints is a decidable problem, its worst case complexity makes an exact algorithm unfeasible because, recalling definition \ref{def:generality}, it would require to asses the compliance of any trace $t \in A^*$ with the two models going to be compared.
+For this reason, we propose an alternative method based on comparing the logical consequences that can be deducted from the models.
+
+The method makes use of a set of deduction rules which account for the \emph{subsumption} between Declare templates. 
+Our work integrates the rules introduced in various articles \cite{2017-DiCiccio,???}\tododl{x sergio, quali altri paper?}, into a function, namely the \emph{deductive closure operator}, which satisfies the properties of extensivity, monotonicity, and idempotence\tododl{dim?}. The complete set of employed rules is available at \cite{?}. 
+
+
+\theoremstyle{definition}\label{def:closure}
+\begin{definition}{}
+A \emph{deductive closure operator} is a function $cl: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$ that associates any set $M \in D[A]$ with all the constraints that can be logically derived from $M$ by applying one or more deduction rules in \cite{?}.
+\end{definition} 
+
+Obviously, we are interested in a closure operator whose rules are \emph{correct}, that is for any $M\subseteq D[A]$ and $t\in A^*$, $t\models M$ iff $t\models cl(M)$.
+As the closure of a model is again a subset of $D[A]$, Theorem \ref{th:subset-generality} is also applicable, i.e. for any $M, M'\subseteq D[A]$, $cl(M)\subseteq cl(M')$ implies that $M$ is more general than $M'$ ($M\succeq M'$).
+%
+%Because of the ``correctness'' of the $cl$ operator, we can guarantee the following lemma.
+%\theoremstyle{definition}\label{lemma:closure-generality}
+%\begin{lemma}{}
+%For any pair of sets $M, M'\subseteq D[A]$, $cl(M)\subseteq M'$\tododl{$cl(M)\subseteq cl(M')$} implies that $M$ is more general than $M'$ ($M'\preceq M$).
+%\end{lemma} 
+%
+%\begin{proof}
+%\tcolor{red}{Proof TODO}
+%\end{proof}
+Unfortunately, due to the nature of the Declare language we cannot provide a complete calculus for the language of conjunctions of Declare constraints. For this reason, we cannot guarantee the strictness, nor the opposite implication (i.e. $M'\preceq M$ does not implies $cl(M)\subseteq cl(M')$).
+
+Anyway, thanks to this property the deductive closure operator can be used to compare Declare models w.r.t. generality. To provide an intuition, let us consider the models $M= \{\mathsf{EXISTENCE(a)}\}$ and $M' = \{\mathsf{INIT(a)}\}$. We could not express any subset relation between these two sets rendering Theorem \ref{th:subset-generality} inapplicable. Nonetheless, if we take into account their closure, we have $cl(M)=\{\mathsf{EXISTENCE(a)}\}$ and $cl(M')=\{\mathsf{INIT(a)}$, $\mathsf{EXISTENCE(a)}\}$. As $cl(M)$ is a subset of $cl(M')$, we can conclude that $M$ is more general than $M'$.
+
+%To provide an intuition let us consider two possible candidates $S' = \{\mathsf{INIT(a)}\}$ and $S = \{\mathsf{EXISTENCE(a)}\}$. It's easy to see that any trace compliant with $\mathsf{INIT(a)}$ must be compliant also with $\mathsf{EXISTENCE(a)}$, therefore $\{\mathsf{INIT(a), EXISTENCE(a)}\}$ is equivalent to $S'$. If we compare the deductive closure of the two sets we can conclude that $S$ is more general that $S'$.\footnote{Not necessarily \emph{strictly} more general.}
+
+
+%To built the closure operator, this work integrates the deduction rules introduced in various articles \cite{2017-DiCiccio,???}\tododl{x sergio, quali altri paper?}. The resulting operator also satisfies the properties of extensivity, monotonicity, and idempotence. The complete set of rules employed is available at \cite{?}. 
+
+%Unfortunately, we cannot guarantee neither the other way around, nor the strictness\tododl{forse va spiegato con pi\`u dettagli il perche non possiamo?}. However, the use of specific classes of operators enable the use of off the shelf finite domain optimisers, as we will show in the following section. 
+
+%Unfortunately, due to the nature of the Declare language we cannot provide a complete calculus\todo{Here we need more details}, therefore we will resort to a set of \emph{correct} deduction rules; e.g.\ the rules introduced in~\cite{???} \tododl{da quale paper le abbiamo prese. Se sono state estese dovremmo spiegare come}. To this end we introduce the notion of a (correct) deductive closure operator\todo{ST: I don't know whether it'a a good name}~for the Declare language.
+
+%\paragraph{Closure operator} In this context a \emph{deductive closure operator} is a function $cl: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$ satisfying the properties of extensivity, monotonicity, and idempotence; moreover it should be ``correct'' w.r.t.\ deduction in Declare, that is for any $C\subseteq D[A]$ and $t\in A^*$, $t\models C$ iff $t\models cl(C)$.
+
+%Because of the ``correctness'' requirement of $cl$ we can guarantee that for any pair of sets $C, C'\subseteq D[A]$, $cl(C)\subseteq C'$ implies that $C$ is more general than $C'$ ($C'\preceq C$). Unfortunately, we cannot guarantee neither the other way around, nor the strictness\tododl{forse va spiegato con pi\`u dettagli il perche non possiamo?}. However, the use of specific classes of operators enable the use of off the shelf finite domain optimisers, as we will show in the following section. 
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Two-step procedure}
+
+In this section we introduce the actual algorithm based on the closure operator. The parameters of the problem are the following
+\begin{itemize}
+  \item $D$ set of Declare templates (language bias)
+  \item $A$ set of activities
+  \item $cl$ closure operator. $cl: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$
+  \item $L^+$ log traces labelled as positive. $L^+ \subseteq A^*$
+  \item $L^-$ log traces labelled as negative. $L^- \subseteq A^*$
+  \item $P$ initial model. $P\subseteq \{c\in D[A]| \forall t\in L^+\, t\models c\}$
+\end{itemize}
+%\begin{description}
+%  \item[$D$] set of Declare templates (language bias)
+%  \item[$A$] set of activities
+%  \item[$cl$] closure operator $cl: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$
+%  \item[$L^+$] log traces labelled as positive $L^+ \subseteq A^*$
+%  \item[$L^-$] log traces labelled as negative $L^- \subseteq A^*$
+%  \item[$P$] initial model $P\subseteq \{c\in D[A]| \forall t\in L^+\, t\models c\}$
+%\end{description}
+
+For the sake of modularity and easiness of experimenting with different hypotheses and parameters, we divide our algorithm into two clearly separate stages: the first which identifies the candidate constraints, and a second optimisation stage which selects the solutions. However these two steps can be merged into a single monolithic search-based algorithm. %The solutions can be further ordered according any preference relation (e.g.\ the smaller solution first).
+
+Starting from the set of all constraints $D[A]$, the first stage aims at aidentifying all the constraints of $D[A]$ which allow all positive traces and exclude at least a negative one. To this end, it first computes the set \textit{compatibles} of constraints for which all traces in $L^+$ are compliant. 
+\begin{equation}
+{compatibles} = \{c\in D[A]~|~\forall t\in L^+~ t\models c \} \\
+\end{equation}
+
+The \textit{compatibles} set is then used to built a \textit{choice} function that associates to any trace $t$ in $L^-$ the constraints of \textit{compatibles} that disallow $t$.
+The result is therefore a function with domain $L^-$ and co-domain $\mathcal{P}({compatibles})$ s.t.:
+\begin{equation}
+{choices}(t) = \{c\in {compatibles}~|~t\not\models c\} \\
+\end{equation}
+
+%%$ \mathcal{C} = \{ c\in D[A]| \forall t\in L^+ t\models c AND \exists t' \in L^- t'\not\models c\}\\$
+%\begin{subequations}
+%  \begin{align}
+%    %\bigcup_{t\in L^-} choices(t) \subseteq \{c\in D[A]| \forall t\in L^+ t\models c\} \\
+%    %\forall t\in L^-\quad choices(t)\subseteq \{c\in D[A]| t\not\models c\} \\ 
+%    choices(t) \subseteq \{c\in D[A]| \forall t'\in L^+ t'\models c \} \\
+%    choices(t) = \{c\in D[A]| t\not\models c\} 
+% \end{align}
+%\end{subequations}
+
+The second stage aims at finding the optimal solution according to some criterion. Therefore, it starts by computing two sets $\mathcal{C}$ and $\mathcal{S}$. 
+%
+Let $\mathcal{C}$ be the set of those constraints in $D[A]$ that allow all positive traces and disallow at least one negative trace. Such set can be derived from the $choice$ function as: $\mathcal{C} = \bigcup_{t\in L^-} choices(t)$.
+%
+Let $\mathcal{S}$ be all the subsets of $\mathcal{C}$ that exclude all the negative traces. $\mathcal{S}$ can be again computed employing the output of the $choice$ function as follows. 
+\begin{equation}
+\mathcal{S}=\{M\in\mathcal{P}(\mathcal{C})\mid \forall t\in L^-~ cl(M\cup P)\cap choices(t)\neq \varnothing\} \label{eq:mathcalS}
+\end{equation}
+%Any element of $\mathcal{S}$ is a model whose constraints can be used to integrate the initial model $P$ with futher information about the negative traces. 
+This formula ensures that any model $M$ in $\mathcal{S}$ is such that the logical consequences of $M \cup P$ include the constraints to disallow all the negative traces. In this way, any element of $\mathcal{S}$ will be a model whose constraints can be used to integrate the initial model $P$ with further information about the negative traces. As any $M \in \mathcal{S}$ fulfil all the properties of Definition \ref{def:cand}, it is a \emph{candidate solution} for our discovery task.
+
+The reason why the deductive closure operator is employed in Eq. \ref{eq:mathcalS} can be highlighted through a simple example. Consider the set of negative traces $L^-=\{\mathsf{b, ab, a}\}$ and suppose the computation of the ${choice}$ function has found three constraints $choice(\mathsf{b})=\{\mathsf{EXISTENCE(a)}\}$, $choice(\mathsf{ba})=\{\mathsf{RESPONSE(a,b)}\}$, and $choice(\mathsf{a})=\{\mathsf{EXISTENCE(b)}\}$. Apparently, the only way to exclude all traces in $L^-$ is to emit a model $M_1=\{$\textsf{EXISTENCE(a), RESPONSE(a,b), EXISTENCE(b)}$\}$. Nonetheless, as 
+$\mathsf{EXISTENCE(b)} \sqsupseteq \mathsf{EXISTENCE(a)} \land  \mathsf{RESPONSE(a,b)}$, 
+taking into account the closure in Eq. \ref{eq:mathcalS} allows emitting another candidate solution $M_2=\{\mathsf{EXISTENCE(a), RESPONSE(a,b)}\}$
+
+Once $\mathcal{C}$ and $\mathcal{S}$ are computed, the goal of the optimisation step is to select the ``best'' model in $\mathcal{S}$ which can be either devoted to \emph{generality/specificity} or \emph{simplicity}.
+When the most general model is desired, the procedure selects as solution the model $S\in \mathcal{S}$ such that 
 \begin{subequations}
   \begin{align}
-    \bigcup_{t\in L^-} choices(t) \subseteq \{c\in D[A]| \forall t\in L^+ t\models c\} \\
-    \forall t\in L^-\quad choices(t)\subseteq \{c\in D[A]| t\not\models c\}
- \end{align}
-\end{subequations}
-
-Let $\mathcal{C} = \bigcup_{t\in L^-} choices(t)$ and $\mathcal{S}=\{C\in\mathcal{P}(\mathcal{C})\mid \forall t\in L^-\quad cl(C\cup P)\cap choices(t)\neq \emptyset\}$ be all the subsets of $\mathcal{C}$ that ``violate'' all the negative traces. Then the second (optimisation) stage selects the solutions $S\in \mathcal{S}$ s.t.
-\begin{subequations}
-  \begin{align}
-    \text{there's no $S'\in\mathcal{S}$ s.t. } cl(S'\cup P)\subset cl(S\cup P)\\
-    \text{there's no $S'\subset S$ s.t. } cl(S'\cup P)=cl(S\cup P)
+    \text{there's no $S'\in\mathcal{S}$ s.t. } cl(S'\cup P)\subset cl(S\cup P) \label{eq:most-gen}\\
+    \text{there's no $S'\subset S$ s.t. } cl(S'\cup P)=cl(S\cup P)\label{eq:redun}
   \end{align}
 \end{subequations}
+%
+The first condition, Eq. \eqref{eq:most-gen}, ensures generality by selecting the model $S$ for which the logical consequences of $S\cup P$ are the less restricting. The closure is again crucial because from the point of view of generality we are not interested in the content of the selected model, but rather in its logical consequences.
+%
+The second condition, Eq. \eqref{eq:redun}, allows to exclude redundancy inside the selected model $S$ by ensuring that it does not contain constraints that are logical consequence of others in $S$.
+%
+If we were interested in the less general model, condition \eqref{eq:most-gen} would be 
+\begin{equation}\label{eq:most-spe}
+\text{there's no $S'\in\mathcal{S}$ s.t. } cl(S'\cup P)\supset cl(S\cup P)
+\end{equation}
+whereas the redundancy constraint would be the same of Eq. \eqref{eq:redun} because, even when we look for the most specific model, redundancy compromises its readability, without adding any value.
 
-We also experimented with an alternative optimisation formulation taking into account cardinality instead of subset relation. The idea is to select the ``minimum causes'' for the rejection of all negative traces. This formulation can be expressed by the properties:
+Generality/specificity is not the only desirable optimality criterion. If we are interested in the \emph{most simple} model instead, a solution composed of a limited number of constraints is certainly preferable. So, we also experimented with an alternative optimisation formulation based on the set cardinality. The procedure selects the $S \in\mathcal{S}$ such that:
 \begin{subequations}
-  \begin{align}
-    \text{there's no $S'\in\mathcal{S}$ s.t. } |cl(S'\cup P)| < |cl(S\cup P)|\\
-    \text{there's no $S'\in\mathcal{S}$ s.t. } |cl(S'\cup P)|=|cl(S\cup P)| \text{ and } |S'| < |S|
-  \end{align}
+   \begin{align}
+    \text{there's no $S'\in\mathcal{S}$ s.t. } |cl(S'\cup P)| < |cl(S\cup P)| \label{eq:simpl1}\\
+    \text{there's no $S'\in\mathcal{S}$ s.t. } |cl(S'\cup P)|=|cl(S\cup P)| \text{ and } |S'| < |S| \label{eq:simpl2}
+   \end{align}
 \end{subequations}
-The solutions of the ``cardinality-based'' are also ``subset-based'' solutions; but not the other way around, as shown by the following example. For the sake of simplicity let's assume that $P$ is empty and $cl$ is the identity function\footnote{This may also be the case when the constraints selected in the first stage are logically independent.}; consider two negative traces $t_1, t_2$ and a $choice$ function like $\{t_1\mapsto\{c_1, c_2\}, t_1\mapsto\{c_1, c_3\}\}$. The ``subset-based'' solutions are $\{c_1\}, \{c_2, c_3\}$, while $\{c_1\}$ would be the only ``cardinality-based'' solution.
+where the first equation selects the set with the smaller closure, whereas the second allows to choose the solution with less constraints among those with closure of equal cardinality.
+
+%We also experimented with an alternative optimisation formulation taking into account cardinality instead of subset relation. The idea is to select the ``minimum causes'' for the rejection of all negative traces. This formulation can be expressed by the properties:
+%\begin{subequations}
+%  \begin{align}
+%    \text{there's no $S'\in\mathcal{S}$ s.t. } |cl(S'\cup P)| < |cl(S\cup P)|\\
+%    \text{there's no $S'\in\mathcal{S}$ s.t. } |cl(S'\cup P)|=|cl(S\cup P)| \text{ and } |S'| < |S|
+%  \end{align}
+%\end{subequations}
+
+\theoremstyle{definition}\label{th:subset-generality}
+\begin{theorem}{}
+The models that are solution according to the simplicity criterion are also solutions for the generality criterion.
+\end{theorem} 
+\begin{proof}
+Suppose ad absurdum that there is a model $S\in\mathcal{S}$ that is optimal according to the simplicity criterion of Eq. \ref{eq:simpl1} and \ref{eq:simpl2} but it is not the most general, i.e. either Eq.\ref{eq:most-gen} or Eq.\ref{eq:redun} are violated for $S$. If $S$ violated Eq. \ref{eq:most-gen}, it would exists an $S'\in\mathcal{S}$ s.t. $cl(S'\cup P)\subset cl(S\cup P)$. But clearly, this implies that $|cl(S'\cup P)| < |cl(S\cup P)|$, which contradicts Eq. \ref{eq:simpl1}. On the other hand, if $S$ violated Eq. \ref{eq:redun}, it would exists an $S' \subset S$ s.t. $cl(S'\cup P)=cl(S\cup P)$. Obviously we would also have $|S'| < |S|$ and $|cl(S'\cup P)|=|cl(S\cup P)|$, which contradict Eq. \ref{eq:simpl2}. 
+\end{proof}
+
+Conversely, the opposite implication in Theorem \ref{th:subset-generality} does not necessarily hold. Indeed, let assume that $P$ is empty and $cl$ is the identity function\footnote{This may also be the case when the constraints selected in the first stage are logically independent.}; consider two negative traces $t_1, t_2$ and a $choice$ function producing three constraints $\{c_1, c_2,c_3\}$. In particular, $choices(t_1)=\{c_1, c_2\}$ and $choices(t_2)=\{c_1, c_3\}$. The only simplicity-oriented solution would be  $\{c_1\}$, whereas as regards the generality-oriented solutions we would have both $\{c_1\}, \{c_2, c_3\}$. We must remark that the simplicity principle is based on the intuition that ``smaller'' Declare models should be easier to understand for humans. However, we might notice that, since the two models $\{c_1\}$ and $\{c_2, c_3\}$ are not directly comparable according to their semantics, deciding which is the ``best'' might depend on the constraints themselves, ad well as the specific domain.
+
+
+
+
+%e' vero che la cardinalità sceglie c1 e questo ha senso se pensiamo che spesso si vuole il set più piccolo di vincoli perchè così il modello risulta più complensibile. However, questo potrebbe non essere sempre preferibile: la subset-based non getta via c1,c3 perchè di fatto se le chiusure sono diverse non è detto che c1 sia preferibile. magari in quello specifico dominio ha più senso c1,c3
+%\tcolor{blue}{The cardinality-based solution, which could be driven by the simplicity principle, is based on the intuition that "smaller" Declare models are easier to be understood by humans. However, we might notice that {c1} and {c2,c3} are not directly comprable, since their meaning (and their understandability too) might depend by the constraints, ad well as by the domain semantics.}
 
 \subsection*{Implementation}
 
-To perform our experiments we decided to separate the implementation of the two stages by reusing as much as possible existing systems.
+%To perform our experiments we decided to separate the implementation of the two stages by reusing as much as possible existing systems.
 
-The first stage is implemented via the ``brute-force'' Algorithm~\ref{alg:cand} that first collects the set of all the constraints that are satisfied by all the positive traces (Line \ref{alg:cand:candidates}). Subsequently, each negative trace is associated (by means of the function ${choices}$) with the subset of those constraints that are not satisfied by the trace  (Line \ref{alg:cand:choices}).
+The first stage is implemented via the Algorithm~\ref{alg:cand} that first collects the set $compatibles$ of the constraints that are satisfied by all the positive traces (Line \ref{alg:cand:candidates}). Subsequently, each negative trace is associated (by means of the function ${choices}$) with those constraints in $compatibles$ that are violated by the trace (Line \ref{alg:cand:choices}).
 %
 \begin{algorithm}
-    \caption{Generation of all possible models allowing all traces in $L^+$ and disallowing at least one trace in $L^-$.}
+    \caption{Identification of the constraints allowing all traces in $L^+$ and disallowing at least one trace in $L^-$.}
     \label{alg:cand}
     %
     \textbf{Input:}  $D[A], L^+, L^-$\\
-    \textbf{Output:} ${compatibles} \subseteq D[A]$, ${choices} : L^- \rightarrow 2^{D[A]}$
+    %\textbf{Output:} ${compatibles} \subseteq D[A]$, ${choices} : L^- \rightarrow 2^{D[A]}$
+    \textbf{Output:} ${choices} : L^- \rightarrow 2^{D[A]}$
 	%
 	\begin{algorithmic}[1] 
-   \Procedure{CandidateGeneration}{$D[A], L^+, L^-$} 
+   \Procedure{ChoicesGeneration}{$D[A], L^+, L^-$} 
    	\State ${compatibles}= \{c \in D[A] | \forall t \in L^+\, \Call{compliant}{t,c} = \texttt{True}\}$ \label{alg:cand:candidates}
 	\For {$t \in L^-$}
 		\State ${choices}(t) = \{c \in {compatibles} | \Call{compliant}{t,c} = \texttt{False}\}$\label{alg:cand:choices}
 	\EndFor
-	\State \Return ${compatibles}, {choices}$
+	%\State \Return ${compatibles}, {choices}$
+	\State \Return ${choices}$
     \EndProcedure
     \end{algorithmic}
 \end{algorithm}
 
-The implementation of the compliance verification \textproc{compliant} (i.e.\ $t\models c$) leverages the semantics of Declare patterns defined by means of regular expressions \cite{2017-DiCiccio} to verify the compliance of the traces. It is implemented in Go language employing a regexp implementation that is guaranteed to run in time linear in the size of the input\footnote{For more details, see the Go package regexp documentation at https://golang.org/pkg/regexp/}. 
-
+The implementation of the compliance verification \textproc{compliant} (i.e.\ $t\models c$) leverages the semantics of Declare patterns defined by means of regular expressions \cite{2017-DiCiccio}\tododl{x sergio, hai aggiunto altre regexp oltre a quelle del paper di Di Ciccio?}~to verify the compliance of the traces. It is implemented in Go language employing a regexp implementation that is guaranteed to run in time linear in the size of the input\footnote{For more details, see the Go package regexp documentation at https://golang.org/pkg/regexp/}.
 \lstset{language=Prolog}
 
-The second optimisation stage has been implemented using the \ac{ASP} system \textsc{Clingo}~\cite{DBLP:journals/corr/GebserKKS14}. The main reason for selecting an \ac{ASP} system for finite domain optimisation is that rules provide an effective and intuitive framework to implement a large class of closure operators. In fact, all the deductive systems for Declare that we analysed in the literature (see e.g.~\cite{2016-Bernardi,2017-DiCiccio}) can be recasted as Normal Logic Programs~\cite{2008-Lifschitz} by exploiting the assumption that the set of activities is finite and known in advance.
+The second optimisation stage has been implemented using the \ac{ASP} system \textsc{Clingo}~\cite{DBLP:journals/corr/GebserKKS14}. The main reason for selecting an \ac{ASP} system for finite domain optimisation is that rules provide an effective and intuitive framework to implement a large class of closure operators. Indeed, all the deductive systems for Declare that we analysed in the literature (see e.g.~\cite{2016-Bernardi,2017-DiCiccio}) can be recasted as Normal Logic Programs~\cite{2008-Lifschitz} by exploiting the assumption that the set of activities is finite and known in advance.
 %
 For example the valid formula $\textsc{Init}(a)\implies\textsc{Precedence}(a,b)$ that holds for any pair of activities $a, b$ can be written as the rule
 \begin{lstlisting}
   precedence(A,B) :- init(A), activity(B).
 \end{lstlisting}
-using a specific predicate (\lstinline{activity}) holding the set of activities.
+using a specific predicate (\lstinline{activity}) holding the set of activities\tododl{non occorre imporre anche $A \neq B$}.
 
-Note that the selection of the optimal stable models does not require the compliance verification on the traces, which are therefore not necessary as input. The required parameters, properly encoded as an \ac{ASP} program, are the closure operator, the base model $P$, and the $choice$ function.
+%Note that the selection of the optimal stable models does not require the compliance verification on the traces, which are therefore not necessary as input. 
+The optimisation stage is implemented as described in Algorithm \ref{alg:select}. The required input parameters, properly encoded as an \ac{ASP} program, are the closure operator $cl$, the initial model $P$, and the $choices$ function.
 
-\todo[inline]{ST: I'd drop most of the part below, already described in the preliminaries}
-\todoindl{Io lo lascerei per ora. Mi pare pi\`u chiaro, pero' possiamo limare il contenuto in seguito se non riusciamo a stare nelle 34 facciate.}
+%\todo[inline]{ST: I'd drop most of the part below, already described in the preliminaries}
+%\todoindl{Io lo lascerei per ora. Mi pare pi\`u chiaro, pero' possiamo limare il contenuto in seguito se non riusciamo a stare nelle 34 facciate.}
 
 
 \begin{algorithm}
-    \caption{Selection of the best model according to custom model fitness.}
+    \caption{Selection of the best solution according to custom model fitness.}
     \label{alg:select}
     %
-    \textbf{Parameters:} $A, {cl}: 2^{D[A]} \rightarrow 2^{D[A]}$\\
-    \textbf{Input:}  ${choices} : L^- \rightarrow 2^{D[A]}, P$\\
+    %\textbf{Parameters:} $A, {cl}: 2^{D[A]} \rightarrow 2^{D[A]}$\\
+    \textbf{Input:}  ${cl}: 2^{D[A]} \rightarrow 2^{D[A]}, {choices} : L^- \rightarrow 2^{D[A]}, P$\\
     \textbf{Output:} $S \subseteq D[A]$
 	%
 	\begin{algorithmic}[1] 
    \Procedure{Selection}{${choices}, P$} 
   	%\State $C = \{c \in D[A] ~|~ \exists t \in L^-, c \in {choices}(t)\}$
-	\State \textbf{select} $S \subseteq \bigcup_{t\in L^-} {choices}(t)$ \textbf{s.t.} \label{alg:subsetC}
+	\State $\mathcal{C} = \bigcup_{t\in L^-} choices(t)$
+	\State \textbf{select} $S \subseteq \mathcal{C}$ \textbf{s.t.} \label{alg:subsetC}
 	\Indent
-		\State 1. $\forall t \in L^-, {choices}(t) \cap {cl}(S \cup P) \neq \varnothing$ 	\label{alg:select:1}
+		\State 1. $\forall t \in L^-,  {cl}(S \cup P)\cap {choices}(t) \neq \varnothing$ 	\label{alg:select:1}
 		\State 2. $is\_optimal(S)$									\label{alg:select:2}
-		\State 3. $\not\exists S' \subset S ~|~ {cl}(S \cup P) = {cl}(S' \cup P)$		\label{alg:select:3}
+		%\State 3. $\not\exists S' \subset S ~|~ {cl}(S \cup P) = {cl}(S' \cup P)$		\label{alg:select:3}
 	\EndIndent
-	\State \Return $S$
+	\State \Return $S$  % DOVREMMO RITORNARE PIù DI UN S
     \EndProcedure
     \end{algorithmic}
 \end{algorithm}
 
 
-%The algorithm starts be defining the set $C$ of the constraints allowing all traces in $L^+$ and disallowing at least one trace in $L^-$.
-
-The optimisation stage is implemented as described in Algorithm \ref{alg:select}\tododl{nella linea \ref{alg:subsetC} avrei potuto dire $S \subseteq C$ dove $C = \{c \in D[A] ~|~ \exists t \in L^-, c \in {choices}(t)\}$, sarebbe stata un'ottimizzazione, ma non so se sarebbe valida anche per la ricerca del modello massimale}
-. In particular, the first condition (Line \ref{alg:select:1}) specifies that $S$ must be a subset of ${compatibles}$ able to discard all traces in $L^-$ as non-compliant.
-
-The second condition (Line \ref{alg:select:2}) accounts for the model fitness function, which can be customised according to the specific needs. For example, we could consider \emph{generality} as a fitness measure. 
+The algorithm starts by computing the set $\mathcal{C}$ of the constraints allowing all traces in $L^+$ and disallowing at least one trace in $L^-$. From that, it selects as solution model a subset $S$ fulfilling two conditions.
 %
-%Intuitively, a model $M$ is more general than another $M'$ if $M$ allows a superset of the traces accepted by $M'$, i.e. defining ${comp(M)}$ the set of all traces compliant with $M$, $M$ is more general than $M'$---and symmetrically $M'$ is more specific than $M$---if ${comp}(M') \subset {comp}(M)$.\tododl{forse \`e meglio evidenziare questo paragrafo come una definizione?}
-
-%Obviously, testing the generality of a model according to this definition is not feasible, because it requires considering all the allowed/disallowed traces. The closure operator can be employed for such purpose. The two methods (comparing the set of traces compliant with $M$ and $M'$, or comparing their closures ${cl}(M)$ and ${cl}(M)$) are not equivalent because the deductive system deriving from the Declare language is not complete. Nonetheless, as the system is correct, closure operator can be used to identify which model is more general/specific.
+%The optimisation stage is implemented as described in Algorithm \ref{alg:select}\tododl{nella linea \ref{alg:subsetC} avrei potuto dire $S \subseteq C$ dove $C = \{c \in D[A] ~|~ \exists t \in L^-, c \in {choices}(t)\}$, sarebbe stata un'ottimizzazione, ma non so se sarebbe valida anche per la ricerca del modello massimale}
+The first condition (Line \ref{alg:select:1}) specifies that $S$ must be a set con constraints able to allow all traces in $L^+$ and discard all those in $L^-$ as non-compliant. So---consistently with Eq. \eqref{}---$S$ must be a subset of $\mathcal{S}$.
 %
-In that case, we could implement the $is\_optimal(S)$ function as a search for the \emph{minimal} $S$, intending it as the set $S$ of constraints for which there is no $S'$ such that ${cl}(S' \cup P) \subset {cl}(S \cup P)$.
+The second condition (Line \ref{alg:select:2}) accounts for an optimality criterion, which can be customised according to the specific needs. 
+%
+For example, we could consider \emph{generality} as an optimality criterion. In that case, the $is\_optimal(S)$ function implements the criteria of Eq. \eqref{eq:most-gen} (for generality) and \eqref{eq:redun} (to avoid redundancy).
+Conversely, if we are interested in the most specific solution, $is\_optimal(S)$ must implement Eq. \eqref{eq:most-spe} and \eqref{eq:redun}.
+Finally, when the optimality criterion is \emph{simplicity}, Eq. \eqref{eq:simpl1} and \eqref{eq:simpl2} must be used.
 
-On the other hand, if we want to find the most specific set of constraints---i.e. the model composed of Declare templates in $D$ that excludes the higher number of unknown traces---the $is\_optimal(S)$ operation must be implemented as a search for the \emph{maximal} $S$, intending it as the $S$ for which there is no $S'$ such that ${cl}(S \cup P) \subset {cl}(S' \cup P)$.
+%In that case, we could implement the $is\_optimal(S)$ function as a search for the \emph{minimal} $S$, intending it as the set $S$ of constraints for which there is no $S'$ such that ${cl}(S' \cup P) \subset {cl}(S \cup P)$.
+%
+%On the other hand, if we want to find the most specific set of constraints---i.e. the model composed of Declare templates in $D$ that excludes the higher number of unknown traces---the $is\_optimal(S)$ operation must be implemented as a search for the \emph{maximal} $S$, intending it as the $S$ for which there is no $S'$ such that ${cl}(S \cup P) \subset {cl}(S' \cup P)$.
+%
+%Finally, the last selecting condition (Line \ref{alg:select:3}) allows reducing the redundancy of the extracted model. This condition is desirable because---even when the user is interested in the most specific model---redundancy compromises the readability of the solution, without adding any value. Nonetheless, it is important to notice that the condition of Line \ref{alg:select:3} may not be sufficient to completely avoid redundancy because we do not have a complete calculus for the language of conjunction of Declare constraints.
+%
+%\todo[inline]{ST: end of dropped part}
 
-Finally, the last selecting condition (Line \ref{alg:select:3}) allows reducing the redundancy of the extracted model. This condition is desirable because---even when the user is interested in the most specific model---redundancy compromises the readability of the solution, without adding any value. Nonetheless, it is important to notice that the condition of Line \ref{alg:select:3} may not be sufficient to completely avoid redundancy because we do not have a complete calculus for the language of conjunction of Declare constraints.
 
-\todo[inline]{ST: end of dropped part}
-
-
-Even if Algorithm \ref{alg:select} reduces the number of candidate solutions by excluding all those non fulfilling conditions 1., 2., and 3., it is not guaranteed to return a unique solution. If the number of solutions provided by the procedure is too high for human intelligibility, the optimality condition could be further refined by inducing a preference order in the returned solution. For example, one can be interested in being reported first the solutions with the lower number of constraints, or with certain Declare templates. The advantage of our approach is precisely in the possibility to implement off-the-shelves optimisation strategies, where---adapting the $is\_optimal(S)$ function or even the definition of the closure operator---the developer can easily experiment with different model fitness functions.
+Even if Algorithm \ref{alg:select} reduces the number of candidate solutions by excluding all those non fulfilling conditions 1 and 2, it is not guaranteed to return a unique solution\tododl{in realta' l'algoritmo per come e' scritto restituisce una sola soluzione. Bisognerebbe cambiarlo per fare emergere che vengono restituite anche altre}. If the number of solutions provided by the procedure is too high for human intelligibility, the optimality condition could be further refined by inducing a preference order in the returned solution. For example, among the most general solutions one can be interested in being reported first those models with the lower number of constraints, or with certain Declare templates. The advantage of our approach is precisely in the possibility to implement off-the-shelves optimisation strategies, where---adapting the $is\_optimal(S)$ function or even the definition of the closure operator---the developer can easily experiment with different criteria.
+\tcolor{red}{*****************}
 
 In order to better clarify the approach, we apply it to a very simple example.  
-Consider the sets of positive and negative traces composed by only one trace each: $L^+=\{\textsf{bac}\}$ and $L^-=\{\textsf{ab}\}$. The alphabet of activities is clearly just $A=\{\textsf{a, b, c}\}$. Suppose we want to learn the most general model composed by only the Declare templates $D=\{\textsf{EXISTENCE, INIT}\}$\tododl{non ho inserito TRUE perch\`e non vorrei confondesse le idee quando si arriva a sceglie il set minimale}.
+Consider the sets of positive and negative traces composed by only one trace each: $L^+=\{\textsf{bac}\}$ and $L^-=\{\textsf{ab}\}$. Suppose $P=\varnothing$ The alphabet of activities is clearly just $A=\{\textsf{a, b, c}\}$. Suppose we want to learn the most general model composed by only the Declare templates $D=\{\textsf{EXISTENCE(X), INIT(X)}\}$.%\tododl{non ho inserito TRUE perch\`e non vorrei confondesse le idee quando si arriva a sceglie il set minimale}.
 
-In this case, the set $D[A]$ can be easily elicited: $D[A]=\{ \textsf{EXISTENCE(a)}$, $\textsf{EXISTENCE(b)}$, $\textsf{EXISTENCE(c)}$, $\textsf{INIT(a)}$, $\textsf{INIT(b)}$, $\textsf{INIT(c)} \}$. Algorithm \ref{alg:cand} elects the following compatible constraints: ${compatibles}=$$\{ \textsf{EXISTENCE(a)}$, $\textsf{EXISTENCE(b)}$, $\textsf{EXISTENCE(c)}$, $\textsf{INIT(b)}\}$, and emits ${choices}(\textsf{ab})=$$\{ \textsf{EXISTENCE(c)}$, $\textsf{INIT(b)}\}$.
-
+In this case, the set $D[A]$ can be easily elicited: $D[A]=\{$ \textsf{EXISTENCE(a), EXISTENCE(b), EXISTENCE(c), INIT(a), INIT(b), INIT(c)}$\}$. Algorithm \ref{alg:cand} elects the following compatible constraints: ${compatibles}=\{$\textsf{EXISTENCE(a), EXISTENCE(b), EXISTENCE(c), INIT(b)}$\}$, and emits ${choices}(\textsf{ab})=\{$\textsf{EXISTENCE(c), INIT(b)}$\}$.
+%
 %Algorithm \ref{alg:select} easily computes the set $C$ of all constraints excluding at least one negate traces as $C=$$\{ \textsf{EXISTENCE(c)}$, $\textsf{INIT(b)}\}$. In this simple case, the subsets of $C$ satisfying the first condition (Line \ref{alg:select:1} of Algorithm \ref{alg:select}) are: $\{\textsf{EXISTENCE(c)}\}$, $\{\textsf{INIT(b)}\}$, and $\{\textsf{EXISTENCE(c)}$,$\textsf{INIT(b)}\}$. As we are interested in the most general model, both the solutions $S=$$\{\textsf{EXISTENCE(c)}\}$ and $S=$$\{\textsf{INIT(b)}\}$ are valid. Note that 
-
+%
 In this simple case, the subsets of ${compatibles}$ satisfying the first condition (Line \ref{alg:select:1}) of Algorithm \ref{alg:select} would be: 
 \[
 \begin{array}{cl}
@@ -188,9 +356,10 @@ In this simple case, the subsets of ${compatibles}$ satisfying the first conditi
 \end{array}
 \]
 
-As we are interested in the most general model, both the solutions $S_1=$ $\{\textsf{EXISTENCE(c)}\}$ and $S_2=$$\{\textsf{INIT(b)}\}$ are valid. Note that these two solutions cannot be compared according to the definitions of generality or specificity because there exist traces (such as the unknown trace $\textsf{b}$) compliant with $S_2$ and non-compliant with $S_1$, i.e. there is no subset relation between $\mathcal{C}_{S_1}$ and $\mathcal{C}_{S_2}$.
-
-On the contrary, if we are interested in the most specific set of constraints, the ${is\_optimal}(S)$ operation must return the maximal model $\{\textsf{EXISTENCE(a)}$, $\textsf{EXISTENCE(b)}$, $\textsf{EXISTENCE(c)}$, $\textsf{INIT(b)}\}$. Finally, the redundancy check operated by the third selecting condition discards the constraint $\textsf{EXISTENCE(b)}$, and correctly return the set $S=$$\{\textsf{EXISTENCE(a)}$, $\textsf{EXISTENCE(c)}$, $\textsf{INIT(b)}\}$. According to this model, the unknown trace \textsf{b} is negative and \textsf{bca} is positive. 
+As we are interested in the most general models, both $S_1=$ $\{\textsf{EXISTENCE(c)}\}$ and $S_2=$$\{\textsf{INIT(b)}\}$ are optimal solutions. Note that these two solutions cannot be compared according to the definitions of generality because there exist traces (such as the unknown trace $\textsf{b}$) compliant with $S_2$ and non-compliant with $S_1$, i.e. there is no subset relation between $\mathcal{C}_{S_1}$ and $\mathcal{C}_{S_2}$.
+If we were interested in the most simple solution instead, $S_1=\{$\textsf{EXISTENCE(c)}$\}$ would have been our choice, because its closure is the smaller in cardinality.
+%
+Finally, if we were interested in the most specific set of constraints, the ${is\_optimal}(S)$ operation would have returned the model $\{$\textsf{EXISTENCE(a), EXISTENCE(c), INIT(b)}$\}$---where the redundancy check of Eq. \eqref{eq:redun} operated by discarding \textsf{EXISTENCE(b)}. According to this model, the unknown trace \textsf{b} is negative and \textsf{bca} is positive. 
 
 
 %

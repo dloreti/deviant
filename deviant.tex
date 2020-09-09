@@ -35,6 +35,10 @@
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+
+\usepackage{enumitem}
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %% Elsevier bibliography styles
@@ -73,7 +77,7 @@
 
 \begin{frontmatter}
 
-\title{On deviant traces and other stranger things}
+\title{Process discovery on deviant traces and other stranger things}
 
 \author[disi]{Federico Chesani}
 \author[fbk]{Chiara Di Francescomarino}
@@ -100,7 +104,7 @@
 \end{abstract}
 
 \begin{keyword}
-Process mining\sep Process discovery\sep Declarative process models\sep Deviant traces
+Process mining\sep process discovery\sep declarative process models\sep deviant traces
 \end{keyword}
 
 \end{frontmatter}
@@ -109,7 +113,7 @@ Process mining\sep Process discovery\sep Declarative process models\sep Deviant 
 
 \input{sections/introduction}
 \input{sections/motivations}
-
+\input{sections/background}
 \input{sections/approach}
 \input{sections/evaluation}
 \input{sections/related}
