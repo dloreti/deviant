@@ -245,7 +245,7 @@ Conversely, the opposite implication in Theorem \ref{th:subset-generality} does 
 %e' vero che la cardinalità sceglie c1 e questo ha senso se pensiamo che spesso si vuole il set più piccolo di vincoli perchè così il modello risulta più complensibile. However, questo potrebbe non essere sempre preferibile: la subset-based non getta via c1,c3 perchè di fatto se le chiusure sono diverse non è detto che c1 sia preferibile. magari in quello specifico dominio ha più senso c1,c3
 %\tcolor{blue}{The cardinality-based solution, which could be driven by the simplicity principle, is based on the intuition that "smaller" Declare models are easier to be understood by humans. However, we might notice that {c1} and {c2,c3} are not directly comprable, since their meaning (and their understandability too) might depend by the constraints, ad well as by the domain semantics.}
 
-\subsection*{Implementation}
+\subsection{Implementation}
 
 %To perform our experiments we decided to separate the implementation of the two stages by reusing as much as possible existing systems.
 
@@ -334,7 +334,6 @@ Finally, when the optimality criterion is \emph{simplicity}, Eq. \eqref{eq:simpl
 
 
 Even if Algorithm \ref{alg:select} reduces the number of candidate solutions by excluding all those non fulfilling conditions 1 and 2, it is not guaranteed to return a unique solution\tododl{in realta' l'algoritmo per come e' scritto restituisce una sola soluzione. Bisognerebbe cambiarlo per fare emergere che vengono restituite anche altre}. If the number of solutions provided by the procedure is too high for human intelligibility, the optimality condition could be further refined by inducing a preference order in the returned solution. For example, among the most general solutions one can be interested in being reported first those models with the lower number of constraints, or with certain Declare templates. The advantage of our approach is precisely in the possibility to implement off-the-shelves optimisation strategies, where---adapting the $is\_optimal(S)$ function or even the definition of the closure operator---the developer can easily experiment with different criteria.
-\tcolor{red}{*****************}
 
 In order to better clarify the approach, we apply it to a very simple example.  
 Consider the sets of positive and negative traces composed by only one trace each: $L^+=\{\textsf{bac}\}$ and $L^-=\{\textsf{ab}\}$. Suppose $P=\varnothing$ The alphabet of activities is clearly just $A=\{\textsf{a, b, c}\}$. Suppose we want to learn the most general model composed by only the Declare templates $D=\{\textsf{EXISTENCE(X), INIT(X)}\}$.%\tododl{non ho inserito TRUE perch\`e non vorrei confondesse le idee quando si arriva a sceglie il set minimale}.
