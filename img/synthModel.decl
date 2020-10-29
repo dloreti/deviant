@@ -1,0 +1,23 @@
+activity Send Acceptance Pack
+bind Send Acceptance Pack: id
+activity Assess Eligibility
+bind Assess Eligibility: id
+activity Appraise Property
+activity Assess Loan Risk
+activity Reject Application
+activity Receive Loan Application
+activity Receive Positive Feedback
+activity Receive Negative Feedback
+activity Notify Approval
+id: integer between 0 and 1000
+Precedence[Assess Eligibility, Send Acceptance Pack] | | |
+Init[Receive Loan Application] | |
+Existence[Assess Eligibility] | |
+Precedence[Assess Loan Risk, Assess Eligibility] | | |
+Precedence[Appraise Property, Assess Eligibility] | | |
+Exclusive Choice[Reject Application, Send Acceptance Pack] | | |
+Precedence[Assess Eligibility, Reject Application] | | |
+Not Co-Existence[Reject Application, Notify Approval] | | |
+Not Co-Existence[Receive Positive Feedback, Receive Negative Feedback] | | |
+Exclusive Choice[Send Acceptance Pack, Receive Negative Feedback] | | |
+Precedence[Appraise Property, Assess Loan Risk] | | |
