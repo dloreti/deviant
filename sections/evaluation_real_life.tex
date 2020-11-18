@@ -1,0 +1,39 @@
+\subsection{Evaluation on case studies from real data}
+\label{sec:realdata}
+
+\todoindl{Chiara DFM\&Sergio\&Fabrizio: descrizione dataset e risultati di esperimenti coi dati veri}
+
+For the experimentation with real datasets, we used three real-life event logs: \textsc{cerv}, \textsc{sepsis} and \textsc{bpic12}. Starting from the 3 event logs we generated 5 different datasets of positive and negative traces by applying different criteria to distinguish positive and negative traces, i.e., labeling the event logs with different labeling functions. 
+
+\textsc{cerv} is an event log related to the process of cervical cancer screening carried out in an Italian cervical cancer screening center~\cite{2007b-Lamma}. Cervical cancer is a disease in which malignant (cancer) cells form in the tissues of the cervix of the uterus. The screening program proposes several tests in order to early detect and treat cervical cancer. It is usually composed by five phases: Screening planning; Invitation management; First level test with pap-test; Second level test with colposcopy, and eventually biopsy. The traces contained in the event log have been analyzed by a domain expert and labeled as compliant (positive traces) or non-compliant (negative traces) with respect to the cervical cancer screening protocol adopted by the screening center.
+
+\textsc{sepsis}~\cite{Sepsis} is an event log that records trajectories of patients with symptoms of the life-threatening sepsis condition in a Dutch hospital.
+%\textsc{Sepsis} is an event log that records trajectories of patients with symptoms of the life-threatening sepsis condition in a Dutch hospital. 
+Each case logs events since the patient’s registration in the emergency room until her discharge from the hospital. Among others, laboratory tests together with their results are recorded as events. The traces contained in the event log have been labelled based on their cycle execution time. In the \textsc{sepsis$_{mean}$} dataset, traces with a cycle time lower than the mean duration of the traces in the event log ($\sim$ 28 days) have been labelled as positive, as negative otherwise. Similarly, in the \textsc{sepsis$_{median}$}, traces with a cycle time lower than the median duration of the traces in the event log ($\sim$ 5 days)  have been labeled as positive, as negative otherwise.  
+
+\textsc{bpic12}~\cite{BPIC2012} is a real-life event log pertaining to the application process for personal loans or overdrafts in a Dutch financial institute. It merges three intertwined sub-processes. Also in this case, the traces have been labelled based on their cycle execution time. In the \textsc{bpic12$_{mean}$} dataset (resp. \textsc{bpic12$_{mean}$}), traces with a cycle time lower than the mean (resp. median) duration of the traces in the event log ($\sim$ 8 days, resp. $\sim$ 19 hours) have been labelled as positive, as negative otherwise. 
+
+%The \textsc{cerv} event log has been labeled based on the compliance of th
+
+
+Table~\ref{tab:rl_datasets} summarizes the data related to the five resulting datasets.
+
+\begin{table} [h]
+	\centering
+	\scalebox{0.8}{
+		\begin{tabular} {l l c c c c c}
+		\toprule
+			\multirow{2}{*}{\textbf{Dataset}} & \multirow{2}{*}{\textbf{Log}} & \multirow{2}{*}{\textbf{Trace \#}} & \multirow{2}{*}{\textbf{Activity \#}} & \multirow{2}{*}{\textbf{Label \#}} & \textbf{Positive} & \textbf{Negative}  \\ 
+			& & & & & \textbf{Trace \#} & \textbf{Trace \#} \\ \midrule
+			\textsc{cerv$_{compl}$} & \textsc{cerv} & 157 & 16 & compliant & 55 & 102 \\ \midrule
+			\textsc{sepsis$_{mean}$} & \multirow{2}{*}{\textsc{sepsis}} & \multirow{2}{*}{1000} & \multirow{2}{*}{16} & mean duration & 838 & 212 \\
+			\textsc{sepsis$_{median}$} &  &  &  & median duration & 525 & 525 \\ \midrule
+			\textsc{bpic12$_{mean}$} & \multirow{2}{*}{\textsc{bpic12}} & \multirow{2}{*}{13087} & \multirow{2}{*}{36} & mean duration & 8160 & 4927  \\
+			\textsc{bpic12$_{median}$} &  &  &  & median duration & 6544  & 6543 \\ 			
+			\bottomrule
+		\end{tabular}}
+		\caption{Dataset description}
+		\label{tab:rl_datasets}
+\end{table}
+
+
