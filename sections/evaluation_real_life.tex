@@ -3,7 +3,7 @@
 
 \todoindl{Chiara DFM\&Sergio\&Fabrizio: descrizione dataset e risultati di esperimenti coi dati veri}
 
-For the experimentation with real datasets, we used three real-life event logs: \textsc{cerv}, \textsc{sepsis} and \textsc{bpic12}. Starting from the 3 event logs we generated 5 different datasets of positive and negative traces by applying different criteria to distinguish positive and negative traces, i.e., labeling the event logs with different labeling functions. 
+For the experimentation with real datasets, we used three real-life event logs: \textsc{cerv}, \textsc{sepsis} and \textsc{bpic12}. Starting from these event logs we generated 5 different datasets, each composed of a set of positive and a set of negative traces, by applying different criteria to distinguish between positive and negative traces, i.e., by labeling the event log with different labeling functions. 
 
 \textsc{cerv} is an event log related to the process of cervical cancer screening carried out in an Italian cervical cancer screening center~\cite{2007b-Lamma}. Cervical cancer is a disease in which malignant (cancer) cells form in the tissues of the cervix of the uterus. The screening program proposes several tests in order to early detect and treat cervical cancer. It is usually composed by five phases: Screening planning; Invitation management; First level test with pap-test; Second level test with colposcopy, and eventually biopsy. The traces contained in the event log have been analyzed by a domain expert and labeled as compliant (positive traces) or non-compliant (negative traces) with respect to the cervical cancer screening protocol adopted by the screening center.
 
@@ -34,6 +34,85 @@ Table~\ref{tab:rl_datasets} summarizes the data related to the five resulting da
 		\end{tabular}}
 		\caption{Dataset description}
 		\label{tab:rl_datasets}
+\end{table}
+
+Table~\ref{tab:rl_results} summarizes the results obtained by applying the \nd algorithm. In detail, the table reports for each dataset, (i) the results related to \minclos and \subsetclos - in terms of number of returned models\footnote{We stop generating models after $20$ models, i.e., \para{max} in Table~\ref{tab:rl_results} indicates that more than $20$ models have been returned.}, in terms of minimum size of returned models, as well as in terms of average percentage of negative traces excluded by the returned model. Moreover, the table reports the time required for computing the set of compatibles, the set of choices, as well as for \minclos and \subsetclos.
+
+\begin{table} [h]
+	\centering
+	\scalebox{0.58}{
+		\begin{tabular} {l | c c c | c c c | c c c c}
+		\toprule
+			\multirow{4}{*}{\textbf{Dataset}} & \multicolumn{3}{c|}{\textbf{\minclos}} & \multicolumn{3}{c|}{\textbf{\subsetclos}} & 	\multicolumn{4}{c}{\textbf{ Required Time (s)}} \\ \cmidrule{2-11}
+			& \textbf{Number} & \textbf{Min} & \textbf{Avg.} & \textbf{Number} & \textbf{Min} & \textbf{Avg.} & \multirow{3}{*}{\textbf{Comp.}} & \multirow{3}{*}{\textbf{Choices}} & \multirow{3}{*}{\textbf{\minclos}} & \multirow{3}{*}{\textbf{\subsetclos}} \\			
+			& \textbf{of} & \textbf{model} & \textbf{Violated} & \textbf{of} & \textbf{model} & \textbf{Violated} & & & & \\
+			& \textbf{models} & \textbf{size} & \textbf{L$^{-}$ \%} & \textbf{models} & \textbf{size} & \textbf{L$^{-}$ \%} & & & & \\\midrule
+			\textsc{cerv$_{compl}$} & \para{max} & 4 & 100\% & \para{max} & 4 & 100\% & 0.12 & 0.33 & 0.045 & 0.065 \\ \midrule
+			\textsc{sepsis$_{mean}$} & 1 & 8 & 4.25\% & 1 & 8  & 4.25\% & 0.73 & 1.04 & 0.035 & 0.039 \\ 
+			\textsc{sepsis$_{median}$} & 16 & 14 & 26.86\% & \para{max} & 14 & 26.86\% & 0.45 &	1.5 & 0.087 & 0.2 \\ \midrule
+			\textsc{bpic12$_{mean}$} & \para{max} & 12 & 1.42\% & \para{max} & 12 & 1.42\% & 13.51 & 31 & 0.066 & 0.096  \\ 
+			\textsc{bpic12$_{median}$} & \para{max} & 22 & 36.59\% & \para{max} & 23 & 36.59\% & 13.32 & 37.63 & 43.846 & 359.164 \\ 			
+			\bottomrule
+		\end{tabular}}
+		\caption{Real Life log results}
+		\label{tab:rl_results}
+\end{table}
+
+The table shows that for the \textsc{cerv$_{compl}$} dataset, \nd is able to return models that satisfy the whole set of positive traces and violate the whole set of negative traces (the percentage of violated traces in $L^-$ is equal to 100\%) with a very low number of constraints (4). For the other datasets, the returned models are always able to satisfy all the traces in $L^+$, however not all the negative traces are violated by the returned models. In case of the datasets built by using the mean of the trace cycle time, the percentage of violated traces is relatively small ($4.25\%$ for \textsc{sepsis$_{mean}$} and $1.24\%$ for \textsc{bpic12$_{mean}$}), as the number of constraints of the returned models ($8$ for \textsc{sepsis$_{mean}$} and $12$ for \textsc{bpic12$_{mean}$}). Nevertheless, \nd is able to obtain reasonable results with the real life datasets built with the median of the trace cycle time. Indeed, it is able to return models able to accept all the traces in $L^+$ and to cover about $27\%$ (resp. $37\%$) of the traces in $L^-$ for \textsc{sepsis$_{median}$} (resp. \textsc{bpic12$_{median}$}). The difference in terms of results between the  \textsc{cerv$_{compl}$} and the other datasets is not surprising. Indeed, while what characterizes positive and negative traces in the \textsc{cerv$_{compl}$} dataset depend upon the control flow (i.e., it depends on whether each execution complies with the cervical cancer screening protocol adopted by the screening center), when mean and median cycle time are used, the difference between positive and negative traces could likely not exclusively depend on the control flow of the considered traces. \todocdf{I would add the language bias in the discussion.}
+The table also shows that \nd is overall very fast for small datasets (e.g., less than one minute for \textsc{cerv$_{compl}$}), while it requires some more time for large ones (e.g., \textsc{bpic12$_{mean}$} and \textsc{bpic12$_{median}$}). While the time required for computing \textit{compatibles} and \textit{choices} seems to be related to the size of the dataset, the time required for computing the closures seems to depend also on other characteristics of the datasets). 
+
+We compared the obtained results with the ones obtained with state-of-the-art techniques for the discovery of declarative models starting (i) from  only positive traces; and (ii) from both positive and negative traces. 
+
+%For the former case, we used the state-of-the-art Declare miner algorithm~\cite{2018a-Maggi}  implemented in the RuM toolkit~\cite{2020-Alman}. For the latter we compared the results obtained with \nd with the ones of DecMiner, the approach based on Inductive Logic Programming proposed in~\cite{2007b-Lamma}.
+
+Concerning the classical declarative discovery from only positive execution traces, we used the state-of-the-art \declare miner algorithm~\cite{2018a-Maggi} implemented in the \rum toolkit~\cite{2020-Alman}. We used the \declareminer algorithm\footnote{We run the \declareminer algorithm with vacuity detection disabled, \par{activity support filter} set to 0\%, using both transitive closure and hierarchy-based reduction of the discovered constraints, as well as with all the Declare templates, except for \dec{NotResponse}, \dec{NotPrecedence}, \dec{NotChainPrecedence}, \dec{NotChainResponse}, \dec{NotRespondedExistence}.} to discover the \declare model starting from the only positive traces with different values of the \para{support} parameter, which measures the percentage of (positive) traces satisfied by the \declare model.  \todocdf{Move this part when the results are presented for the synthetic data}
+
+Table~\ref{tab:rl_declare_miner} summarizes the obtained results. In detail, the table reports for each dataset and \para{support}, i.e., percentage of positive traces satisfied by the model, the size of the model in terms of number of constraints, as well as the percentage of negative traces violated by the model.
+
+\begin{table} [h]
+	\centering
+	\scalebox{0.8}{
+		\begin{tabular} {l l c c}
+		\toprule
+			\textbf{Dataset} & \textbf{\para{support}} & \textbf{Model size} & \textbf{Avg. violated L$^{-}$ \%}  \\ \midrule
+			\multirow{2}{*}{\textsc{cerv$_{compl}$}} & 100\% & 323 & 9.8\% \\ 
+			& 90\% & 517 & 100\% \\ \midrule
+			\multirow{3}{*}{\textsc{sepsis$_{mean}$}} & 100\% & 210 & 4.25\%\\
+			& 95\% & 342 & 81.13\% \\
+			& 90\% & 363 & 100\% \\ \midrule
+			\multirow{3}{*}{\textsc{sepsis$_{median}$}} & 100\% & 202 & 22.29\% \\ 
+			& 95\% & 211 & 88.19\% \\
+			& 90\% & 322 & 100\% \\ \midrule
+			\multirow{3}{*}{\textsc{bpic12$_{mean}$}} & 100\% & 514 & 0\% \\
+			& 90\% & 637 & 83.52\%\\ 
+			& 80\% & 650 & 100\%\\ \midrule
+			\multirow{3}{*}{\textsc{bpic12$_{median}$}} & 100\% & 532 & 14.21\% \\ 
+			& 80\% & 654 & 98.18\% \\			
+			& 60\% & 654 & 98.18\% \\	
+		\bottomrule
+		\end{tabular}}
+		\caption{\declareminer results}
+		\label{tab:rl_declare_miner}
+\end{table}
+
+Finally, we compared the results obtained with \nd with the ones of \decminer, the state-of-the-art approach using both positive and negative execution traces based on Inductive Logic Programming proposed in~\cite{2007b-Lamma}. To this aim, we run the same procedure described in~\cite{2007b-Lamma} on the same dataset (the \textsc{cerv$_{compl}$} dataset) used in the same paper. Five fold-cross validation was used, i.e., the \textsc{cerv$_{compl}$} dataset was divided into 5 sets and in each experiment 4 were used for training and the remaining one for testing. The average accuracy of the five executions is collected, where the accuracy is defined as the sum of the number of compliant traces that are correctly classified as compliant by the learned model and the number of non-compliant traces that are correctly classified as non-compliant by the learned model divided by the total number of traces. Table~\ref{tab:acc_results} reports the obtained accuracy values for the \decminer, the \declareminer (with different values of the \para{support} parameter) and the \nd (both for the \minclos and \subsetclos closure) approach.
+
+\begin{table} [h]
+	\centering
+	\scalebox{0.8}{
+		\begin{tabular} {l c c}
+			\toprule
+			 \decminer &  & 97.44\%\\ \midrule
+			\multirow{3}{*}{\declareminer} & \para{support}=100\% & 48.53\%\\
+			& \para{support}=90\% & 95.5\% \\
+			& \para{support}=80\% & 96.15\% \\ 
+			& \para{support}=10\% & 81.94\% \\ \midrule
+			 \multirow{2}{*}{\nd} & \minclos & 97.57\% \\ 
+        & \subsetclos & 97.38\% \\ 			
+			\bottomrule
+		\end{tabular}}
+		\caption{Accuracy results obtained with \declareminer, \decminer and \nd}
+		\label{tab:acc_results}
 \end{table}
 
 
