@@ -61,7 +61,7 @@ Unfortunately, the opposite implication is not always true, i.e. if we have $M, 
 \paragraph{Initial model} A wide body of research has been devoted to techniques to mine declarative process models that characterise a given event log (our positive traces). The goal of our approach is to leverage these techniques and refine their results by taking into account the negative examples as well. To this end we consider a---possibly empty---\emph{initial model} $P$, i.e. a set of Declare constraints that are known to characterise the positive traces. For example, such set can be the expression of domain knowledge or the result of a state-of-the-art discovery algorithm previously applied to $L^+$. To apply our technique we only require that all the positive traces are compliant with all the constraints in $P$. 
 We are aware that often state-of-the-art approaches do not emit a model compliant with all the traces in the input log. In these cases, we consider as positive only the traces that are allowed by $P$.
 %We are aware of the fact that often this is not guaranteed by state-of-the-art approaches; in these cases we assume that the positive traces are a subset $L'^+$ of the original $L^+$ including only the traces compliant with $P$; i.e.\ $L'^+ = \{ t\in L^+\mid t\models P\}$.
-%ho tolto questa formulazione perchè non mi sembra conforme alle definizioni precedenti. Noi abbiamo detto che assumiamo che l'input event log contenga L+ e L- e abbiamo definito L+ come il subset delle positive in input (non come l'event log completo).
+%ho tolto questa formulazione perchï¿½ non mi sembra conforme alle definizioni precedenti. Noi abbiamo detto che assumiamo che l'input event log contenga L+ e L- e abbiamo definito L+ come il subset delle positive in input (non come l'event log completo).
 
 \paragraph{Candidate solution} As the goal of our technique is to refine the initial model $P$ taking into account both positive and negative traces, we can define which are the necessary conditions for a set of constraints $S$ to be a candidate solution for our discovery task.
 
@@ -242,7 +242,7 @@ Conversely, the opposite implication in Theorem \ref{th:subset-generality} does 
 
 
 
-%e' vero che la cardinalità sceglie c1 e questo ha senso se pensiamo che spesso si vuole il set più piccolo di vincoli perchè così il modello risulta più complensibile. However, questo potrebbe non essere sempre preferibile: la subset-based non getta via c1,c3 perchè di fatto se le chiusure sono diverse non è detto che c1 sia preferibile. magari in quello specifico dominio ha più senso c1,c3
+%e' vero che la cardinalitï¿½ sceglie c1 e questo ha senso se pensiamo che spesso si vuole il set piï¿½ piccolo di vincoli perchï¿½ cosï¿½ il modello risulta piï¿½ complensibile. However, questo potrebbe non essere sempre preferibile: la subset-based non getta via c1,c3 perchï¿½ di fatto se le chiusure sono diverse non ï¿½ detto che c1 sia preferibile. magari in quello specifico dominio ha piï¿½ senso c1,c3
 %\tcolor{blue}{The cardinality-based solution, which could be driven by the simplicity principle, is based on the intuition that "smaller" Declare models are easier to be understood by humans. However, we might notice that {c1} and {c2,c3} are not directly comprable, since their meaning (and their understandability too) might depend by the constraints, ad well as by the domain semantics.}
 
 \subsection{Implementation}
@@ -303,11 +303,11 @@ The optimisation stage is implemented as described in Algorithm \ref{alg:select}
 	\State $\mathcal{C} = \bigcup_{t\in L^-} choices(t)$
 	\State \textbf{select} $S \subseteq \mathcal{C}$ \textbf{s.t.} \label{alg:subsetC}
 	\Indent
-		\State 1. $\forall t \in L^-,  {cl}(S \cup P)\cap {choices}(t) \neq \varnothing$ 	\label{alg:select:1}
+		\State 1. $\forall t \in L^- \; ({choices}(t) = \emptyset \textbf{ or } {cl}(S \cup P)\cap {choices}(t) \neq \varnothing$) 	\label{alg:select:1}
 		\State 2. $is\_optimal(S)$									\label{alg:select:2}
 		%\State 3. $\not\exists S' \subset S ~|~ {cl}(S \cup P) = {cl}(S' \cup P)$		\label{alg:select:3}
 	\EndIndent
-	\State \Return $S$  % DOVREMMO RITORNARE PIù DI UN S
+	\State \Return $S$  % DOVREMMO RITORNARE PIï¿½ DI UN S
     \EndProcedure
     \end{algorithmic}
 \end{algorithm}
