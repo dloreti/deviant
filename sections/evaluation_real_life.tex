@@ -36,7 +36,7 @@ Table~\ref{tab:rl_datasets} summarizes the data related to the five resulting da
 		\label{tab:rl_datasets}
 \end{table}
 
-The results obtained by applying the \nd algorithm are summarised in Table~\ref{tab:rl_results}. The table reports for each dataset, (i) the results related to the \subsetclos (Eq. \ref{eq:most-gen} and Eq.\ref{eq:redun} in Section~\ref{sec:approach}) and \minclos (Eq. \ref{eq:simpl1} and \ref{eq:simpl2} in Section~\ref{sec:approach}) closure - in terms of number of returned models\footnote{We stop generating models after $20$ models, i.e., \para{max} in Table~\ref{tab:rl_results} indicates that more than $20$ models have been returned.}, in terms of minimum size of the returned models, as well as in terms of percentage of negative traces violated by the returned model. Moreover, the table reports the time required for computing the set of compatibles, the set of choices, as well as for the \subsetclos and \minclos closures.
+The results obtained by applying the \nd algorithm are summarised in Table~\ref{tab:rl_results}. The table reports for each dataset, (i) the results related to the \subsetclos (Eq. \ref{eq:most-gen} and Eq.\ref{eq:redun} in Section~\ref{sec:approach}) and \minclos (Eq. \ref{eq:simpl1} and \ref{eq:simpl2} in Section~\ref{sec:approach}) closure - in terms of number of returned models\footnote{We stop generating models after $20$ models, i.e., \para{max} in Table~\ref{tab:rl_results} indicates that more than $20$ models have been returned.}, in terms of minimum size of the returned models, as well as in terms of percentage of negative traces violated by the returned model. Moreover, the table reports the time required for computing the set of compatibles, the set of choices, as well as for the \subsetclos and \minclos optimizations.
 
 \begin{table} [h]
 	\centering
@@ -64,7 +64,7 @@ The difference of the results obtained with the mean and the median cycle time c
 %(the size of the set of the positive traces is about 4 times, resp. 2 times, the size of the set of the negative traces in \textsc{sepsis$_{mean}$} and \textsc{BPIC12$_{mean}$}, respectively)
  characterizing the high number of traces with a low or medium cycle time while excluding the ones with a very high cycle time can become hard. 
 
-The table also shows that \nd is overall very fast for small datasets (e.g., less than one minute for \textsc{cerv$_{compl}$}), while it requires some more time for large ones (e.g., \textsc{bpic12$_{mean}$} and \textsc{bpic12$_{median}$}). While the time required for computing \textit{compatibles} and \textit{choices} seems to be related to the size of the dataset, the time required for computing the closures seems to depend also on other characteristics of the datasets. 
+The table also shows that \nd is overall very fast for small datasets (e.g., less than one minute for \textsc{cerv$_{compl}$}), while it requires some more time for large ones (e.g., \textsc{bpic12$_{mean}$} and \textsc{bpic12$_{median}$}). While the time required for computing \textit{compatibles} and \textit{choices} seems to be related to the size of the dataset, the time required for computing the optimizations seems to depend also on other characteristics of the datasets. 
 
 %We compared the obtained results with the ones obtained with state-of-the-art techniques for the discovery of declarative models starting (i) from  only positive traces; and (ii) from both positive and negative traces. 
 
@@ -103,7 +103,7 @@ Five fold-cross validation is used, i.e., the \textsc{cerv$_{compl}$} dataset is
 % accuracy = (|satisifed L^+ | + |violated L^-|)/ |L^+ + L^-|
 %\end{equation*}
 
-Table~\ref{tab:acc_results} reports the obtained accuracy values for the \decminer, the \declareminer (with the \para{support} parameter set to 100\%) and the \nd (both for the \minclos and \subsetclos closure) approach. The table shows that on this specific dataset, \nd and \decminer have very close performance (with \nd \minclos performing slightly better). \declareminer presents instead on average a slightly lower accuracy mainly due to the highly constrained discovered model that, on the hand, allows for violating all negative traces in the validation set, and, on the other hand, leads to the violation of some of the positive traces in the validation set.
+Table~\ref{tab:acc_results} reports the obtained accuracy values for the \decminer, the \declareminer (with the \para{support} parameter set to 100\%) and the \nd (both for the \minclos and \subsetclos optimization) approach. The table shows that on this specific dataset, \nd and \decminer have very close performance (with \nd \minclos performing slightly better). \declareminer presents instead on average a slightly lower accuracy mainly due to the highly constrained discovered model that, on the hand, allows for violating all negative traces in the validation set, and, on the other hand, leads to the violation of some of the positive traces in the validation set.
 
 \begin{table} [h]
 	\centering
