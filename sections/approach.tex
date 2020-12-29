@@ -35,7 +35,7 @@ Note that this definition is consistent with that of subsumption between Declare
 For any pair of models $M, M'\subseteq D[A]$, $M\subseteq M'$ implies that $M$ is more general than $M'$ ($M\succeq M'$).
 \end{theorem} 
 \begin{proof}
-A Declare model is a conjunction of constraints, each imposing some restrictions on the set of allowed traces. Consider two sets fulfilling the premise $M\subseteq M'$ such that $M=\{c_1,...c_m\}$ and $M'=\{c_1,...c_m, c_{m'}\}$. There are two possible cases: either the additional $c_{m'}$ in $M'$ excludes other traces w.r.t. $\{c_1,...c_m\}$---i.e. $M \succ M'$---or it does not because the traces $c_{m'}$ rules out are also disallowed by $\{c_1,...c_m\}$. $M\succeq M'$ follows.
+A Declare model is a conjunction of constraints, each imposing some restrictions on the set of allowed traces. Consider two sets fulfilling the premise $M\subseteq M'$ such that $M=\{c_1,...c_m\}$ and $M'=\{c_1,...c_m, c_{m'}\}$. There are two possible cases: either the additional $c_{m'}$ in $M'$ excludes other traces w.r.t. $\{c_1,...c_m\}$---i.e. $M \succ M'$---or it does not because the traces $c_{m'}$ rules out are already disallowed by $\{c_1,...c_m\}$. $M\succeq M'$ follows.
 \end{proof}
 
 Unfortunately, the opposite implication is not always true, i.e. if we have $M, M'\subseteq D[A]$ such that $M\succeq M'$, we cannot guarantee that $M\subseteq M'$.
@@ -88,12 +88,12 @@ Although testing for strict generality between two set of constraints is a decid
 For this reason, we propose an alternative method based on comparing the logical consequences that can be deducted from the models.
 
 The method makes use of a set of deduction rules which account for the \emph{subsumption} between Declare templates. 
-Our work integrates the rules introduced in various articles \cite{2017-DiCiccio,???}\tododl{x sergio, quali altri paper?}, into a function, namely the \emph{deductive closure operator}, which satisfies the properties of extensivity, monotonicity, and idempotence\tododl{dim?}. The complete set of employed rules is available at \cite{?}. 
+Our work integrates the rules introduced in \cite{2017-DiCiccio}, into a function, namely the \emph{deductive closure operator}, which satisfies the properties of extensivity, monotonicity, and idempotence. The complete set of employed rules is available at \cite{?}\tododl{appendice/link a git repo?}. 
 
 
 \theoremstyle{definition}\label{def:closure}
 \begin{definition}{}
-A \emph{deductive closure operator} is a function $cl: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$ that associates any set $M \in D[A]$ with all the constraints that can be logically derived from $M$ by applying one or more deduction rules in \cite{?}.
+A \emph{deductive closure operator} is a function $cl: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$ that associates any set $M \in D[A]$ with all the constraints that can be logically derived from $M$ by applying one or more deduction rules in \cite{?link a git repo}.
 \end{definition} 
 
 Obviously, we are interested in a closure operator whose rules are \emph{correct}, that is for any $M\subseteq D[A]$ and $t\in A^*$, $t\models M$ iff $t\models cl(M)$.
@@ -110,7 +110,7 @@ As the closure of a model is again a subset of $D[A]$, Theorem \ref{th:subset-ge
 %\end{proof}
 Unfortunately, due to the nature of the Declare language we cannot provide a complete calculus for the language of conjunctions of Declare constraints. For this reason, we cannot guarantee the strictness, nor the opposite implication (i.e. $M'\preceq M$ does not implies $cl(M)\subseteq cl(M')$).
 
-Anyway, thanks to this property the deductive closure operator can be used to compare Declare models w.r.t. generality. To provide an intuition, let us consider the models $M= \{\mathsf{EXISTENCE(a)}\}$ and $M' = \{\mathsf{INIT(a)}\}$. We could not express any subset relation between these two sets rendering Theorem \ref{th:subset-generality} inapplicable. Nonetheless, if we take into account their closure, we have $cl(M)=\{\mathsf{EXISTENCE(a)}\}$ and $cl(M')=\{\mathsf{INIT(a)}$, $\mathsf{EXISTENCE(a)}\}$. As $cl(M)$ is a subset of $cl(M')$, we can conclude that $M$ is more general than $M'$.
+Anyway, thanks to this property the deductive closure operator can be used to compare Declare models w.r.t.~generality. To provide an intuition, let us consider the models $M= \{\mathsf{EXISTENCE(a)}\}$ and $M' = \{\mathsf{INIT(a)}\}$. We cannot express any subset relation between these two sets, thus rendering Theorem \ref{th:subset-generality} inapplicable. Nonetheless, if we take into account their closure, we have $cl(M)=\{\mathsf{EXISTENCE(a)}\}$ and $cl(M')=\{\mathsf{INIT(a)}$, $\mathsf{EXISTENCE(a)}\}$. As $cl(M)$ is a subset of $cl(M')$, we can conclude that $M$ is more general than $M'$.
 
 %To provide an intuition let us consider two possible candidates $S' = \{\mathsf{INIT(a)}\}$ and $S = \{\mathsf{EXISTENCE(a)}\}$. It's easy to see that any trace compliant with $\mathsf{INIT(a)}$ must be compliant also with $\mathsf{EXISTENCE(a)}$, therefore $\{\mathsf{INIT(a), EXISTENCE(a)}\}$ is equivalent to $S'$. If we compare the deductive closure of the two sets we can conclude that $S$ is more general that $S'$.\footnote{Not necessarily \emph{strictly} more general.}
 
@@ -155,13 +155,13 @@ In this section we introduce the actual algorithm based on the closure operator.
 %  \item[$P$] initial model $P\subseteq \{c\in D[A]| \forall t\in L^+\, t\models c\}$
 %\end{description}
 
-For the sake of modularity and easiness of experimenting with different hypotheses and parameters, we divide our algorithm into two clearly separate stages: the first which identifies the candidate constraints, and a second optimisation stage which selects the solutions. However these two steps can be merged into a single monolithic search-based algorithm. %The solutions can be further ordered according any preference relation (e.g.\ the smaller solution first).
+For the sake of modularity and easiness of experimenting with different hypotheses and parameters, we divide our algorithm into two clearly separate stages: the first which identifies the candidate constraints, and a second optimisation stage which selects the solutions. However, these two steps can be merged into a single monolithic search-based algorithm. %The solutions can be further ordered according any preference relation (e.g.\ the smaller solution first).
 
 Starting from the set of all constraints $D[A]$, the first stage aims at aidentifying all the constraints of $D[A]$ which allow all positive traces and exclude at least a negative one. To this end, it first computes the set \textit{compatibles} of constraints for which all traces in $L^+$ are compliant. 
 \begin{equation}
 {compatibles} = \{c\in D[A]~|~\forall t\in L^+~ t\models c \} \\
 \end{equation}
-
+%
 The \textit{compatibles} set is then used to built a \textit{choice} function that associates to any trace $t$ in $L^-$ the constraints of \textit{compatibles} that disallow $t$.
 The result is therefore a function with domain $L^-$ and co-domain $\mathcal{P}({compatibles})$ s.t.:
 \begin{equation}
@@ -212,7 +212,7 @@ If we were interested in the less general model, condition \eqref{eq:most-gen} w
 \end{equation}
 whereas the redundancy constraint would be the same of Eq. \eqref{eq:redun} because, even when we look for the most specific model, redundancy compromises its readability, without adding any value.
 
-Generality/specificity is not the only desirable optimality criterion. If we are interested in the \emph{most simple} model instead, a solution composed of a limited number of constraints is certainly preferable. So, we also experimented with an alternative optimisation formulation based on the set cardinality. The procedure selects the $S \in\mathcal{S}$ such that:
+Generality/specificity is not the only desirable optimality criterion. If we are interested in the \emph{simplest} model instead, a solution composed of a limited number of constraints is certainly preferable. So, we also experimented with an alternative optimisation formulation based on the set cardinality. The procedure selects the $S \in\mathcal{S}$ such that:
 \begin{subequations}
    \begin{align}
     \text{there's no $S'\in\mathcal{S}$ s.t. } |cl(S'\cup P)| < |cl(S\cup P)| \label{eq:simpl1}\\
@@ -249,7 +249,7 @@ Conversely, the opposite implication in Theorem \ref{th:subset-generality} does 
 
 %To perform our experiments we decided to separate the implementation of the two stages by reusing as much as possible existing systems.
 
-The first stage is implemented via the Algorithm~\ref{alg:cand} that first collects the set $compatibles$ of the constraints that are satisfied by all the positive traces (Line \ref{alg:cand:candidates}). Subsequently, each negative trace is associated (by means of the function ${choices}$) with those constraints in $compatibles$ that are violated by the trace (Line \ref{alg:cand:choices}).
+The first stage is implemented via the Algorithm~\ref{alg:cand} that first collects the set $compatibles$ of the constraints that are satisfied by all the positive traces (Line \ref{alg:cand:candidates}). Subsequently, each negative trace is associated (by means of the function ${choices}$) with those constraints in $compatibles$ that are violated by the trace (Line \ref{alg:cand:choices}). Notice that for some negative trace $t$ we can have $choices(t)=\varnothing$ because the chosen language may not be expressive enough. This situation might arise also in case $t$ belongs to both $L^+$ and $L^-$.
 %
 \begin{algorithm}
     \caption{Identification of the constraints allowing all traces in $L^+$ and disallowing at least one trace in $L^-$.}
@@ -257,7 +257,7 @@ The first stage is implemented via the Algorithm~\ref{alg:cand} that first colle
     %
     \textbf{Input:}  $D[A], L^+, L^-$\\
     %\textbf{Output:} ${compatibles} \subseteq D[A]$, ${choices} : L^- \rightarrow 2^{D[A]}$
-    \textbf{Output:} ${choices} : L^- \rightarrow 2^{D[A]}$
+    \textbf{Output:} ${choices} : L^- \rightarrow \mathcal{P}({D[A]})$
 	%
 	\begin{algorithmic}[1] 
    \Procedure{ChoicesGeneration}{$D[A], L^+, L^-$} 
@@ -271,7 +271,8 @@ The first stage is implemented via the Algorithm~\ref{alg:cand} that first colle
     \end{algorithmic}
 \end{algorithm}
 
-The implementation of the compliance verification \textproc{compliant} (i.e.\ $t\models c$) leverages the semantics of Declare patterns defined by means of regular expressions \cite{2017-DiCiccio}\tododl{x sergio, hai aggiunto altre regexp oltre a quelle del paper di Di Ciccio?}~to verify the compliance of the traces. It is implemented in Go language employing a regexp implementation that is guaranteed to run in time linear in the size of the input\footnote{For more details, see the Go package regexp documentation at https://golang.org/pkg/regexp/}.
+The implementation of the compliance verification \textproc{compliant} (i.e.\ $t\models c$) leverages the semantics of Declare patterns defined by means of regular expressions \cite{2017-DiCiccio}%\tododl{x sergio, hai aggiunto altre regexp oltre a quelle del paper di Di Ciccio?}
+~to verify the compliance of the traces. It is implemented in Go language employing a regexp implementation that is guaranteed to run in time linear in the size of the input\footnote{For more details, see the Go package regexp documentation at https://golang.org/pkg/regexp/}.
 \lstset{language=Prolog}
 
 The second optimisation stage has been implemented using the \ac{ASP} system \textsc{Clingo}~\cite{DBLP:journals/corr/GebserKKS14}. The main reason for selecting an \ac{ASP} system for finite domain optimisation is that rules provide an effective and intuitive framework to implement a large class of closure operators. Indeed, all the deductive systems for Declare that we analysed in the literature (see e.g.~\cite{2016-Bernardi,2017-DiCiccio}) can be recasted as Normal Logic Programs~\cite{2008-Lifschitz} by exploiting the assumption that the set of activities is finite and known in advance.
@@ -280,7 +281,7 @@ For example the valid formula $\textsc{Init}(a)\implies\textsc{Precedence}(a,b)$
 \begin{lstlisting}
   precedence(A,B) :- init(A), activity(B).
 \end{lstlisting}
-using a specific predicate (\lstinline{activity}) holding the set of activities\tododl{non occorre imporre anche $A \neq B$}.
+using a specific predicate (\lstinline{activity}) holding the set of activities\tododl{non occorre imporre anche $A \neq B$?}.
 
 %Note that the selection of the optimal stable models does not require the compliance verification on the traces, which are therefore not necessary as input. 
 The optimisation stage is implemented as described in Algorithm \ref{alg:select}. The required input parameters, properly encoded as an \ac{ASP} program, are the closure operator $cl$, the initial model $P$, and the $choices$ function.
@@ -294,16 +295,16 @@ The optimisation stage is implemented as described in Algorithm \ref{alg:select}
     \label{alg:select}
     %
     %\textbf{Parameters:} $A, {cl}: 2^{D[A]} \rightarrow 2^{D[A]}$\\
-    \textbf{Input:}  ${cl}: 2^{D[A]} \rightarrow 2^{D[A]}, {choices} : L^- \rightarrow 2^{D[A]}, P$\\
+    \textbf{Input:}  ${cl}: \mathcal{P}({D[A]}) \rightarrow \mathcal{P}({D[A]}), {choices} : L^- \rightarrow \mathcal{P}({D[A]}), P$\\
     \textbf{Output:} $S \subseteq D[A]$
 	%
 	\begin{algorithmic}[1] 
    \Procedure{Selection}{${choices}, P$} 
   	%\State $C = \{c \in D[A] ~|~ \exists t \in L^-, c \in {choices}(t)\}$
-	\State $\mathcal{C} = \bigcup_{t\in L^-} choices(t)$
+	\State $\mathcal{C} = \bigcup_{t\in L^-} choices(t)$\label{alg:buildC}
 	\State \textbf{select} $S \subseteq \mathcal{C}$ \textbf{s.t.} \label{alg:subsetC}
 	\Indent
-		\State 1. $\forall t \in L^- \; ({choices}(t) = \emptyset \textbf{ or } {cl}(S \cup P)\cap {choices}(t) \neq \varnothing$) 	\label{alg:select:1}
+		\State 1. $\forall t \in L^- \; ({choices}(t) = \varnothing \textbf{ or } {cl}(S \cup P)\cap {choices}(t) \neq \varnothing$) 	\label{alg:select:1}
 		\State 2. $is\_optimal(S)$									\label{alg:select:2}
 		%\State 3. $\not\exists S' \subset S ~|~ {cl}(S \cup P) = {cl}(S' \cup P)$		\label{alg:select:3}
 	\EndIndent
@@ -313,10 +314,13 @@ The optimisation stage is implemented as described in Algorithm \ref{alg:select}
 \end{algorithm}
 
 
-The algorithm starts by computing the set $\mathcal{C}$ of the constraints allowing all traces in $L^+$ and disallowing at least one trace in $L^-$. From that, it selects as solution model a subset $S$ fulfilling two conditions.
+The algorithm starts by computing the set $\mathcal{C}$ of the constraints allowing all traces in $L^+$ and disallowing at least one trace in $L^-$ (Line \ref{alg:buildC}). From that, it selects as solution model a subset $S$ fulfilling two conditions.
 %
 %The optimisation stage is implemented as described in Algorithm \ref{alg:select}\tododl{nella linea \ref{alg:subsetC} avrei potuto dire $S \subseteq C$ dove $C = \{c \in D[A] ~|~ \exists t \in L^-, c \in {choices}(t)\}$, sarebbe stata un'ottimizzazione, ma non so se sarebbe valida anche per la ricerca del modello massimale}
-The first condition (Line \ref{alg:select:1}) specifies that $S$ must be a set con constraints able to allow all traces in $L^+$ and discard all those in $L^-$ as non-compliant. So---consistently with Eq. \eqref{}---$S$ must be a subset of $\mathcal{S}$.
+\tcolor{blue}{The first condition (Line \ref{alg:select:1}) specifies that $S$ must be such that it allows all traces in $L^+$ and, whenever possible, discards all those in $L^-$. Indeed, for any negative trace $t$ the algorithms admits that either there is no way to exclude such trace ($choices(t)=\varnothing$), or it is excluded by the model $S \cup P$ (condition ${cl}(S \cup P)\cap {choices}(t) \neq \varnothing$).}
+%
+%The first condition (Line \ref{alg:select:1}) specifies that $S$ must be a set of constraints able to allow all traces in $L^+$ and discard all those in $L^-$ as non-compliant. So---consistently with Eq. \eqref{eq:mathcalS}---$S$ must be a subset of $\mathcal{S}$.
+
 %
 The second condition (Line \ref{alg:select:2}) accounts for an optimality criterion, which can be customised according to the specific needs. 
 %
@@ -333,7 +337,7 @@ Finally, when the optimality criterion is \emph{simplicity}, Eq. \eqref{eq:simpl
 %\todo[inline]{ST: end of dropped part}
 
 
-Even if Algorithm \ref{alg:select} reduces the number of candidate solutions by excluding all those non fulfilling conditions 1 and 2, it is not guaranteed to return a unique solution\tododl{in realta' l'algoritmo per come e' scritto restituisce una sola soluzione. Bisognerebbe cambiarlo per fare emergere che vengono restituite anche altre}. If the number of solutions provided by the procedure is too high for human intelligibility, the optimality condition could be further refined by inducing a preference order in the returned solution. For example, among the most general solutions one can be interested in being reported first those models with the lower number of constraints, or with certain Declare templates. The advantage of our approach is precisely in the possibility to implement off-the-shelves optimisation strategies, where---adapting the $is\_optimal(S)$ function or even the definition of the closure operator---the developer can easily experiment with different criteria.
+Even if Algorithm \ref{alg:select} reduces the number of candidate solutions by excluding all those non fulfilling conditions 1 and 2, it is not guaranteed to return a unique solution\tododl{in realta' l'algoritmo per come e' scritto restituisce una sola soluzione. Bisognerebbe cambiarlo per fare emergere che vengono restituite anche altre???}. If the number of solutions provided by the procedure is too high for human intelligibility, the optimality condition could be further refined by inducing a preference order in the returned solution. For example, among the most general solutions one can be interested in being reported first those models with the lower number of constraints, or with certain Declare templates. The advantage of our approach is precisely in the possibility to implement off-the-shelves optimisation strategies, where---adapting the $is\_optimal(S)$ function or even the definition of the closure operator---the developer can easily experiment with different criteria.
 
 In order to better clarify the approach, we apply it to a very simple example.  
 Consider the sets of positive and negative traces composed by only one trace each: $L^+=\{\textsf{bac}\}$ and $L^-=\{\textsf{ab}\}$. Suppose $P=\varnothing$ The alphabet of activities is clearly just $A=\{\textsf{a, b, c}\}$. Suppose we want to learn the most general model composed by only the Declare templates $D=\{\textsf{EXISTENCE(X), INIT(X)}\}$.%\tododl{non ho inserito TRUE perch\`e non vorrei confondesse le idee quando si arriva a sceglie il set minimale}.

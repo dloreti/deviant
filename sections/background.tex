@@ -10,19 +10,20 @@ Declare is one of the most used languages in process mining literature. Thanks t
 
 Declare specifies a set of templates that can be used to model the process. 
 A constraint is a concrete instantiation of a template involving one ore more process activities.
-For example, the constraint \textsf{EXISTENCE(a)} is an instantiation of the template \textsf{EXISTENCE(X)}, and is used to specify that the activity \textsf{a} must occur in every trace; \textsf{INIT(a)} specifies that all traces must start with \textsf{a}. \textsf{RESPONCE(a,b)} imposes that if the \textsf{a} occurs, then \textsf{b} must follow\tododl{aggiungo notazione grafica in figura?}.
+For example, the constraint \textsf{EXISTENCE(a)} is an instantiation of the template \textsf{EXISTENCE(X)}, and is used to specify that the activity \textsf{a} must occur in every trace; \textsf{INIT(a)} specifies that all traces must start with \textsf{a}. \textsf{RESPONCE(a,b)} imposes that if the \textsf{a} occurs, then \textsf{b} must follow. %\tododl{Necessaria notazione grafica in figura?}.
 For a complete description of most used Declare templates see \cite{2008-Pesic}. 
 
-We assume that the log contains both \emph{positive} traces---i.e. fulfilling all the constraints in the business model---and \emph{negative} traces---i.e. traces that diverge from the expected behaviour by violating at least one constraint in the (intended) model. 
-We denote with $L^+$ the set of positive traces in the input event log, and with $L^-$ the set of the negative ones.
+We assume that the log contains both \emph{positive} traces---i.e., fulfilling all the constraints in the business model---and \emph{negative} traces---i.e., diverging from the expected behaviour by violating at least one constraint in the (intended) model. 
+
+%We denote with $L^+$ the set of positive traces in the input event log, and with $L^-$ the set of the negative ones.
 
 
 \paragraph{Language bias} Given a set of Declare templates $D$ and activities $A$, we identify with $D[A]$ the set of all possible grounding of templates in $D$ w.r.t. $A$, i.e. all the constraints that can be built using the given activities.
 
 %\paragraph{Logs and traces} We assume that a trace $t$ is a \emph{finite} word over the set of activities (i.e.\ $t\in A^*$), and a log is a \emph{finite} set of traces. The consequences of this choice is that we don't consider parallel events and multiple occurrences of the same trace won't affect our discovery process.\todo{ST: this might be relaxed}
-\paragraph{Logs and traces} We assume that a trace $t$ is a \emph{finite} word over the set of activities (i.e. $t\in A^*$, where $A^*$ is the set of all the words that can be build on the alphabet defined by $A$), and a log is a \emph{finite} set of traces. Multiple occurrences of the same trace won't affect our discovery process. 
+\paragraph{Logs and traces} We assume that a trace $t$ is a \emph{finite} word over the set of activities (i.e., $t\in A^*$, where $A^*$ is the set of all the words that can be build on the alphabet defined by $A$), and a log is a \emph{finite} set of traces. Multiple occurrences of the same trace won't affect our discovery process. We denote with $L^+$ and $L^-$ the sets of positive and negative traces, respectively, reported in the input event log. We assume that $L^+ \cap L^- = \varnothing$.
 
-\paragraph{Template subsumption} As pointed out by Di Ciccio et al. \cite{2017-DiCiccio} Declare templates can be organised into a subsumption hierarchy according to the logical implications that can be derived from their semantics. Intuitively, as the constraint \textsf{INIT(a)} force all traces to start with \textsf{a}, this also implies that \textsf{a} must exist in every trace, i.e. \textsf{EXISTENCE(a)}. This relation is valid irrespectively of the involved activity. In a sense, we could say that the template \textsf{EXISTENCE(X)} is \emph{more general} than \textsf{INIT(X)}.
+\paragraph{Template subsumption} As pointed out by Di Ciccio et al. \cite{2017-DiCiccio} Declare templates can be organised into a subsumption hierarchy according to the logical implications that can be derived from their semantics. Intuitively, as the constraint \textsf{INIT(a)} forces all traces to start with \textsf{a}, this also implies that \textsf{a} must exist in every trace i.e., \textsf{EXISTENCE(a)}. This relation is valid irrespectively of the involved activity. In a sense, we could say that the template \textsf{EXISTENCE(X)} is \emph{more general} than \textsf{INIT(X)}.
 This idea is frequently expressed through the subsumption operator $\sqsupseteq$. Given two templates $d, d' \in D$, we say that $d$ \emph{subsumes} $d'$, i.e. $d$ \emph{is more general then} $d'$ (written $d\sqsupseteq d'$), if for any grounding of the involved parameters w.r.t. the activities in $A$, whenever a trace $t \in A^*$ is compliant with $d$, it is also compliant with $d'$.
 
 %\tododl{aggiungere anche definizione di subsumption?}

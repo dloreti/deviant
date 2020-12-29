@@ -1,3 +1,5 @@
+% !TEX root = ../deviant.tex
+
 \subsection{Evaluation on case studies from real data}
 \label{sec:realdata}
 
@@ -36,7 +38,7 @@ Table~\ref{tab:rl_datasets} summarizes the data related to the five resulting da
 		\label{tab:rl_datasets}
 \end{table}
 
-The results obtained by applying the \nd algorithm are summarised in Table~\ref{tab:rl_results}. The table reports for each dataset, (i) the results related to the \subsetclos (Eq. \ref{eq:most-gen} and Eq.\ref{eq:redun} in Section~\ref{sec:approach}) and \minclos (Eq. \ref{eq:simpl1} and \ref{eq:simpl2} in Section~\ref{sec:approach}) optimization - in terms of number of returned models\footnote{We stop generating models after $20$ models, i.e., \para{max} in Table~\ref{tab:rl_results} indicates that more than $20$ models have been returned.}, in terms of minimum size of the returned models, as well as in terms of percentage of negative traces violated by the returned model. Moreover, the table reports the time required for computing the set of compatibles, the set of choices, as well as for the \subsetclos and \minclos optimizations.
+The results obtained by applying the \nd algorithm are summarised in Table~\ref{tab:rl_results}. The table reports for each dataset, the results related to the \subsetclos (connected to the \emph{generality} criterion of Eq. \ref{eq:most-gen} and \ref{eq:redun}) and \minclos (\emph{simplicity} criterion of Eq. \ref{eq:simpl1} and \ref{eq:simpl2}) optimization---in terms of number of returned models\footnote{We stop generating models after $20$ models, i.e., \para{max} in Table~\ref{tab:rl_results} indicates that more than $20$ models have been returned.}, in terms of minimum size of the returned models, as well as in terms of percentage of negative traces violated by the returned model. Moreover, the table reports the time required for computing the set of compatibles, the set of choices, as well as for the \subsetclos and \minclos optimizations.
 
 \begin{table} [h]
 	\centering

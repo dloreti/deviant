@@ -9,9 +9,9 @@ The model going to be learned must rely on a shared language to express the poss
 Procedural techniques envisage the process model as a synthetic description of all possible sequences of actions that the business allows from a certain beginning to an end. Declarative discovery algorithms---which are the subject of this work---return the model as a set of constraints which must be fulfilled by the business execution cases. 
 %
 Albeit extremely intuitive in some cases, procedural discovery may show poor results when the business process is unstructured and characterised by high variability \cite{2009-Fahland}. 
-In that case, forcing the vision of the business process towards the template of a begin-to-end sequence of activities may result in a so-called ``spaghetti'' model \cite{2018b-Maggi}. Declarative approaches are preferable in these situations because allow expressing the model as a simple elicitation of permitted and prohibited behaviours.
+In that case, forcing the vision of the business process towards the template of a begin-to-end sequence of activities may result in a so-called ``spaghetti'' model \cite{2018b-Maggi}. Declarative approaches are preferable in these situations because they represent the model as a simple elicitation of permitted and prohibited behaviours.
 
-Besides a well-defined language to express the model, all these techniques must relay on shared metrics to establish the quality of the extracted model in terms of \emph{fitness}, \emph{precision}, \emph{generality}, and \emph{simplicity} \cite{2015-Adriansyah,2014-Broucke,2018-Ponce}. In particular, while fitness and precision focus on the quality of the model w.r.t.~the log (i.e. its ability to respectively allow desired traces or forbid unlikely ones reported in the input log), generality measures the model's capability to abstract from the input by reproducing desired behaviours, which are not assumed to be part of the log in the first place. Finally, simplicity is connected to the clarity and legibility of the result for the final user. 
+Besides a well-defined language to express the model, all these techniques must relay on shared metrics to establish the quality of the extracted model in terms of \emph{fitness}, \emph{precision}, \emph{generality}, and \emph{simplicity} \cite{2015-Adriansyah,2014-Broucke,2018-Ponce}. In particular, fitness and precision focus on the quality of the model w.r.t.~the log i.e., its ability to respectively allow desired traces or forbid unlikely ones reported in the input log. Generality measures the model's capability to abstract from the input by reproducing the desired behaviours, which are not assumed to be part of the log in the first place. Finally, simplicity is connected to the clarity and legibility of the result for the final user. 
 
 Besides the declarative/procedural classification, the process discovery approaches can be also divided into two categories according to their vision on the model-extraction task. 
 As also pointed out by Ponce-de-Le\`on et al. \cite{2018-Ponce}, the vast majority of works %(e.g. \cite{2004-Aalst,2003-Weijters,2007-Gunther,2010-Aalst, altri!!!}) 
@@ -22,7 +22,6 @@ Fewer works instead %(e.g. \cite{2006-Maruster,2015-Guo,2009-Goedertier,2009-Che
 intend the model-extraction task as a two-class supervised process discovery, which is driven by the availability of both \emph{positive} and \emph{negative} business executions, i.e. besides the allowed cases, these works assume that also examples of undesired behaviours can be exploited. %Inductive-learning techniques as those used in the works \cite{2009-Goedertier,2009-Chesani} for example, where a set of logical clauses is produced by the analysis of the input log, fall into this category.
 %
 Clearly, the benefits of considering negative information can be significant as they allow to better control the degree of generalisation of the resulting model, as well as improve its simplicity by highlighting the parts of the model that are not significant to discriminate positive and negative behaviours. 
-
 %The vast majority of works (e.g., \cite{2004-Aalst,2003-Weijters,2007-Gunther,2010-Aalst}) intend discovery as a classification task, where the set of traces in the input log must be analysed to extract valuable information about the occurrence of certain behavioural templates. This information is then used to build the execution model. Typically, the approaches in this category make use of thresholds, and language biases to drive the discovery task. 
 %A smaller number of works \cite{2015-Guo,2007-Lamma,2009-Chesani} intend the model-extraction task as an inductive-learning process, where a set of logical clauses is produced by the analysis of the input log. 
 %
@@ -36,20 +35,20 @@ Clearly, the benefits of considering negative information can be significant as 
 Actually, many studies endorse the thesis that, since in most of the real-life situations distinguish positive and negative cases in the input log is a very hard and time-consuming task, we should work as if the negative examples (which are assumed to be less frequent in the input) do not exist. Nonetheless, it is indisputable that, for each (meaningful) discovered business process model, there is a set of traces that are necessarily excluded because they are not compliant with the model. Such set constitutes a sort of ``upside-down world'', specular to the real world of positive, common and allowed cases. 
 
 
-In this work, we focus on declarative process models express in Declare syntax \cite{2008-Pesic} and embrace the less popular view of process discovery as a binary supervised learning task.
+In this work, we focus on declarative process models expressed in Declare syntax \cite{2008-Pesic}, and embrace the less popular view of process discovery as a binary supervised learning task.
 %In this work, we propose a view on process discovery that deviates from the two presented so far. 
 Like the allowed traces can be exploited to extract information about the usual process model, we explore the possibility that the ``upside-down world'' of negative execution traces can be used---if made accessible---to understand the reasons why deviations from the common process model occur. This information is useful not only to better clarify what should be deemed compliant with the model and what should not, but also to specify parts of the business process in a more synthetic and effective way---by converting for example, a set of positive execution constraints into a single negative one.  
 To this end, we propose a novel vision on process discovery as a \emph{satisfiability problem}. Our approach can be combined with other process discovery techniques as a post processing step to further refine and simplify complex models.
  
 %Our work, which envisages the process discovery task as a \emph{satisfiability problem}, can also be combined with other process discovery approaches as a post processing step to further refine and simplify complex models.
 
-\tcolor{blue}{This attempt yields ... \tododl{qualit\`a del nostro lavoro che emergono dagli esperimenti.}}
+%\tcolor{blue}{This attempt yields ... \tododl{qualit\`a del nostro lavoro che emergono dagli esperimenti.}}
 
 
 The contributions of our work can be listed as follows.
 \begin{itemize}
 \item A novel approach to deviance mining, which makes use of the information brought by both positive and negative execution cases to determine a set of possible models to represent the business process.
-\item A heuristic to select the preferred models according to predefined goals of generalisation and specialisation and simplicity.
+\item A heuristic to select the preferred models according to predefined goals of generalisation or simplicity.
 \item An evaluation of the performance of the proposed approach w.r.t. other relevant works in the same field.
 \end{itemize}
 
