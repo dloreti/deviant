@@ -1,10 +1,6 @@
 % !TEX root = ../deviant.tex
 
 \section{Conclusion}
-\todoindl{recap \& future works... }
+While the vast majority of works see process discovery as a one-class supervised learning task, we embrace the less popular view of process discovery as a binary supervised learning job, where traces that deviate from the expected behaviour can be considered as heralds of valuable information about the process itself. Devoted to this vision, we developed a technique which considers both positive and negative traces and performs process discovery as a satisfiability problem, where different heuristics can be adopted to assess the optimal model according to different goals.  
+\todoindl{Io vedrei bene qui gli argomenti attualmente in Discussion narrati come future works... }
 Finally, the performance of the technique presented in this paper could be boosted through a parallel approach. Analogously to previous works \cite{2018a-Maggi, 2018-Loreti, 2020b-Loreti} we can envisage two possible directions to decompose our task: by spitting the model (i.e. in this case the set of constraints to be learned), or the input data (i.e. the business log). The algorithm presented here could easily adopt the first kind of partitioning, whereas the second might be more challenging.
-
-% the process mining task: the set of constraints (to be checked for compliance or learned), and the business log. In this regard, the algorithm presented in this work could easily adopt the first kind of partitioning, whereas the second might be more challenging.
-
-
-%Finally\tododl{come future work}, the performance of our approach could be boosted through a parallel approach as the one presented in \cite{2018-Loreti}---related to compliance checking---and \cite{2018a-Maggi}---focused on process discovery. Both these works envisage two possible directions to decompose the process mining task: the set of constraints (to be checked for compliance or learned), and the business log. In this regard, the algorithm presented in this work could easily adopt the first kind of partitioning, whereas the second might be more challenging.

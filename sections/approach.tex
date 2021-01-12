@@ -3,7 +3,7 @@
 \section{The approach}
 \label{sec:approach}
 
-The discovery task must be able to extract a model which correctly classifies the log traces by admitting all cases in $L^+$ and discarding those in $L^-$\footnote{The conditions on all the positives and none of the negatives can be relaxed by requiring only a percentage of them---thus affecting the fitness and precision of the resulting model. \tcolor{red}{See section \ref{} for a discussion on this topic. TODO.}}. Besides that, it is required to perform an abstraction step in order to be able to classify also unknown traces, which are not in the input log. %Generalisation is the measure of how much tolerant or restricting the model is w.r.t unknown traces. 
+The discovery task must be able to extract a model which correctly classifies the log traces by admitting all cases in $L^+$ and discarding those in $L^-$\footnote{The conditions on all the positives and none of the negatives can be relaxed by requiring only a percentage of them. See section \ref{sec:discuss} for a discussion on this topic.}. Besides that, it is required to perform an abstraction step in order to be able to classify also unknown traces, which are not in the input log. %Generalisation is the measure of how much tolerant or restricting the model is w.r.t unknown traces. 
 
 \subsection{Definitions}
 Before introducing our approach, we hereby provide some preliminary definitions that are relevant for the following explanation.
@@ -281,7 +281,7 @@ For example the valid formula $\textsc{Init}(a)\implies\textsc{Precedence}(a,b)$
 \begin{lstlisting}
   precedence(A,B) :- init(A), activity(B).
 \end{lstlisting}
-using a specific predicate (\lstinline{activity}) holding the set of activities\tododl{non occorre imporre anche $A \neq B$?}.
+using a specific predicate (\lstinline{activity}) holding the set of activities\tododl{esplicitiamo che occorre imporre anche $A \neq B$?}.
 
 %Note that the selection of the optimal stable models does not require the compliance verification on the traces, which are therefore not necessary as input. 
 The optimisation stage is implemented as described in Algorithm \ref{alg:select}. The required input parameters, properly encoded as an \ac{ASP} program, are the closure operator $cl$, the initial model $P$, and the $choices$ function.
@@ -317,7 +317,7 @@ The optimisation stage is implemented as described in Algorithm \ref{alg:select}
 The algorithm starts by computing the set $\mathcal{C}$ of the constraints allowing all traces in $L^+$ and disallowing at least one trace in $L^-$ (Line \ref{alg:buildC}). From that, it selects as solution model a subset $S$ fulfilling two conditions.
 %
 %The optimisation stage is implemented as described in Algorithm \ref{alg:select}\tododl{nella linea \ref{alg:subsetC} avrei potuto dire $S \subseteq C$ dove $C = \{c \in D[A] ~|~ \exists t \in L^-, c \in {choices}(t)\}$, sarebbe stata un'ottimizzazione, ma non so se sarebbe valida anche per la ricerca del modello massimale}
-\tcolor{blue}{The first condition (Line \ref{alg:select:1}) specifies that $S$ must be such that it allows all traces in $L^+$ and, whenever possible, discards all those in $L^-$. Indeed, for any negative trace $t$ the algorithms admits that either there is no way to exclude such trace ($choices(t)=\varnothing$), or it is excluded by the model $S \cup P$ (condition ${cl}(S \cup P)\cap {choices}(t) \neq \varnothing$).}
+The first condition (Line \ref{alg:select:1}) specifies that $S$ must be such that it allows all traces in $L^+$ and, whenever possible, discards all those in $L^-$. Indeed, for any negative trace $t$ the algorithms admits that either there is no way to exclude such trace ($choices(t)=\varnothing$), or it is excluded by the model $S \cup P$ (condition ${cl}(S \cup P)\cap {choices}(t) \neq \varnothing$).
 %
 %The first condition (Line \ref{alg:select:1}) specifies that $S$ must be a set of constraints able to allow all traces in $L^+$ and discard all those in $L^-$ as non-compliant. So---consistently with Eq. \eqref{eq:mathcalS}---$S$ must be a subset of $\mathcal{S}$.
 

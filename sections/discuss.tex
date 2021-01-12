@@ -1,8 +1,13 @@
 % !TEX root = ../deviant.tex
 
 \section{Discussion}
-\label{sec:discuss}\tododl{x Dani: sezione da raffinare alla fine. Molte riflessioni penso non abbiano pi\` u senso.}
-Our work is focused on declarative process models. However, it is worth to underline that a declarative process discoverer taking advantage of explicitly defined positive and negative examples is not necessarily an alternative to procedural discovery techniques. 
+\label{sec:discuss}
+
+\tcolor{blue}{Our approach to process discovery aims at correctly classifying the traces in a log by admitting all the positive and discarding all the negative ones. These conditions can be relaxed by requiring that only a percentage of the positive (negative) traces is admitted (discarded). This decision inevitably affects the fitness and precision of the resulting model, but might be useful in particular cases where the language is not expressive enough to find a set of constraints able to clearly discriminate positive from negative examples, or cases in which the initial assumption $L^+ \cap L^- = \varnothing$ cannot be guaranteed.\tododl{per come \`e scritto ora l'algoritmo questa discussione non mi pare calzante.}}
+
+Another discussion point regards the possibility to integrate our technique with other existing approaches. Being able to extract valuable knowledge from negative examples, our proposal can be employed to enrich the process description extracted by a state-of-the-art declarative process discovery algorithm.
+%Our work is focused on declarative process models. 
+However, it is worth to underline that the resulting declarative process discoverer taking advantage of explicitly defined positive and negative examples would not be necessarily an alternative to procedural discovery techniques. 
 Indeed in some cases, when correct thresholds and language biases are adopted, procedural discoverers have the great advantage to provide the user with a rather easy-to-understand definition of the process model. Nonetheless, the informative content provided by those process cases that are discarded by procedural discoverer (e.g., in order to avoid spaghetti models) can still be extremely important. 
 As our approach extracts valuable information from $L^-$ traces without excluding any trace of $L^+$, it could also be applied as a post processing technique to enrich the output of procedural discoverers with declarative constraints.
 %A declarative process discoverer taking advantage of explicitly defined positive and negative examples can extract valuable information from such discarded traces and synthesize it into declarative constraints. 
@@ -21,4 +26,3 @@ An hybrid procedural/declarative model formulation would maintain a structured f
 %
 This idea of a hybrid procedural/declarative model formulation has been explored by various works and proved to be particularly effective in the field of medical clinical guidelines \cite{2009a-Bottrighi,2009b-Bottrighi, 2011-Bottrighi}. A wider landscape of applications is considered by Maggi et al. in the work \cite{2018b-Maggi}. %The technique starts from a structured business process model and adopts non-deterministic finite-state automaton manipulation to detect violations of compliance requirements expressed as temporal declarative rules.
 
-\todoindl{Riflessione su: Our goal is admitting all cases in $L^+$ and discarding all those in $L^-$. These conditions can be relaxed by requiring only a percentage of them?thus affecting the fitness and precision of the resulting model.}
