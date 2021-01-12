@@ -12,8 +12,8 @@
 % NO, questa motivazine non va bene...
 
 One of the difficulties of evaluating process mining algorithms is that given a log, the underlying model might not be known before. As a consequence, it might be difficult to establish an \emph{ideal model} to refer and confront with. In this regard, a number of metrics and evaluation indexes have been proposed in the past to evaluate how a discovered model fits a given log \todofc{Citiamo qualche metrica? O forse basta citare un paper?}. However, those metrics provide only a partial answer to the question of ``how good'' is the discovered model.\todofc{Frase molto forte, la vogliamo lasciare? Forse dovremmo almeno citare un paper che dica qualcosa di simile\ldots Notate che siccome andiamo a fare coverage del 100\%, alcune metriche ci potrebbero premiare col massimo\ldots}
-
-In the case of our approach, a further issue influences the evaluation process: the difficulty of performing a ``fair'' comparison with existing techniques, especially if we consider that our approach exploits information from traces labeled as ``negative'', while the majority of the methods we could access have been designed to use positive traces only.
+%
+In the case of our approach, a further issue influences the evaluation process: the difficulty of performing a ``fair'' comparison with existing techniques, since the majority of the methods we could access have been designed to use ``positive'' traces only.
 
 
 %A second issue is about the difficulty of confronting our approach with existing ones, especially if we consider that \todofc{Non so se questa cosa la voglio scrivere qui\ldots} our approach exploits information from traces labeled as ``negative'', while the majority of the approaches we could access have been designed to use positive traces only.
@@ -70,14 +70,14 @@ To ease the understanding of the loan application process, a Declare model of th
 \end{figure}
 
 To test our approach, besides positive traces, we generated also negative traces. In particular, we generated traces that violate two different constraints:
-\todofc{Non ho messo il terzo test di violazione, perch\`e riguardava ancora una \emph{precedence}\ldots pensiamo se vogliamo aggiungerlo.}
+% \todofc{Non ho messo il terzo test di violazione, perch\`e riguardava ancora una \emph{precedence}\ldots pensiamo se vogliamo aggiungerlo.}
 \begin{enumerate}[label=(\alph*)]
 \item the \emph{precedence(assess\_loan\_risk, assess\_eligibility)}, that is violated when either the latter activity is executed and the former is absent, or if both the activities appear in the log, but in the wrong temporal order;
 %
 \item the \emph{exclusive\_choice(send\_acceptance\_pack, receive\_negative\_feedback)}, that is violated when a trace either contains both the activities, or does not contain any of them.
 \end{enumerate}
 %
-The resulting log consists of 64,000 positives traces, 25,600 traces that violates the constraint as in $(a)$, and 10,240 traces that violates the constraint as specified in $(b)$.
+The resulting log consists of 64,000 positives traces, 25,600 traces that violate the constraint as in $(a)$, and 10,240 traces that violate the constraint as specified in $(b)$.
 %
 When fed with the positives traces and traces violating the constraint in $(a)$, our approach successfully manages to identify constraints that allow to clearly distinguish positives from negatives traces. Moreover, the discovered constraint coincides with the one we originally decided to violate during the generation phase. When confronted with the $(b)$ scenario, our approach again successfully managed to identify a minimum model able to discriminate between positive and negative traces, and the identified constraint is indeed logically consistent with the constraint originally selected for the violation.
 % In particular, it is worthy to notice that our approach derived 
@@ -85,11 +85,12 @@ Table \ref{tab:syntResults} summarize the obtained results and reports the first
 
 % source of this data:
 % file:///Users/federico/Google%20Drive/on-negative-traces/experiments/2020-07-14%20Federico/run_experiments_2020-07-30_130357_CEST.html
+\todoinfc{I tempi di calcolo riportati in tabella potrebbero non essere giusti. Chiedere a Sergio\ldots in particolare, Sergio suggeriva che per gli step \texttt{compatibles} e \texttt{choices} dovremmo prendere i tempi \texttt{user + system}; per lo step \texttt{opt} invece nel caso di minclose dovremmo prendere la \texttt{CPUtime}, mentre per la subsetclose dovremmo prendere \texttt{CPUtime * (numconstraints bigger model) } }
 \begin{table}
 \tiny
 \begin{tabular}{c c c c p{3cm} | p{3cm}}
 \hline
-Scenario & \#pos & \#neg & time & Originally violated constraint & Discovered model \\
+Scenario & \#pos & \#neg & time & Originally violated constraint & First discovered model \\
 \hline\hline
 $(a)$ & 64,000 & 25,600 & \bf{Total: \fpeval{81.78 + 1.94 + 109.74 + 3.32 + 15.165}s} & \emph{precedence(assess\_loan\_ risk, assess\_eligibility)} & \emph{precedence( assess\_loan\_risk, assess\_eligibility)}\\
 & & & Compatibles:  \fpeval{81.78 + 1.94}s  & & \\
@@ -108,7 +109,6 @@ $(b)$ & 64,000 & 10,240 & \bf{Total: \fpeval{81.78 + 1.94 + 94.51 + 2.96 + 1.379
 \label{tab:syntResults}
 \end{table}
 
-
 % PARAMETRI RuM usati:
 % Templates: devi selezionarli tutti eccetto:
 %  - not precedence
@@ -121,23 +121,18 @@ $(b)$ & 64,000 & 10,240 & \bf{Total: \fpeval{81.78 + 1.94 + 94.51 + 2.96 + 1.379
 % Vacuity detection: deve essere OFF
 % Activity support filter: deve essere a 0%
 
+For the sake of completeness, we decided to experiment also with the Process Discovery Tool of the Rum Framework\footnote{\url{https://rulemining.org/}}, that is based on the Declare Miner algorithm \cite{2018a-Maggi}. Based on the exploitation of positive traces only, Declare Miner discovers a rich model that describes as ``most exactly'' as possible the given traces. When fed with the positive traces of our artificial log, and with the \emph{coverage} parameter set to 100\% (i.e., prefer constraints that are valid for all the traces in the logs), the RuM Framework discover a model made of 514 constraints. If the coverage is relaxed to 80\% (prefer constraints that are satisfied by at least the 80\% of the traces), the model cardinality grows up to 1031 constraints.
+
+In both cases the discovered model is able to distinguish between the positive and the negative traces. This is not surprising, since Declare Miner aims to identify all the constraints that hold for a given log: hence, it will discover also those constraints that allow to discern positive from negative traces. Rather, this result is a clear indication that indeed our artificial log has been constructed ``correctly'', since negative traces differ from positive ones for some specific constraints. This is typical of artificial logs, while real-life logs might not enjoy such property.
+%
+Another consideration is about the cardinalty of the discovered model: the Declare Miner approach provides a far richer description of the positive traces, at the cost perhaps of bigger models. Our approach instead has the goal of identifying the \emph{smallest} set of constraints that allow to discriminate between positive and negatives. In this sense, approaches like the one presented in this paper and Declare Miner are complementary.
+
+% \todoinfc{ChiaraDFM, qui ci starebbe bene un paragrafetto in cui riportiamo i risultati ottenuti usando RuM. Il commento che potremmo scrivere e' che RuM trova un modello intero per coprire le positive, e riesce a distingure benissimo anche le negative: il risultato e' atteso, dato l'elevato numero di tracce che rende il synthetic data set molto informativo.}
 
 
-\todoinfc{ChiaraDFM, qui ci starebbe bene un paragrafetto in cui riportiamo i risultati ottenuti usando RuM. Il commento che potremmo scrivere e' che RuM trova un modello intero per coprire le positive, e riesce a distingure benissimo anche le negative: il risultato e' atteso, dato l'elevato numero di tracce che rende il synthetic data set molto informativo.}
-% Beside positive trace, we also generated negative traces in a controlled way, i.e. taking care that those traces violate only a small, specific and known piece of the model.
-
-% \todoinfc{x Fede, Chiara DFM, Sergio: qui bisognerebbe introdurre la metodologia per provare la validit\`a del nostro approccio, cio\`e abbiamo preso questo esempio, abbiamo generato delle tracce (cit \cite{2020-Loreti}), alcune positive, altre negative che per\`o violano dei vincoli che in questo modello non sono presenti e poi abbiamo visto se riusciamo a re-impararli. Perch\`e proprio questi vincoli e non altri?}
-
-% A bank carries out the following \emph{loan application} process\footnote{The process is inspired by the Loan Application process reported in (2018, Dumas).} in order to grant loans. The process starts when the \emph{loan application} is received. In order to decide whether to \emph{reject the application} or to \emph{send the acceptance pack} to the customer for receiving the customer's official acceptance, the bank has to \emph{assess} the \emph{eligibility} of the loan. To this aim, the customer's \emph{property} has to be \emph{appraised} and the \emph{loan risk assessed} by the bank. The bank can optionally \emph{notify} the customer about the loan \emph{approval}, of course in case the loan is not rejected. During the process the bank can also \emph{receive positive} or \emph{negative feedback} according to the experience of the loan requester. To ease the understanding of the loan application process, a Declare model of the process is reported in Fig. \ref{fig:ex}.
 
 
-% Among the processed loan application requests, some are considered as negative by the bank, while others as positive. In detail, the negative cases are the ones in which:
-% \begin{itemize}
-% \item the bank receives a negative feedback, although the acceptance pack is sent to the customer;
-% \item the time required for carrying out the whole procedure is huge (this happens when the property appraisal is performed after the loan risk assessment).
-% \end{itemize}
 
-% Being aware of the process executions that deviate from its expectations (the negative cases), the bank would like to discover a process model of the loan application procedure in which only the positive cases are included, while the deviant ones are excluded.
 
 \input{sections/evaluation_real_life}
 
