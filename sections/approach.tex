@@ -182,12 +182,12 @@ The second stage aims at finding the optimal solution according to some criterio
 %
 Let $\mathcal{C}$ be the set of those constraints in $D[A]$ that allow all positive traces and disallow at least one negative trace. Such set can be derived from the $choice$ function as: $\mathcal{C} = \bigcup_{t\in L^-} choices(t)$.
 %
-Let $\mathcal{S}$ be all the subsets of $\mathcal{C}$ that exclude all the negative traces. $\mathcal{S}$ can be again computed employing the output of the $choice$ function as follows. 
+Note that we cannot guarantee that all negative traces can be excluded by at least one of the constraints in ${compatibles}$; i.e.\ ${choices}(t)$ might be empty for some $t\in L^-$. Therefore let $\mathcal{S}$ be all the subsets of $\mathcal{C}$ that exclude all the negative traces that can be excluded by the ${compatibles}$ (i.e.\ $\{t\in L-\mid {choices}(t)\neq \varnothing\}$). $\mathcal{S}$ can be again computed employing the $choice$ function as follows. 
 \begin{equation}
-\mathcal{S}=\{M\in\mathcal{P}(\mathcal{C})\mid \forall t\in L^-~ cl(M\cup P)\cap choices(t)\neq \varnothing\} \label{eq:mathcalS}
+\mathcal{S}=\{M\in\mathcal{P}(\mathcal{C})\mid \forall t\in L^-~\text{s.t.}~{choices}(t)\neq \varnothing,~ cl(M\cup P)\cap {choices}(t)\neq \varnothing\} \label{eq:mathcalS}
 \end{equation}
 %Any element of $\mathcal{S}$ is a model whose constraints can be used to integrate the initial model $P$ with futher information about the negative traces. 
-This formula ensures that any model $M$ in $\mathcal{S}$ is such that the logical consequences of $M \cup P$ include the constraints to disallow all the negative traces. In this way, any element of $\mathcal{S}$ will be a model whose constraints can be used to integrate the initial model $P$ with further information about the negative traces. As any $M \in \mathcal{S}$ fulfil all the properties of Definition \ref{def:cand}, it is a \emph{candidate solution} for our discovery task.
+This formula ensures that any model $M$ in $\mathcal{S}$ is such that the logical consequences of $M \cup P$ include the constraints to disallow the negative traces than can be excluded. In this way, any element of $\mathcal{S}$ will be a model whose constraints can be used to integrate the initial model $P$ with further information about the negative traces. As any $M \in \mathcal{S}$ fulfil all the properties of Definition \ref{def:cand}, it is a \emph{candidate solution} for our discovery task.
 
 The reason why the deductive closure operator is employed in Eq. \ref{eq:mathcalS} can be highlighted through a simple example. Consider the set of negative traces $L^-=\{\mathsf{b, ab, a}\}$ and suppose the computation of the ${choice}$ function has found three constraints $choice(\mathsf{b})=\{\mathsf{EXISTENCE(a)}\}$, $choice(\mathsf{ba})=\{\mathsf{RESPONSE(a,b)}\}$, and $choice(\mathsf{a})=\{\mathsf{EXISTENCE(b)}\}$. Apparently, the only way to exclude all traces in $L^-$ is to emit a model $M_1=\{$\textsf{EXISTENCE(a), RESPONSE(a,b), EXISTENCE(b)}$\}$. Nonetheless, as 
 $\mathsf{EXISTENCE(b)} \sqsupseteq \mathsf{EXISTENCE(a)} \land  \mathsf{RESPONSE(a,b)}$, 
