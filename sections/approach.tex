@@ -34,6 +34,7 @@ Note that this definition is consistent with that of subsumption between Declare
 \begin{theorem}{}
 For any pair of models $M, M'\subseteq D[A]$, $M\subseteq M'$ implies that $M$ is more general than $M'$ ($M\succeq M'$).
 \end{theorem} 
+\todo[inline]{ST: I don't think the proof works, theorem is true because of Declare monotonicity, which is not mentioned in the proof. Probably not worth a theorem but needs a reference for Declare monotonicity.}
 \begin{proof}
 A Declare model is a conjunction of constraints, each imposing some restrictions on the set of allowed traces. Consider two sets fulfilling the premise $M\subseteq M'$ such that $M=\{c_1,...c_m\}$ and $M'=\{c_1,...c_m, c_{m'}\}$. There are two possible cases: either the additional $c_{m'}$ in $M'$ excludes other traces w.r.t. $\{c_1,...c_m\}$---i.e. $M \succ M'$---or it does not because the traces $c_{m'}$ rules out are already disallowed by $\{c_1,...c_m\}$. $M\succeq M'$ follows.
 \end{proof}

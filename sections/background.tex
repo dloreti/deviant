@@ -25,6 +25,7 @@ We assume that the log contains both \emph{positive} traces---i.e., fulfilling a
 
 \paragraph{Template subsumption} As pointed out by Di Ciccio et al. \cite{2017-DiCiccio} Declare templates can be organised into a subsumption hierarchy according to the logical implications that can be derived from their semantics. Intuitively, as the constraint \textsf{INIT(a)} forces all traces to start with \textsf{a}, this also implies that \textsf{a} must exist in every trace i.e., \textsf{EXISTENCE(a)}. This relation is valid irrespectively of the involved activity. In a sense, we could say that the template \textsf{EXISTENCE(X)} is \emph{more general} than \textsf{INIT(X)}.
 This idea is frequently expressed through the subsumption operator $\sqsupseteq$. Given two templates $d, d' \in D$, we say that $d$ \emph{subsumes} $d'$, i.e. $d$ \emph{is more general then} $d'$ (written $d\sqsupseteq d'$), if for any grounding of the involved parameters w.r.t. the activities in $A$, whenever a trace $t \in A^*$ is compliant with $d$, it is also compliant with $d'$.
+\todo[inline]{ST: we don't use \emph{template subsumption} but the more general idea of generality of models (see \ref{def:generality}), even the rules are more general. Maybe this is not the right place for this paragraph, we should move it where we talk about the rules or to the related works section.}
 
 %\tododl{aggiungere anche definizione di subsumption?}
 
