@@ -40,7 +40,7 @@
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}{Lemma}[section]
 
-\usepackage{enumitem}
+\usepackage[inline]{enumitem}
 
 \usepackage{xfp}
 
@@ -124,7 +124,12 @@
 
 
 \begin{abstract}
-\tcolor{blue}{abstract goes here}
+As the need to understand and formalise business processes into a model has grown over the last years, 
+the process discovery research field has gain more and more importance, developing two different classes of approaches to model representation: procedural and declarative. 
+%
+Orthogonally to this classification, the vast majority of works envisage the discovery task as a one-class supervised learning process guided by the traces that are recorded into an input log. 
+
+In this work instead, we focus on declarative processes and embrace the less-popular view of process discovery as a binary supervised learning job, where the input log reports both examples of the normal system execution, and traces representing ``stranger'' behaviours according to the domain semantics. We therefore deepen how the valuable information brought by both these two sets can be extracted and formalised into a model that is ``optimal'' according to user-defined goals. The evaluation of our approach w.r.t. other relevant works in this field shows promising results as regards both the performance and the quality of the obtained solution.
 \end{abstract}
 
 \begin{keyword}
@@ -136,12 +141,12 @@ Process mining\sep process discovery\sep declarative process models\sep deviant 
 \linenumbers
 
 \input{sections/introduction}
-\input{sections/motivations}
+%\input{sections/motivations}
 \input{sections/background}
 \input{sections/approach}
 \input{sections/evaluation}
 \input{sections/related}
-\input{sections/discuss}
+%\input{sections/discuss}
 \input{sections/conclusion}
 
 

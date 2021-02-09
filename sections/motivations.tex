@@ -2,11 +2,20 @@
 
 \section{Motivations}
 \label{sec:motivations}
-Process discovery focuses on the analysis of an event log in order to automatically learn the process model underpinning the cases of such input log. 
-In general, the techniques in this field assume that the input log is not the complete elicitation of all the expected cases. Other traces not reported in there might be deemed compliant with the expected behaviour of the system. Therefore, the aim of process discovery techniques is necessarily to generalise the log by finding a compact way to express the usual behaviour of the systems, for example, by means of a structured or declarative process model. 
-Such generalisation causes the resulting model to allow as compliant a larger set of traces w.r.t. the input log \cite{2011-Aalst}. This is one of the challenges of process discovery. If we could rely on logs reporting all expected behaviours, the extraction of the model would be a rather straightforward task, because we would need to learn a model exhaustively covering all the elicited cases. Also, if the model going to be learned is aimed for a following compliance checking task, model extraction would not be crucial, because a simple algorithm verifying the membership of a trace to the input set would serve the purpose.
-On the other hand, in order to avoid the so-called ``spaghetti'' models, process discovery must also prevent overfitting \cite{2010-Aalst}. To this end, a widespread strategy is to overlook those process cases that show a particularly infrequent behaviour. A practice that is often obtained by checking that the extracted model constraints meet certain thresholds according to predefined metrics (e.g., fitness, precision, generality, and simplicity). 
-It is therefore evident that, besides the usual attempt to generalise while extracting the model, process discovery necessarily performs an opposite attempt to increase the specificity by excluding some traces from the learning task.
+Process discovery techniques start from a finite input log representing business instances. It is generally assumed that such a log is not a complete, explicit elicitation of all the expected cases. Indeed, there might be traces that are part of the business process but are not reported in the log.
+Therefore, process discovery aims to learn a model general enough to encompass all the expected business behaviours \cite{2011-Aalst}.
+%
+Such generalisation is one of the challenges of process discovery. If we could rely on logs reporting all expected behaviours, the extraction of the model would be a simpler task.
+%Also, if the model going to be learned is aimed for a later compliance checking task, model extraction would not be crucial, because a simple algorithm verifying the membership of a trace to the input set would serve the purpose.
+%
+Generalisation might also help to avoid the so-called ``spaghetti'' models and the overfitting of models in general\cite{2010-Aalst}. Alternatively, a widespread strategy is to overlook those process cases that show a particularly infrequent behaviour. 
+
+On the other hand, underfitting is a risk as well since too-much general models would be of no help.
+It is therefore evident that, besides the usual attempt to generalise while extracting the model, process discovery necessarily performs an opposite attempt to increase the specificity.
+
+
+%On the other hand, in order to avoid the so-called ``spaghetti'' models, process discovery must also prevent overfitting \cite{2010-Aalst}. To this end, a widespread strategy is to overlook those process cases that show a particularly infrequent behaviour. A practice that is often obtained by checking that the extracted model constraints meet certain thresholds according to predefined metrics (e.g., fitness, precision, generality, and simplicity). 
+%It is therefore evident that, besides the usual attempt to generalise while extracting the model, process discovery necessarily performs an opposite attempt to increase the specificity by excluding some traces from the learning task.
 
 The overlooked traces represent a sort of ``stranger'' behaviour, a deviation from the usual and expected conduct, which is the subject of \emph{deviance mining}\cite{2016-Nguyen}. 
 %

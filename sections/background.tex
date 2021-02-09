@@ -3,10 +3,8 @@
 \label{sec:back}
 
 Our technique relays on the key concept of \emph{event log}, intending it as a set of observed business process executions, logged into a file in terms of all the occurred events. In this work, we adopt the \ac{XES} storing standard \cite{XES} for the input log. According to this standard, each \emph{event} is related to a specific process \emph{instance}, and describes the occurrence of a well-defined step in the process, namely an \emph{activity}, at a specific timestamp. The logged set of events composing a process instance is addressed as \emph{trace} or \emph{case}. 
-From the analysis of the \emph{event log}, we want to extract a Declare \cite{2008-Pesic,2009-Aalst} \emph{model} %\footnote{In this context we'll use \emph{model} to indicate a set of Declare constraints.} 
-of the business process. %, which must be able to represent the logged traces in a synthetic way, trough a set of declarative constraints.
-
-Declare is one of the most used languages in process mining literature. Thanks to its declarative nature, it does not represent the process as a sequence of activities from a start to an end, but through a set of constraints, which must all hold true during the process execution.
+From the analysis of the \emph{event log}, we want to extract a Declare \cite{2008-Pesic,2009-Aalst} \emph{model} of the business process.
+Declare is one of the most used languages in process mining literature. Thanks to its declarative nature, it does not represent the process as a sequence of activities from a start to an end, but through a set of constraints, which can be mapped into \ac{LTL} formulae \cite{?}\tododl{cosa citiamo?}. These constraints must all hold true during the process execution.
 
 Declare specifies a set of templates that can be used to model the process. 
 A constraint is a concrete instantiation of a template involving one ore more process activities.
@@ -21,11 +19,16 @@ We assume that the log contains both \emph{positive} traces---i.e., fulfilling a
 \paragraph{Language bias} Given a set of Declare templates $D$ and activities $A$, we identify with $D[A]$ the set of all possible grounding of templates in $D$ w.r.t. $A$, i.e. all the constraints that can be built using the given activities.
 
 %\paragraph{Logs and traces} We assume that a trace $t$ is a \emph{finite} word over the set of activities (i.e.\ $t\in A^*$), and a log is a \emph{finite} set of traces. The consequences of this choice is that we don't consider parallel events and multiple occurrences of the same trace won't affect our discovery process.\todo{ST: this might be relaxed}
-\paragraph{Logs and traces} We assume that a trace $t$ is a \emph{finite} word over the set of activities (i.e., $t\in A^*$, where $A^*$ is the set of all the words that can be build on the alphabet defined by $A$), and a log is a \emph{finite} set of traces. Multiple occurrences of the same trace won't affect our discovery process. We denote with $L^+$ and $L^-$ the sets of positive and negative traces, respectively, reported in the input event log. We assume that $L^+ \cap L^- = \varnothing$.
+\paragraph{Logs and traces} We assume that a trace $t$ is a \emph{finite} word over the set of activities (i.e., $t\in A^*$, where $A^*$ is the set of all the words that can be build on the alphabet defined by $A$), and a log is a \emph{finite} set of traces. Multiple occurrences of the same trace won't affect our discovery process. We denote with $L^+$ and $L^-$ the sets of positive and negative traces, respectively, reported in the input event log. We assume that:
+\begin{enumerate*}[label=(\textit{\roman*})]
+\item $L^+ \cap L^- = \varnothing$, and 
+\item for each trace $t \in L^-$ there exists at least a Declare constraint that allows to accept all the positive traces and exclude $t$.
+\end{enumerate*}
+In other words, we assume that the problem is feasible\footnote{Notice that sometimes real cases might not fulfil these assumptions. We will discuss this issue in section \ref{subsec:impl}}.
 
-\paragraph{Template subsumption} As pointed out by Di Ciccio et al. \cite{2017-DiCiccio} Declare templates can be organised into a subsumption hierarchy according to the logical implications that can be derived from their semantics. Intuitively, as the constraint \textsf{INIT(a)} forces all traces to start with \textsf{a}, this also implies that \textsf{a} must exist in every trace i.e., \textsf{EXISTENCE(a)}. This relation is valid irrespectively of the involved activity. In a sense, we could say that the template \textsf{EXISTENCE(X)} is \emph{more general} than \textsf{INIT(X)}.
-This idea is frequently expressed through the subsumption operator $\sqsupseteq$. Given two templates $d, d' \in D$, we say that $d$ \emph{subsumes} $d'$, i.e. $d$ \emph{is more general then} $d'$ (written $d\sqsupseteq d'$), if for any grounding of the involved parameters w.r.t. the activities in $A$, whenever a trace $t \in A^*$ is compliant with $d$, it is also compliant with $d'$.
-\todo[inline]{ST: we don't use \emph{template subsumption} but the more general idea of generality of models (see \ref{def:generality}), even the rules are more general. Maybe this is not the right place for this paragraph, we should move it where we talk about the rules or to the related works section.}
+%\paragraph{Template subsumption} As pointed out by Di Ciccio et al. \cite{2017-DiCiccio} Declare templates can be organised into a subsumption hierarchy according to the logical implications that can be derived from their semantics. Intuitively, as the constraint \textsf{INIT(a)} forces all traces to start with \textsf{a}, this also implies that \textsf{a} must exist in every trace i.e., \textsf{EXISTENCE(a)}. This relation is valid irrespectively of the involved activity. In a sense, we could say that the template \textsf{EXISTENCE(X)} is \emph{more general} than \textsf{INIT(X)}. This idea is frequently expressed through the subsumption operator $\sqsupseteq$. Given two templates $d, d' \in D$, we say that $d$ \emph{subsumes} $d'$, i.e. $d$ \emph{is more general then} $d'$ (written $d\sqsupseteq d'$), if for any grounding of the involved parameters w.r.t. the activities in $A$, whenever a trace $t \in A^*$ is compliant with $d'$, it is also compliant with $d$ \cite{2017-DiCiccio} .
+
+%\todo[inline]{ST: we don't use \emph{template subsumption} but the more general idea of generality of models (see \ref{def:generality}), even the rules are more general. Maybe this is not the right place for this paragraph, we should move it where we talk about the rules or to the related works section.}
 
 %\tododl{aggiungere anche definizione di subsumption?}
 
