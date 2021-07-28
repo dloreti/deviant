@@ -2,29 +2,42 @@
 \section{Background}%\tododl{A me piaceva di pi\`u Preliminaries...}}
 \label{sec:back}
 
-Our technique relays on the key concept of \emph{event log}, intending it as a set of observed business process executions, logged into a file in terms of all the occurred events. In this work, we adopt the \ac{XES} storing standard \cite{XES} for the input log. According to this standard, each \emph{event} is related to a specific process \emph{instance}, and describes the occurrence of a well-defined step in the process, namely an \emph{activity}, at a specific timestamp. The logged set of events composing a process instance is addressed as \emph{trace} or \emph{case}. 
-From the analysis of the \emph{event log}, we want to extract a Declare \cite{2008-Pesic,2009-Aalst} \emph{model} of the business process.
-Declare is one of the most used languages in process mining literature. Thanks to its declarative nature, it does not represent the process as a sequence of activities from a start to an end, but through a set of constraints, which can be mapped into \ac{LTL} formulae \cite{?}\tododl{cosa citiamo?}. These constraints must all hold true during the process execution.
+Our technique relies on the key concept of \emph{event log}, intending it as a \emph{set} of observed process executions, logged into a file in terms of all the occurred events.
+%
+% Other approaches adopt view the log as a multi-set
+%
+In this work, we adopt the \ac{XES} storing standard \cite{XES} for the input log. According to this standard, each \emph{event} is related to a specific process \emph{instance}, and describes the occurrence of a well-defined step in the process, namely an \emph{activity}, at a specific timestamp. The logged set of events composing a process instance is addressed as \emph{trace} or \emph{case}. 
+From the analysis of the \emph{event log}, we want to extract a Declare \cite{2008-Pesic,2009-Aalst} \emph{model} of the process.
+Declare is one of the most used languages for declarative process modeling. Thanks to its declarative nature, it does not represent the process as a sequence of activities from a start to an end, but through a set of constraints, which can be mapped into \ac{LTL} formulae over finite traces \cite{DBLP:journals/tweb/MontaliPACMS10,DBLP:conf/ijcai/GiacomoV13}. These constraints must all hold true when a trace complete.
 
 Declare specifies a set of templates that can be used to model the process. 
 A constraint is a concrete instantiation of a template involving one ore more process activities.
-For example, the constraint \textsf{EXISTENCE(a)} is an instantiation of the template \textsf{EXISTENCE(X)}, and is used to specify that the activity \textsf{a} must occur in every trace; \textsf{INIT(a)} specifies that all traces must start with \textsf{a}. \textsf{RESPONCE(a,b)} imposes that if the \textsf{a} occurs, then \textsf{b} must follow. %\tododl{Necessaria notazione grafica in figura?}.
-For a complete description of most used Declare templates see \cite{2008-Pesic}. 
+For example, the constraint \textsf{EXISTENCE(a)} is an instantiation of the template \textsf{EXISTENCE(X)}, and is used to specify that activity \textsf{a} must occur in every trace; \textsf{INIT(a)} specifies that all traces must start with \textsf{a}. \textsf{RESPONSE(a,b)} imposes that if the \textsf{a} occurs, then \textsf{b} must follow, possibly with other activities in between. %\tododl{Necessaria notazione grafica in figura?}.
+For a description of the most common Declare templates see \cite{2008-Pesic}. 
 
-We assume that the log contains both \emph{positive} traces---i.e., fulfilling all the constraints in the business model---and \emph{negative} traces---i.e., diverging from the expected behaviour by violating at least one constraint in the (intended) model. 
+We assume that the log contains both \emph{positive} traces---i.e., satisfying all the constraints in the business model---and \emph{negative} traces---i.e., diverging from the expected behaviour by violating at least one constraint in the (intended) model. 
 
 %We denote with $L^+$ the set of positive traces in the input event log, and with $L^-$ the set of the negative ones.
 
 
-\paragraph{Language bias} Given a set of Declare templates $D$ and activities $A$, we identify with $D[A]$ the set of all possible grounding of templates in $D$ w.r.t. $A$, i.e. all the constraints that can be built using the given activities.
+\paragraph{Language bias} Given a set of Declare templates $D$ and a set of activities $A$, we identify with $D[A]$ the set of all possible grounding of templates in $D$ w.r.t. $A$, i.e. all the constraints that can be built using the given activities.
 
 %\paragraph{Logs and traces} We assume that a trace $t$ is a \emph{finite} word over the set of activities (i.e.\ $t\in A^*$), and a log is a \emph{finite} set of traces. The consequences of this choice is that we don't consider parallel events and multiple occurrences of the same trace won't affect our discovery process.\todo{ST: this might be relaxed}
-\paragraph{Logs and traces} We assume that a trace $t$ is a \emph{finite} word over the set of activities (i.e., $t\in A^*$, where $A^*$ is the set of all the words that can be build on the alphabet defined by $A$), and a log is a \emph{finite} set of traces. Multiple occurrences of the same trace won't affect our discovery process. We denote with $L^+$ and $L^-$ the sets of positive and negative traces, respectively, reported in the input event log. We assume that:
+\paragraph{Traces and Logs} We assume that a \emph{Trace} $t$ is a \emph{finite} word over the set of activities (i.e., $t\in A^*$, where $A^*$ is the set of all the words that can be build on the alphabet defined by $A$).
+%
+Other approaches \cite{?} \todofc{Quali?} consider a log as a multi-set of traces, thus allowing multiple occurrences of the same trace, and consider also the frequency of a trace within a log. Since our goal is to learn a (possibly \emph{minimal}) set of constraints able to discriminate between two example classes, we rather opt to consider a \emph{Log} as a \emph{finite set} of traces. As a consequence, multiple occurrences of the same trace will not affect our discovery process.
+% Multiple occurrences of the same trace will not affect our discovery process.
+%
+
+\paragraph{Declare constraints satisfaction and violation} Recalling the $LTL_f$ semantics \cite{DBLP:journals/tweb/MontaliPACMS10,DBLP:conf/ijcai/GiacomoV13}, we say that a constraint $c$ \emph{accepts} a trace $t$, or equivalently that $t$ \emph{satisfies} $c$, if $t \models c$. Similarly, a constraint $c$ rejects a trace $t$, or equivalently $t$ \emph{violates} $c$, if $t \not\models c$. Given that a Declare model $M$ is a conjunction of constraints, it follows that $M$ accepts a trace $t$ ($t$ \emph{satisfies} $M$) if $\forall c \in M, t \models c$. Analogously, a model $M$ \emph{rejects} a trace $t$ ($t$ \emph{violates} $M$) if $\exists c \in M, t\not\models c$.
+
+
+\paragraph{Positive and negative examples} Finally, we respectively denote with $L^+$ and $L^-$ the sets of positive and negative examples (traces), reported in the input event log. We assume that:
 \begin{enumerate*}[label=(\textit{\roman*})]
 \item $L^+ \cap L^- = \varnothing$, and 
-\item for each trace $t \in L^-$ there exists at least a Declare constraint that allows to accept all the positive traces and exclude $t$.
+\item for each trace $t \in L^-$ there exists at least one grounded Declare constraint $c \in D[A]$ that accepts all the positive traces and excludes $t$.
 \end{enumerate*}
-In other words, we assume that the problem is feasible\footnote{Notice that sometimes real cases might not fulfil these assumptions. We will discuss this issue in section \ref{subsec:impl}}.
+In other words, we assume that the problem is feasible\footnote{Notice that sometimes real cases might not fulfill these assumptions. We will discuss this issue in section \ref{subsec:impl}}.
 
 %\paragraph{Template subsumption} As pointed out by Di Ciccio et al. \cite{2017-DiCiccio} Declare templates can be organised into a subsumption hierarchy according to the logical implications that can be derived from their semantics. Intuitively, as the constraint \textsf{INIT(a)} forces all traces to start with \textsf{a}, this also implies that \textsf{a} must exist in every trace i.e., \textsf{EXISTENCE(a)}. This relation is valid irrespectively of the involved activity. In a sense, we could say that the template \textsf{EXISTENCE(X)} is \emph{more general} than \textsf{INIT(X)}. This idea is frequently expressed through the subsumption operator $\sqsupseteq$. Given two templates $d, d' \in D$, we say that $d$ \emph{subsumes} $d'$, i.e. $d$ \emph{is more general then} $d'$ (written $d\sqsupseteq d'$), if for any grounding of the involved parameters w.r.t. the activities in $A$, whenever a trace $t \in A^*$ is compliant with $d'$, it is also compliant with $d$ \cite{2017-DiCiccio} .
 
