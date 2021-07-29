@@ -3,24 +3,23 @@
 \section{The approach}
 \label{sec:approach}
 
-The discovery task must be able to extract a model which correctly classifies the log traces by admitting all cases in $L^+$ and discarding those in $L^-$\footnote{The conditions on all the positives and none of the negatives can be relaxed by requiring only a percentage of them. See section \ref{sec:discuss} for a discussion on this topic.}. Besides that, it is required to perform an abstraction step in order to be able to classify also unknown traces, which are not in the input log. %Generalisation is the measure of how much tolerant or restricting the model is w.r.t unknown traces. 
+The discovery task aims to extract a model which correctly classifies the log traces by accepting all cases in $L^+$ and rejecting those in $L^-$\footnote{The conditions on all the positives and none of the negatives can be relaxed by requiring only a percentage of them. See section \ref{sec:discuss} for a discussion on this topic.} \todofc{Aggiornare la footnote\ldots}. Besides that, it is required to perform an abstraction step in order to be able to classify also unknown traces, which are not in the input log. %Generalisation is the measure of how much tolerant or restricting the model is w.r.t unknown traces. 
 
 \subsection{Definitions}
 Before introducing our approach, we hereby provide some preliminary definitions that are relevant for the following explanation.
 
 
-
-\paragraph{Trace compliance} The role of \emph{compliance} of a trace w.r.t.\ a set of Declare constraints is pivotal in our approach. We assume the standard Declare semantics as detailed in~\cite{2008-Pesic}. 
-Given a trace $t\in A^*$ and a set of constraints $M\subseteq D[A]$, in the following we will use the notation $t\models M$ to indicate that none of the constraints in $M$ are violated in $t$. Such a notation is inspired by the \ac{LTL} semantics given in \cite{DBLP:series/lnbip/Montali10}.
+%%% paragrafo rimosso perche' seguendo il suggerimento di MArcoM, ho messo una quasi-formale definizione di conformance nella sezione background.
+%%% \paragraph{Trace compliance} The role of \emph{compliance} of a trace w.r.t.\ a set of Declare constraints is pivotal in our approach. We assume the standard Declare semantics as detailed in~\cite{2008-Pesic}.  Given a trace $t\in A^*$ and a set of constraints $M\subseteq D[A]$, in the following we will use the notation $t\models M$ to indicate that none of the constraints in $M$ are violated in $t$. Such a notation is inspired by the \ac{LTL} semantics given in \cite{DBLP:series/lnbip/Montali10}.
 
 %The role of \emph{compliance} of a trace w.r.t.\ a set of Declare constraints is pivotal in our approach. We assume the standard Declare semantics as detailed in~\cite{2008-Pesic}. 
 %\theoremstyle{definition}
 %\begin{definition}{\emph{Trace compliance.}} Given a trace $t\in A^*$ and a set of constraints $M\subseteq D[A]$, in the following we will use the notation $t\models M$ to indicate that none of the constraints in $M$ are violated in $t$.
 %\end{definition}
 
-\paragraph{Model generality} The notion of compliance naturally introduces the relation of \emph{generality} (or the converse \emph{specificity}) between models.
+\paragraph{Model generality} The notion of a model accepting a trace, often refrred as the compliance of a trace w.r.t. the model, naturally introduces the relation of \emph{generality} (or the converse \emph{specificity}) between models.
 %
-Intuitively, a model $M$ is more general than another $M'$ if $M$ allows a superset of the traces accepted by $M'$. That is, denoting with $C_M$ the set of all traces compliant with a model $M$, $M$ is more general than another model $M'$---and symmetrically $M'$ is more specific than $M$---if and only if $C_{M'} \subseteq C_M$. 
+Intuitively, a model $M$ is more general than another $M'$ if $M$ accepts a superset of the traces accepted by $M'$. That is, denoting with $T_M$ the set of all traces compliant with a model $M$, $M$ is more general than another model $M'$---and symmetrically $M'$ is more specific than $M$---if and only if $T_{M'} \subseteq T_M$. 
 %
 More precisely, we say that 
 \theoremstyle{definition}\label{def:generality}
@@ -28,20 +27,26 @@ More precisely, we say that
 a model $M\subseteq D[A]$ is \emph{more general} than $M'\subseteq D[A]$ (written as $M \succeq M'$) when for any $t\in A^*$, $t\models M' \Rightarrow t\models M$ , and \emph{strictly more general} (written as $M \succ M'$) if $M$ is more general than $M'$ and there exists a $t'\in A^*$ s.t.\ $t'\not\models M'$ and $t'\models M$.
 \end{definition}
 
-Note that this definition is consistent with that of subsumption between Declare templates provided in Di Ciccio et al. \cite{2017-DiCiccio}. Indeed, Declare templates can be organised into a subsumption hierarchy according to the logical implications that can be derived from their semantics. Intuitively, as the constraint \textsf{INIT(a)} forces all traces to start with \textsf{a}, this also implies that \textsf{a} must exist in every trace i.e., \textsf{EXISTENCE(a)}. This relation is valid irrespectively of the involved activity. In a sense, we could say that the template \textsf{EXISTENCE(X)} is \emph{more general} than \textsf{INIT(X)}.
-This idea is frequently expressed through the subsumption operator $\sqsupseteq$. Given two templates $d, d' \in D$, we say that $d$ \emph{subsumes} $d'$, i.e. $d$ \emph{is more general then} $d'$ (written $d\sqsupseteq d'$), if for any grounding of the involved parameters w.r.t. the activities in $A$, whenever a trace $t \in A^*$ is compliant with $d'$, it is also compliant with $d$ \cite{2017-DiCiccio} .
+Note that this definition is consistent with that of subsumption between Declare templates provided in Di Ciccio et al. \cite{2017-DiCiccio}. Indeed, Declare templates can be organised into a subsumption hierarchy according to the logical implications that can be derived from their semantics.
+%
+%\theoremstyle{plain}
+\begin{example}{}
+The constraint \textsf{INIT(a)} accepts only traces that start with \textsf{a}. Hence, \textsf{a} exists in each one of those accepted traces. In other words, all those traces satisfy also the constraint \textsf{EXISTENCE(a)}. However, the latter constraint accepts also traces that contains \textsf{a} even if they do not start with \textsf{a}. This relation is valid irrespectively of the involved activity. In a sense, we could say that the template \textsf{EXISTENCE(X)} is \emph{more general} than \textsf{INIT(X)}.
+\end{example}
+This idea is frequently expressed through the subsumption operator $\sqsupseteq$. Given two templates $d, d' \in D$, we say that $d$ \emph{subsumes} $d'$, i.e. $d$ \emph{is more general than} $d'$ (written $d\sqsupseteq d'$), if for any grounding of the involved parameters w.r.t. the activities in $A$, whenever a trace $t \in A^*$ is compliant with $d'$, it is also compliant with $d$ \cite{2017-DiCiccio} .
 
 
-\theoremstyle{definition}
-\begin{theorem}{}\label{th:subset-generality}
-For any pair of models $M, M'\subseteq D[A]$, $M\subseteq M'$ implies that $M$ is more general than $M'$ ($M\succeq M'$).
-\end{theorem} 
+% \theoremstyle{definition}
+\begin{remark}{}\label{re:subset-generality}
+For any pair of models $M, M'\subseteq D[A]$, $M\subseteq M'$ implies that $M$ is more general than $M'$ ($M\succeq M'$). This stems from the Declare semantics \cite{2008-Pesic} on $LTL_f$ \cite{DBLP:conf/ijcai/GiacomoV13}.
+\end{remark} 
 %\todo[inline]{ST: I don't think the proof works, theorem is true because of Declare monotonicity, which is not mentioned in the proof. Probably not worth a theorem but needs a reference for Declare monotonicity.}
-\begin{proof}
-A Declare model is a conjunction of constraints, each imposing some restrictions on the set of allowed traces. Consider two sets fulfilling the premise $M\subseteq M'$ such that $M=\{c_1,...c_m\}$ and $M'=\{c_1,...c_m, c_{m'}\}$. There are two possible cases: either the additional $c_{m'}$ in $M'$ excludes other traces w.r.t. $\{c_1,...c_m\}$---i.e. $M \succ M'$---or it does not because the traces $c_{m'}$ rules out are already disallowed by $\{c_1,...c_m\}$. $M\succeq M'$ follows.
-\end{proof}
+%%% Proof rimossa dopo commento di MarcoM, e sostituica con un riferimento diretto alla semantica.
+%%%\begin{proof}
+%%%A Declare model is a conjunction of constraints, each imposing some restrictions on the set of allowed traces. Consider two sets fulfilling the premise $M\subseteq M'$ such that $M=\{c_1,...c_m\}$ and $M'=\{c_1,...c_m, c_{m'}\}$. There are two possible cases: either the additional $c_{m'}$ in $M'$ excludes other traces w.r.t. $\{c_1,...c_m\}$---i.e. $M \succ M'$---or it does not because the traces $c_{m'}$ rules out are already disallowed by $\{c_1,...c_m\}$. $M\succeq M'$ follows.
+%%%\end{proof}
 
-Unfortunately, the opposite implication is not always true, i.e. if we have $M, M'\subseteq D[A]$ such that $M\succeq M'$, we cannot guarantee that $M\subseteq M'$. A clear example is $M=$\textsf{EXISTENCE(a)} and $M'=$\textsf{INIT(a)}.
+Unfortunately, the opposite implication does not hold, i.e. if we have $M, M'\subseteq D[A]$ such that $M\succeq M'$, we cannot guarantee that $M\subseteq M'$. A clear example is $M=\{\textsf{EXISTENCE(a)}\}$ and $M'=\{\textsf{INIT(a)}\}$.
 
 %\tododl{esempio per chiarire meglio}.
 %a model $M\subseteq D[A]$ is \emph{more general} than $M'\subseteq D[A]$ when for any $t\in A^*$, $t\models M' \Rightarrow t\models M$ (written as $M' \preceq M$ ), and \emph{strictly} more general if there is a $t'\in A^*$ s.t.\ $t'\not\models M'$ and $t'\models M$ (written as $M' \prec M$).
@@ -63,10 +68,14 @@ Unfortunately, the opposite implication is not always true, i.e. if we have $M, 
 
 %In general, the goal of our technique is to select one, or more, sets of Declare constraints such that all positive traces and none of the negative are compliant.\footnote{The conditions on all the positives and none of the negatives can be relaxed requiring a percentage of them; but this is outside the focus of the present work, and left for future investigation}
 
+
+
 \paragraph{Initial model} A wide body of research has been devoted to techniques to mine declarative process models that characterise a given event log (our positive traces). Our approach can leverage these techniques and refine their results by taking into account the negative examples as well. To this end, we consider a---possibly empty---\emph{initial model} $P$, i.e. a set of Declare constraints that are known to characterise the positive traces. For example, such set can be the expression of domain knowledge or the result of a state-of-the-art discovery algorithm previously applied to $L^+$. To apply our technique we only require that all the positive traces are compliant with all the constraints in $P$. 
 We are aware that often state-of-the-art approaches do not emit a model compliant with all the traces in the input log. In these cases, we consider as positive only the traces that are allowed by $P$.
 %We are aware of the fact that often this is not guaranteed by state-of-the-art approaches; in these cases we assume that the positive traces are a subset $L'^+$ of the original $L^+$ including only the traces compliant with $P$; i.e.\ $L'^+ = \{ t\in L^+\mid t\models P\}$.
 %ho tolto questa formulazione perch� non mi sembra conforme alle definizioni precedenti. Noi abbiamo detto che assumiamo che l'input event log contenga L+ e L- e abbiamo definito L+ come il subset delle positive in input (non come l'event log completo).
+
+
 
 \paragraph{Candidate solution} As the goal of our technique is to refine the initial model $P$ taking into account both positive and negative traces, we can define which are the necessary conditions for a set of constraints $S$ to be a candidate solution for our discovery task.
 
@@ -74,40 +83,53 @@ We are aware that often state-of-the-art approaches do not emit a model complian
 \begin{definition}{}\label{def:cand}
 Given the initial model $P$, a \emph{candidate solution} for the discovery task is any $S\subseteq D[A]$ s.t.
 \begin{enumerate} [label=\textit{(\roman*)}]
-  \item $P\subseteq S$,
-  \item for all $t\in L^+$ $t\models S$, 
-  \item for all $t\in L^-$ $t\not\models S$.
+  \item $P\subseteq S$;
+  \item $\forall t\in L^+$ we have $t\models S$;
+  \item $\forall t\in L^-$ we have $t\not\models S$.
 \end{enumerate}
 \end{definition}
 %\todo[inline]{ST: the third condition is too restrictive, since prevents solutions that exclude only part of $L^-$, also when this is due to the language bias induced by $L^+$. Possible solutions: i) drop it (doesn't make much sense); ii) substitute $L^-$ with the subset of traces that can be excluded by the language bias induced by $L^+$; iii) any other?
 
 %One way of doing (ii) is to define $D[A]_{L^+} = \{ c \in D[A] \mid \forall t\in L^+$ $t\models c\}$ (the \emph{compatibles}) and $L'^- = \{t\in L^-\mid t\not\models D[A]_{L^+}\}$}
 
-\paragraph{Optimality criterion} Clearly, there can be several sets satisfying these conditions. They differ from the way they classify the unknown traces, which are not in $L^+$, nor in $L^-$. Therefore, we need to introduce some way to compare the multiple output models in order to identify the preferable ones.
+\paragraph{Optimality criterion} Clearly, there can be several sets satisfying these conditions. They differ from the way they classify the unknown traces\todofc{Verificare che nell'intro questa cosa delle unknown si astata spiegata bene.}, which are not in $L^+$, nor in $L^-$. Therefore, we need to introduce some way to compare the multiple output models in order to identify the preferable ones.
 %Clearly, there can be several sets satisfying these conditions and we need to introduce a notion of \emph{fitness} to identify the preferred ones. 
 %
-In some context, \emph{generality} can be a measure of the quality of the solution, i.e. we want to identify the set that is less committing in terms of restricting the admitted traces. In some other context on the contrary, we might be interested in the identification of a more specific model. So besides allowing all traces in $L^+$ and forbidding all traces in $L^-$, the choice between a general or specific model, obviously affects the classification of the unknown traces. Alternatively, one can be interested in the most \emph{simple} solution, i.e. the one that is presumed to be easier to understand irrespectively from the degree of generality/specificity it accomplishes.
+In some context, \emph{generality} can be a measure of the quality of the solution, i.e. we want to identify the set that is less committing in terms of restricting the admitted traces. In some other context on the contrary, we might be interested in the identification of a more specific model. So besides allowing all traces in $L^+$ and forbidding all traces in $L^-$, the choice between a general or specific model, obviously affects the classification of the unknown traces. Alternatively, \emph{simplicity} is another criterion: one can be interested in the most \emph{simple} solution, i.e. the one that is presumed to be easier to understand irrespectively from the degree of generality/specificity it accomplishes.
 
 %\tcolor{red}{*************************}
 
-Let us focus on \emph{generality} for the moment. In this case, we are interested in the candidate solution $S$ (i.e., satisfying the properties of definition \ref{def:cand}) such that there is no other candidate solution $S'\subseteq D[A]$  strictly more general than $S$ (i.e., $\nexists~ S'$ s.t. $S\prec S'$).
+Let us focus on \emph{generality} for the moment. In this case, we are interested in the candidate solution $S$ (i.e., satisfying the properties of Definition \ref{def:cand}) such that there is no other candidate solution $S'\subseteq D[A]$  strictly more general than $S$ (i.e., $\nexists~ S'$ s.t. $S\prec S'$).
 %If we consider generality as the fitness measure then we focus on the minimal sets $S$ satisfying the above properties and s.t.\ there is no $S'\subseteq D[A]$ satisfying the properties and strictly more general than $S$ (that is $S\prec S'$).
 
 
 Although testing for strict generality between two set of constraints is a decidable problem, its worst case complexity makes an exact algorithm unfeasible because, recalling definition \ref{def:generality}, it would require to asses the compliance of any trace $t \in A^*$ with the two models going to be compared.
 For this reason, we propose an alternative method based on comparing the logical consequences that can be deducted from the models.
 
-The method makes use of a set of deduction rules which account for the \emph{subsumption} between Declare templates. 
-Our work integrates the rules introduced in \cite{2017-DiCiccio}, into a function, namely the \emph{deductive closure operator}, which satisfies the properties of extensivity, monotonicity, and idempotence. The complete set of employed rules is available at \cite{?}\tododl{link a git repo}. 
+The method makes use of a set of deduction rules which account for the \emph{subsumption} between Declare templates. Our work integrates the rules introduced in \cite{2017-DiCiccio}, into a function, namely the \emph{deductive closure operator}, which satisfies the properties of extensivity, monotonicity, and idempotence.
 
 
 \theoremstyle{definition}\label{def:closure}
 \begin{definition}{}
-A \emph{deductive closure operator} is a function $cl: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$ that associates any set $M \in D[A]$ with all the constraints that can be logically derived from $M$ by applying one or more deduction rules.
-\end{definition} 
+Given a set $R$ of subsumption rules, a \emph{deductive closure operator} is a function $cl_R: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$ that associates any set $M \in D[A]$ with all the constraints that can be logically derived from $M$ by applying one or more deduction rules in $R$.
+\end{definition}
 
-Obviously, we are interested in a closure operator whose rules are \emph{correct}, that is for any $M\subseteq D[A]$ and $t\in A^*$, $t\models M$ iff $t\models cl(M)$.
-As the closure of a model is again a subset of $D[A]$, theorem \ref{th:subset-generality} is also applicable, i.e. for any $M, M'\subseteq D[A]$, $cl(M)\subseteq cl(M')$ implies that $M$ is more general than $M'$ ($M\succeq M'$).
+\begin{example}
+Let be:
+\begin{itemize}
+\item $R=\{\ \textsf{EXISTENCE(X)} \sqsupseteq \textsf{INIT(X)}\ \}$
+\item $M'=\{ \textsf{INIT(a)}\ \}$
+\end{itemize}
+If we apply the deductive closure operator $cl_R$ to $M'$, we get:
+$$
+cl_R(M') = \{\ \textsf{INIT(a), EXISTENCE(a)}\ \}
+$$
+\end{example}
+
+\noindent Obviously, we are interested in sets $R$ of \emph{correct} subsumption rules, that is for any $M\subseteq D[A]$ and $t\in A^*$, $t\models M$ iff $t\models cl_R(M)$. In the rest of the paper, for the easy of understanding, we will omit the set $R$ and we will simply write $cl(M)$. The complete set of employed rules is available at \cite{?}\tododl{link a git repo}.
+
+
+As the closure of a model is again a subset of $D[A]$, Remark \ref{re:subset-generality} is also applicable, i.e. for any $M, M'\subseteq D[A]$, $cl(M)\subseteq cl(M')$ implies that $M$ is more general than $M'$ ($M\succeq M'$).
 %
 %Because of the ``correctness'' of the $cl$ operator, we can guarantee the following lemma.
 %\theoremstyle{definition}\label{lemma:closure-generality}
@@ -118,9 +140,25 @@ As the closure of a model is again a subset of $D[A]$, theorem \ref{th:subset-ge
 %\begin{proof}
 %\tcolor{red}{Proof TODO}
 %\end{proof}
-Unfortunately, due to the nature of the Declare language we cannot provide a complete calculus for the language of conjunctions of Declare constraints. For this reason, we cannot guarantee the strictness, nor the opposite implication (i.e. $M'\preceq M$ does not implies $cl(M)\subseteq cl(M')$).
+Thanks to this property, the deductive closure operator can be used to compare Declare models w.r.t.~generality. To provide an intuition, let us consider the following example:
 
-Anyway, thanks to this property, the deductive closure operator can be used to compare Declare models w.r.t.~generality. To provide an intuition, let us consider the models $M= \{\mathsf{EXISTENCE(a)}\}$ and $M' = \{\mathsf{INIT(a)}\}$. We cannot express any subset relation between these two sets, thus rendering Theorem \ref{th:subset-generality} inapplicable. Nonetheless, if we take into account their closure, we have $cl(M)=\{\mathsf{EXISTENCE(a)}\}$ and $cl(M')=\{\mathsf{INIT(a)}$, $\mathsf{EXISTENCE(a)}\}$. As $cl(M)$ is a subset of $cl(M')$, we can conclude that $M$ is more general than $M'$.
+\begin{example}
+Let be:
+\begin{itemize}
+\item $R=\{\ \textsf{EXISTENCE(X)} \sqsupseteq \textsf{INIT(X)}\ \}$
+\item $M = \{\ \mathsf{EXISTENCE(a)}\ \}$
+\item $M' = \{\ \mathsf{INIT(a)}\ \}$
+\end{itemize}
+We cannot express any subset relation between $M$ and $M'$, thus making Remark \ref{re:subset-generality} inapplicable.
+
+\noindent Nonetheless, if we take into account their closure, we have:
+$$cl(M)=\{\mathsf{EXISTENCE(a)}\}\quad \textnormal{and}\quad cl(M')=\{\textsf{INIT(a)}, \textsf{EXISTENCE(a)}\}$$
+As $cl(M)$ is a subset of $cl(M')$, we conclude that $M$ is more general than $M'$.
+\end{example}
+%
+\noindent In other words, the closure operator (being based on the subsumtpion rules) captures the logical consequences deriving from the Declare semantics.
+Due to the nature of the Declare language we cannot provide a complete calculus for the language of conjunctions of Declare constraints. For this reason, we cannot guarantee the strictness, nor the opposite implication (i.e. $M'\preceq M$ does not implies $cl(M)\subseteq cl(M')$). Anyway, the closure operator provide us a powerful tool for confronting candidate solutions w.r.t. the generality criterion.
+
 
 %To provide an intuition let us consider two possible candidates $S' = \{\mathsf{INIT(a)}\}$ and $S = \{\mathsf{EXISTENCE(a)}\}$. It's easy to see that any trace compliant with $\mathsf{INIT(a)}$ must be compliant also with $\mathsf{EXISTENCE(a)}$, therefore $\{\mathsf{INIT(a), EXISTENCE(a)}\}$ is equivalent to $S'$. If we compare the deductive closure of the two sets we can conclude that $S$ is more general that $S'$.\footnote{Not necessarily \emph{strictly} more general.}
 
@@ -149,15 +187,15 @@ In this section we introduce the theoretical basis of the algorithm. The paramet
 \begin{itemize}
   \item $D$ set of Declare templates (language bias)
   \item $A$ set of activities
-  \item $cl$ closure operator. $cl: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$
+  \item $cl$ closure operator equipped with a set $R$ of subsumption rules.\\ $cl: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$
   \item $L^+$ log traces labelled as positive. $L^+ \subseteq A^*$
   \item $L^-$ log traces labelled as negative. $L^- \subseteq A^*$
-  \item $P$ initial model. $P\subseteq \{c\in D[A]| \forall t\in L^+\, t\models c\}$
+  \item $P$ initial model. $P\subseteq \{c\in D[A]\quad | \quad \forall t\in L^+,\, t\models c\}$
 \end{itemize}
 
 For the sake of modularity and easiness of experimenting with different hypotheses and parameters, we divide our algorithm into two clearly separate stages: the first which identifies the candidate constraints, and a second optimisation stage which selects the solutions. However, these two steps can be merged into a single monolithic search-based algorithm. 
 
-Starting from the set of all constraints $D[A]$, the first stage aims at identifying all the constraints of $D[A]$ which allow all positive traces and exclude at least a negative one. To this end, it first computes the set \textit{compatibles} of constraints for which all traces in $L^+$ are compliant. 
+Starting from the set of all constraints $D[A]$, the first stage aims at identifying all the constraints of $D[A]$ which accept all positive traces and reject at least a negative one. To this end, it first computes the set \textit{compatibles} of constraints for which all traces in $L^+$ are compliant. 
 \begin{equation}
 {compatibles} = \{c\in D[A]~|~\forall t\in L^+~ t\models c \} \\
 \end{equation}
