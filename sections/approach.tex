@@ -3,7 +3,7 @@
 \section{The approach}
 \label{sec:approach}
 
-The discovery task aims to extract a model which correctly classifies the log traces by accepting all cases in $L^+$ and rejecting those in $L^-$\footnote{The conditions on all the positives and none of the negatives can be relaxed by requiring only a percentage of them. See section \ref{sec:discuss} for a discussion on this topic.} \todofc{Aggiornare la footnote\ldots}. Besides that, it is required to perform an abstraction step in order to be able to classify also unknown traces, which are not in the input log. %Generalisation is the measure of how much tolerant or restricting the model is w.r.t unknown traces. 
+\nd aims to extract a model which correctly classifies the log traces by accepting all cases in $L^+$ and rejecting those in $L^-$\footnote{The conditions on all the positives and none of the negatives can be relaxed by requiring only a percentage of them. See section \ref{sec:discuss} for a discussion on this topic.} \todofc{Aggiornare la footnote\ldots}. Besides that, it is required to perform an abstraction step in order to be able to classify also unknown traces, which are not in the input log. %Generalisation is the measure of how much tolerant or restricting the model is w.r.t unknown traces. 
 
 \subsection{Definitions}
 Before introducing our approach, we hereby provide some preliminary definitions that are relevant for the following explanation.
@@ -183,7 +183,7 @@ Due to the nature of the Declare language we cannot provide a complete calculus 
 
 \subsection{Two-step procedure}
 
-In this section we introduce the theoretical basis of the algorithm. The parameters of the problem are the following.
+In this section we introduce the theoretical basis of our \nd approach. The parameters of the problem are the following.
 \begin{itemize}
   \item $D$ set of Declare templates (language bias)
   \item $A$ set of activities
@@ -193,7 +193,7 @@ In this section we introduce the theoretical basis of the algorithm. The paramet
   \item $P$ initial model. $P\subseteq \{c\in D[A]\quad | \quad \forall t\in L^+,\, t\models c\}$
 \end{itemize}
 
-For the sake of modularity and easiness of experimenting with different hypotheses and parameters, we divide our algorithm into two clearly separate stages: the first which identifies the candidate constraints, and a second optimisation stage which selects the solutions. However, these two steps can be merged into a single monolithic search-based algorithm. 
+For the sake of modularity and easiness of experimenting with different hypotheses and parameters, we divide our approach into two clearly separate stages: the first which identifies the candidate constraints, and a second optimisation stage which selects the solutions. However, these two steps are merged into a single monolithic search-based approach. 
 
 Starting from the set of all constraints $D[A]$, the first stage aims at identifying all the constraints of $D[A]$ which accept all positive traces and reject at least a negative one. To this end, it first computes the set of constraints that accepts all traces in $L^+$, namely the set \emph{compatibles}. 
 \begin{equation}
@@ -349,7 +349,7 @@ For example the valid formula $\textsc{Init}(a)\implies\textsc{Precedence}(a,b)$
 \begin{lstlisting}
   precedence(A,B) :- init(A), activity(B).
 \end{lstlisting}
-using a specific predicate ( lstinline{activity} ) holding the set of activities.\todofc{Da mettere a posto\ldots}
+using a specific predicate ( \lstinline{activity} ) holding the set of activities.
 %\tododl{esplicitiamo che occorre imporre anche $A \neq B$?}
 
 %Note that the selection of the optimal stable models does not require the compliance verification on the traces, which are therefore not necessary as input. 

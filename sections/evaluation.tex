@@ -12,14 +12,14 @@
 
 One of the difficulties of evaluating process mining algorithms is that given a log, the underlying model might not be known before. As a consequence, it might be difficult to establish an \emph{ideal model} (a golden standard) to refer and confront with. In this regard, a number of metrics and evaluation indexes have been proposed in the past to evaluate how a discovered model fits a given log \cite{2015-Adriansyah,2014-Broucke,2018-Ponce}. However, those metrics might provide only a partial answer to the question of ``how good'' is the discovered model. 
 %
-In the case of our approach, a further issue influences the evaluation process: the difficulty of performing a ``fair'' comparison with existing techniques because the majority of the methods we could access have been designed to use ``positive'' traces only.
+In the case of \nd, a further issue influences the evaluation process: the difficulty of performing a ``fair'' comparison with existing techniques because the majority of the methods we could access have been designed to use ``positive'' traces only.
 
 
 %A second issue is about the difficulty of confronting our approach with existing ones, especially if we consider that \todofc{Non so se questa cosa la voglio scrivere qui\ldots} our approach exploits information from traces labeled as ``negative'', while the majority of the approaches we could access have been designed to use positive traces only.
 
-We pursued two different evaluation strategies. On one side, we defined a model, and from that model we generated a synthetic, artificial log, taking care that it exhibits a number of desired properties: in a sense, this part of the evaluation can be referred as being about a ``controlled setting''. A first aim is to understand if our approach succeeds to discover a \emph{minimum} set of constraints for distinguishing positive from negative examples; a second aim is to qualitatively evaluate the discovered model, having the possibility to confront it with the original one. Experiments conducted on that synthetic log are reported and discussed in Section \ref{sec:syntheticlog}.
+We pursued two different evaluation strategies. On one side, we defined a model, and from that model we generated a synthetic, artificial log, taking care that it exhibits a number of desired properties: in a sense, this part of the evaluation can be referred as being about a ``controlled setting''. A first aim is to understand if \nd succeeds to discover a \emph{minimum} set of constraints for distinguishing positive from negative examples; a second aim is to qualitatively evaluate the discovered model, having the possibility to confront it with the original one. Experiments conducted on that synthetic log are reported and discussed in Section \ref{sec:syntheticlog}.
 
-On the other side, we applied our discovery technique to some existing logs, thus evaluating it on some real data set. Again, this experiment has two aims: to understand weakness and strengths of our proposal w.r.t. to some relevant literature; and to confront the proposed approach with real-world data---and difficulties that real-world data bring along. Section \ref{sec:realdata} is devoted to present the selected logs and discuss the obtained results.
+On the other side, we applied \nd to some existing logs, thus evaluating it on some real data set. Again, this experiment has two aims: to understand weakness and strengths of \nd w.r.t. to some relevant literature; and to confront the proposed approach with real-world data---and difficulties that real-world data bring along. Section \ref{sec:realdata} is devoted to present the selected logs and discuss the obtained results.
 
 % Such aspect is further exacerbated by the fact that our approach exploits information from traces labeled as ``negative'', while the totality of the approaches we could access have been designed to use positive traces only.
 
@@ -68,7 +68,7 @@ To ease the understanding of the loan application process, a Declare model of th
 \label{fig:ex}
 \end{figure}
 
-To test our approach, besides positive traces, we generated also negative traces. In particular, we generated traces that violate two different constraints:
+To test \nd, besides positive traces, we generated also negative traces. In particular, we generated traces that violate two different constraints:
 % \todofc{Non ho messo il terzo test di violazione, perch\`e riguardava ancora una \emph{precedence}\ldots pensiamo se vogliamo aggiungerlo.}
 \begin{enumerate}[label=(\textit{\alph*})]
 \item the \textsf{precedence(assess\_loan\_risk, assess\_eligibility)}, that is violated when either the latter activity is executed and the former is absent, or if both the activities appear in the log, but in the wrong temporal order;
@@ -78,7 +78,7 @@ To test our approach, besides positive traces, we generated also negative traces
 %
 The resulting log consists of 64,000 positives traces, 25,600 traces that violate the constraint as in $(a)$, and 10,240 traces that violate the constraint as specified in $(b)$.
 %
-When fed with the positives traces and traces violating the constraint in $(a)$, our approach successfully manages to identify constraints that allow to clearly distinguish positives from negatives traces. Moreover, the discovered constraint coincides with the one we originally decided to violate during the generation phase. When confronted with the scenario $(b)$, our approach again successfully managed to identify a minimum model able to discriminate between positive and negative traces, and the identified constraint is indeed logically consistent with the constraint originally selected for the violation.
+When fed with the positives traces and traces violating the constraint in $(a)$, \nd successfully manages to identify constraints that allow to clearly distinguish positives from negatives traces. Moreover, the discovered constraint coincides with the one we originally decided to violate during the generation phase. When confronted with the scenario $(b)$, \nd again successfully managed to identify a minimum model able to discriminate between positive and negative traces, and the identified constraint is indeed logically consistent with the constraint originally selected for the violation.
 % In particular, it is worthy to notice that our approach derived 
 Table \ref{tab:syntResults} summarize the obtained results and reports the first selected model for each scenario.
 
