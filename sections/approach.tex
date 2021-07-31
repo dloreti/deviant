@@ -3,7 +3,7 @@
 \section{The approach}
 \label{sec:approach}
 
-\nd aims to extract a model which correctly classifies the log traces by accepting all cases in $L^+$ and rejecting those in $L^-$\footnote{The conditions on all the positives and none of the negatives can be relaxed by requiring only a percentage of them. See section \ref{sec:discuss} for a discussion on this topic.} \todofc{Aggiornare la footnote\ldots}. Besides that, it is required to perform an abstraction step in order to be able to classify also unknown traces, which are not in the input log. %Generalisation is the measure of how much tolerant or restricting the model is w.r.t unknown traces. 
+\nd aims to extract a model which correctly classifies the log traces by accepting all cases in $L^+$ and rejecting those in $L^-$\footnote{The conditions on accepting all the positives and none of the negatives can be relaxed by requiring only a percentage of them.}. Besides that, it is required to perform an abstraction step in order to be able to classify also unknown traces, which are not in the input log. %Generalisation is the measure of how much tolerant or restricting the model is w.r.t unknown traces. 
 
 \subsection{Definitions}
 Before introducing our approach, we hereby provide some preliminary definitions that are relevant for the following explanation.
@@ -92,7 +92,7 @@ Given the initial model $P$, a \emph{candidate solution} for the discovery task 
 
 %One way of doing (ii) is to define $D[A]_{L^+} = \{ c \in D[A] \mid \forall t\in L^+$ $t\models c\}$ (the \emph{compatibles}) and $L'^- = \{t\in L^-\mid t\not\models D[A]_{L^+}\}$}
 
-\paragraph{Optimality criterion} Clearly, there can be several sets satisfying these conditions. They differ from the way they classify the unknown traces\todofc{Verificare che nell'intro questa cosa delle unknown si astata spiegata bene.}, which are not in $L^+$, nor in $L^-$. Therefore, we need to introduce some way to compare the multiple output models in order to identify the preferable ones.
+\paragraph{Optimality criterion} Clearly, there can be several sets satisfying these conditions. They differ from the way they classify the unknown traces, which are not in $L^+$, nor in $L^-$. Therefore, we need to introduce some way to compare the multiple output models in order to identify the preferable ones.
 %Clearly, there can be several sets satisfying these conditions and we need to introduce a notion of \emph{fitness} to identify the preferred ones. 
 %
 In some context, \emph{generality} can be a measure of the quality of the solution, i.e. we want to identify the set that is less committing in terms of restricting the admitted traces. In some other context on the contrary, we might be interested in the identification of a more specific model. So besides allowing all traces in $L^+$ and forbidding all traces in $L^-$, the choice between a general or specific model, obviously affects the classification of the unknown traces. Alternatively, \emph{simplicity} is another criterion: one can be interested in the most \emph{simple} solution, i.e. the one that is presumed to be easier to understand irrespectively from the degree of generality/specificity it accomplishes.
