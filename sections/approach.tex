@@ -126,7 +126,7 @@ cl_R(M') = \{\ \textsf{INIT(a), EXISTENCE(a)}\ \}
 $$
 \end{example}
 
-\noindent Obviously, we are interested in sets $R$ of \emph{correct} subsumption rules, that is for any $M\subseteq D[A]$ and $t\in A^*$, $t\models M$ iff $t\models cl_R(M)$. In the rest of the paper, for the easy of understanding, we will omit the set $R$ and we will simply write $cl(M)$. The complete set of employed rules is available at \cite{?}\tododl{link a git repo}.
+\noindent Obviously, we are interested in sets $R$ of \emph{correct} subsumption rules, that is for any $M\subseteq D[A]$ and $t\in A^*$, $t\models M$ iff $t\models cl_R(M)$. In the rest of the paper, for the easy of understanding, we will omit the set $R$ and we will simply write $cl(M)$. The complete set of employed rules is available\footnote{The repository is freely available at \url{https://zenodo.org/record/5158528}, and the experiments can be run through a Jupyter Notebook at \url{https://mybinder.org/v2/zenodo/10.5281/zenodo.5158528/}}.
 
 
 As the closure of a model is again a subset of $D[A]$, Remark \ref{re:subset-generality} is also applicable, i.e. for any $M, M'\subseteq D[A]$, $cl(M)\subseteq cl(M')$ implies that $M$ is more general than $M'$ ($M\succeq M'$).
