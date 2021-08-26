@@ -1,6 +1,6 @@
-% !TEX root = ../deviant.tex
-\section{Background}%\tododl{A me piaceva di pi\`u Preliminaries...}}
-\label{sec:back}
+% !TEX root = ../deviant-tkde.tex
+
+\section{Background}\label{sec:back}
 
 Our technique relies on the key concept of \emph{event log}, intending it as a \emph{set} of observed process executions, logged into a file in terms of all the occurred events.
 %
@@ -20,19 +20,20 @@ We assume that the log contains both \emph{positive} traces---i.e., satisfying a
 %We denote with $L^+$ the set of positive traces in the input event log, and with $L^-$ the set of the negative ones.
 
 
-\paragraph{Language bias} Given a set of Declare templates $D$ and a set of activities $A$, we identify with $D[A]$ the set of all possible grounding of templates in $D$ w.r.t. $A$, i.e. all the constraints that can be built using the given activities.
+\paragrafo{Language bias} Given a set of Declare templates $D$ and a set of activities $A$, we identify with $D[A]$ the set of all possible grounding of templates in $D$ w.r.t. $A$, i.e. all the constraints that can be built using the given activities.
 
 %\paragraph{Logs and traces} We assume that a trace $t$ is a \emph{finite} word over the set of activities (i.e.\ $t\in A^*$), and a log is a \emph{finite} set of traces. The consequences of this choice is that we don't consider parallel events and multiple occurrences of the same trace won't affect our discovery process.\todo{ST: this might be relaxed}
-\paragraph{Traces and Logs} We assume that a \emph{Trace} $t$ is a \emph{finite} word over the set of activities (i.e., $t\in A^*$, where $A^*$ is the set of all the words that can be build on the alphabet defined by $A$).
+
+\paragrafo{Traces and Logs} We assume that a \emph{Trace} $t$ is a \emph{finite} word over the set of activities (i.e., $t\in A^*$, where $A^*$ is the set of all the words that can be build on the alphabet defined by $A$).
 %
 Usually a log is defined as a multi-set of traces, thus allowing multiple occurrences of the same trace: the frequency of a certain trace is then considered as an indicator, for example, of the importance of that trace within the process. Since our goal is to learn a (possibly \emph{minimal}) set of constraints able to discriminate between two example classes, we rather opt to consider a \emph{Log} as a \emph{finite set} of traces. As a consequence, multiple occurrences of the same trace will not affect our discovery process.
 % Multiple occurrences of the same trace will not affect our discovery process.
 %
 
-\paragraph{Declare constraints satisfaction and violation} Recalling the $LTL_f$ semantics \cite{DBLP:journals/tweb/MontaliPACMS10,DBLP:conf/ijcai/GiacomoV13}, and referring to the stadard Declare semantics as in \cite{2008-Pesic}, we say that a constraint $c$ \emph{accepts} a trace $t$, or equivalently that $t$ \emph{satisfies} $c$, if $t \models c$. Similarly, a constraint $c$ rejects a trace $t$, or equivalently $t$ \emph{violates} $c$, if $t \not\models c$. Given that a Declare model $M$ is a conjunction of constraints, it follows that $M$ \emph{accepts} a trace $t$ ($t$ \emph{satisfies} $M$) if $\forall c \in M, t \models c$. Analogously, a model $M$ \emph{rejects} a trace $t$ ($t$ \emph{violates} $M$) if $\exists c \in M, t\not\models c$. In the following, we will write $t \models M$ meaning that M accepts t.
+\paragrafo{Declare constraints satisfaction and violation} Recalling the $LTL_f$ semantics \cite{DBLP:journals/tweb/MontaliPACMS10,DBLP:conf/ijcai/GiacomoV13}, and referring to the standard Declare semantics as in \cite{2008-Pesic}, we say that a constraint $c$ \emph{accepts} a trace $t$, or equivalently that $t$ \emph{satisfies} $c$, if $t \models c$. Similarly, a constraint $c$ rejects a trace $t$, or equivalently $t$ \emph{violates} $c$, if $t \not\models c$. Given that a Declare model $M$ is a conjunction of constraints, it follows that $M$ \emph{accepts} a trace $t$ ($t$ \emph{satisfies} $M$) if $\forall c \in M, t \models c$. Analogously, a model $M$ \emph{rejects} a trace $t$ ($t$ \emph{violates} $M$) if $\exists c \in M, t\not\models c$. In the following, we will write $t \models M$ meaning that M accepts t.
 
 
-\paragraph{Positive and negative examples} Finally, we respectively denote with $L^+$ and $L^-$ the sets of positive and negative examples (traces), reported in the input event log. We assume that:
+\paragrafo{Positive and negative examples} Finally, we respectively denote with $L^+$ and $L^-$ the sets of positive and negative examples (traces), reported in the input event log. We assume that:
 \begin{enumerate*}[label=(\textit{\roman*})]
 \item $L^+ \cap L^- = \varnothing$, and 
 \item for each trace $t \in L^-$ there exists at least one grounded Declare constraint $c \in D[A]$ that accepts all the positive traces and excludes $t$.

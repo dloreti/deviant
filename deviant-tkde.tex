@@ -1,9 +1,7 @@
 \documentclass[10pt,journal,compsoc]{IEEEtran}
 
-
 \usepackage{lineno,hyperref}
 \modulolinenumbers[5]
-
 
 
 % *** CITATION PACKAGES ***
@@ -42,10 +40,20 @@
 \usepackage{amssymb}
 
 \usepackage{algorithm}%,algorithmic}
+
 \usepackage{algpseudocode}
 \algdef{SE}[SUBALG]{Indent}{EndIndent}{}{\algorithmicend\ }%
 \algtext*{Indent}
 \algtext*{EndIndent}
+
+\usepackage{colortbl}
+
+
+
+% \makeatletter
+% \algrenewcommand\ALG@beginalgorithmic{\footnotesize}
+% \makeatother
+
 
 \usepackage{listings}
 
@@ -84,6 +92,9 @@
 \newcommand\dec[1]{$\mathsf{#1}$}
 \newcommand\para[1]{\textnormal{\textsf{#1}}}
 \newcommand\btext[1]{{\color{blue!30}{#1}}}
+\newcommand\paragrafo[1]{{\smallskip \noindent \textit{#1}.}}
+
+
 
 % MarcoM non condivide il termine choices, dice che è misunderstanding
 % A tal scopo ho quindi creato una macro per deicedere che nome usare
@@ -120,25 +131,21 @@
 %\usepackage{numcompress}\bibliographystyle{model6-num-names}
 
 %% `Elsevier LaTeX' style
-\bibliographystyle{elsarticle-num}
+%\bibliographystyle{elsarticle-num}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 
 
-\title{Process discovery on deviant traces and other stranger things}
+\title{Process discovery on deviant traces and \\ other stranger things}
 
-\author{Michael~Shell,~\IEEEmembership{Member,~IEEE,}
-        John~Doe,~\IEEEmembership{Fellow,~OSA,}
-        and~Jane~Doe,~\IEEEmembership{Life~Fellow,~IEEE}% <-this % stops a space
-\IEEEcompsocitemizethanks{\IEEEcompsocthanksitem M. Shell was with the Department
-of Electrical and Computer Engineering, Georgia Institute of Technology, Atlanta,
-GA, 30332.\protect\\
-% note need leading \protect in front of \\ to get a newline within \thanks as
-% \\ is fragile and will error, could use \hfil\break instead.
-E-mail: see http://www.michaelshell.org/contact.html
-\IEEEcompsocthanksitem J. Doe and J. Doe are with Anonymous University.}% <-this % stops an unwanted space
+\author{Federico~Chesani, Chiara~Di~Francescomarino, Chiara~Ghidini, Daniela~Loreti, Fabrizio~Maria~Maggi, Paola~Mello, Marco~Montali, Sergio~Tessaris% <-this % stops a space
+\IEEEcompsocitemizethanks{\IEEEcompsocthanksitem F.~Chesani, D.~Loreti, and P.~Mello are with DISI - University of Bologna, Italy. 
+E-mail: daniela.loreti@unibo.it
+\IEEEcompsocthanksitem C.~Di~Francescomarino and C.~Ghidini with Fondazione Bruno Kessler, Italy.
+\IEEEcompsocthanksitem F.~M.~Maggi, M.~Montali, and S.~Tessaris are with Free University of Bozen/Bolzano, Italy.
+}% <-this % stops an unwanted space
 \thanks{Manuscript received April 19, 2005; revised August 26, 2015.}}
 
 
@@ -192,71 +199,31 @@ Computer Society, IEEE, IEEEtran, journal, \LaTeX, paper, template.
 
 
 
-\IEEEraisesectionheading{\section{Introduction}\label{sec:introduction}}
-% Computer Society journal (but not conference!) papers do something unusual
-% with the very first section heading (almost always called "Introduction").
-% They place it ABOVE the main text! IEEEtran.cls does not automatically do
-% this for you, but you can achieve this effect with the provided
-% \IEEEraisesectionheading{} command. Note the need to keep any \label that
-% is to refer to the section immediately after \section in the above as
-% \IEEEraisesectionheading puts \section within a raised box.
-
-\IEEEPARstart{T}{his} demo file is intended to serve as a ``starter file''
-for IEEE Computer Society journal papers produced under \LaTeX\ using
-IEEEtran.cls version 1.8b and later.
-% You must have at least 2 lines in the paragraph with the drop letter
-% (should never be an issue)
-I wish you the best of success.
-
-\hfill mds
- 
-\hfill August 26, 2015
-
-
-
-
+% \IEEEraisesectionheading{\section{Introduction}\label{sec:introduction}}
+% % Computer Society journal (but not conference!) papers do something unusual
+% % with the very first section heading (almost always called "Introduction").
+% % They place it ABOVE the main text! IEEEtran.cls does not automatically do
+% % this for you, but you can achieve this effect with the provided
+% % \IEEEraisesectionheading{} command. Note the need to keep any \label that
+% % is to refer to the section immediately after \section in the above as
+% % \IEEEraisesectionheading puts \section within a raised box.
+%
+% \IEEEPARstart{T}{his} demo file is intended to serve as a ``starter file''
+% for IEEE Computer Society journal papers produced under \LaTeX\ using
+% IEEEtran.cls version 1.8b and later.
+% % You must have at least 2 lines in the paragraph with the drop letter
+% % (should never be an issue)
+% I wish you the best of success.
+%
+% \hfill mds
+%
+% \hfill August 26, 2015
+%
+%
 
 
 
-
-%%%\begin{frontmatter}
-%%%
-%%%\author[disi]{Federico Chesani}
-%%%\author[fbk]{Chiara Di Francescomarino}
-%%%\author[fbk]{Chiara Ghidini}
-%%%\author[disi]{Daniela Loreti\corref{mycorrespondingauthor}}
-%%%\cortext[mycorrespondingauthor]{Corresponding author}
-%%%\ead{daniela.loreti@unibo.it}
-%%%
-%%%\author[unibz]{Fabrizio Maria Maggi}
-%%%\author[disi]{Paola Mello}
-%%%\author[unibz]{Marco Montali}
-%%%\author[unibz]{Sergio Tessaris}
-%%%
-%%%\address[disi]{DISI - University of Bologna, Italy}
-%%%\address[fbk]{Fondazione Bruno Kessler, Trento, Italy}
-%%%\address[unibz]{Free University of Bozen/Bolzano, Italy}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%%%\begin{abstract}
-%%%As the need to understand and formalise business processes into a model has grown over the last years, 
-%%%the process discovery research field has gained more and more importance, developing two different classes of approaches to model representation: procedural and declarative. 
-%%%%
-%%%Orthogonally to this classification, the vast majority of works envisage the discovery task as a one-class supervised learning process guided by the traces that are recorded into an input log. 
-%%%
-%%%In this work instead, we focus on declarative processes and embrace the less-popular view of process discovery as a binary supervised learning task, where the input log reports both examples of the normal system execution, and traces representing ``stranger'' behaviours according to the domain semantics. We therefore deepen how the valuable information brought by both these two sets can be extracted and formalised into a model that is ``optimal'' according to user-defined goals. Our approach, namely \nd, is evaluated w.r.t. other relevant works in this field, and shows promising results as regards both the performance and the quality of the obtained solution.
-%%%\end{abstract}
-%%%
-%%%\begin{keyword}
-%%%Process mining\sep process discovery\sep declarative process models\sep deviant traces
-%%%\end{keyword}
-%%%
-%%%\end{frontmatter}
-
-\linenumbers
+%\linenumbers
 
 \input{sections/introduction}
 %\input{sections/motivations}
@@ -271,6 +238,47 @@ I wish you the best of success.
 
 %\section*{References}
 
+\bibliographystyle{IEEEtran}
+
 \bibliography{deviant}
 \input{sections/acronyms}
+
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{img/Tessaris.png}}]{Federico Chesani}
+TO DO
+\end{IEEEbiography}
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{img/Tessaris.png}}]{Chiara Di Francescomarino}
+TO DO
+\end{IEEEbiography}
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{img/Ghidini.png}}]{Chiara Ghidini}
+is a Senior Research Scientist at Fondazione Bruno Kessler where she leads the Process \& Data Intelligence Research Unit.  
+Her scientific work in the areas of Semantic Web, Knowledge Engineering and Representation, Multi-Agent Systems and Process Mining is internationally well known and recognised, and she has actively been involved in the organisation of several reference conferences in these areas. She is a board member of the Italian Association for Artificial Intelligence and is involved in the scientific coordination of the Centre for Digital Health and Well Being of Head of Fondazione Bruno Kessler.
+\end{IEEEbiography}
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{img/Loreti.pdf}}]{Daniela Loreti}
+is post-doc and assistant professor of Operating Systems at Department of Computer Science and Engineering, University of Bologna. She received her Ph.D. in Computer Science in 2016. 
+Her research focuses on distributed systems for big data management and stream processing as well as parallel paradigms for high performance computing. She is also interested in the parallelization of artificial intelligence techniques in the fields of Machine Learning, Process Mining and expert systems.
+\end{IEEEbiography}
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{img/Maggi.pdf}}]{Fabrizio Maria Maggi}
+is Associate Professor at the KRDB Research Centre for Knowledge and Data. He devises techniques grounded in business process management, process mining, predictive analytics and his work is specifically focused on the application of artificial intelligence and machine learning in the context of business process analytics. On these topics, he authored more than 130 papers, appeared in top-tier, international journals and conferences. He is recipient of 4 best paper awards, two of which in the International Conference on Business Process Management. 
+\end{IEEEbiography}
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{img/Mello.pdf}}]{Paola Mello}
+is Full Professor at the University of Bologna, where she conducts research, both practical and theoretical in Artificial Intelligence. In particular, her research activity is  about knowledge representation, computational logic, multi-agent and  decision support systems, with applications in medicine, web services, business processes, monitoring and verification.  She has been President of the Italian Association for Artificial Intelligence and Head of the Department of Computer Science and Engineering of the University of Bologna. She is fellow of the European Association for Artificial Intelligence.
+\end{IEEEbiography}
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{img/Tessaris.png}}]{Marco Montali}
+TO DO
+\end{IEEEbiography}
+
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{img/Tessaris.png}}]{Sergio Tessaris}
+received the PhD degree in computer science from the University of Manchester (UK). He is Assistant Professor at the Faculty of Computer Science of the Free University of Bozen-Bolzano (Italy). His research interests include the use of Semantic Technologies and Knowledge Representation formalisms to support the management, access, and exploitation of data and processes.
+\end{IEEEbiography}
+
+\vfill
+
 \end{document}
