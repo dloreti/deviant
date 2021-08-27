@@ -236,6 +236,17 @@ Computer Society, IEEE, IEEEtran, journal, \LaTeX, paper, template.
 
 
 
+% use section* for acknowledgment
+\ifCLASSOPTIONcompsoc
+  % The Computer Society usually uses the plural form
+  \section*{Acknowledgments}
+\else
+  % regular IEEE prefers the singular form
+  \section*{Acknowledgment}
+\fi
+
+This work was partially supported by the European Commission funded project ``Humane AI: Toward AI Systems That Augment and Empower Humans by Understanding Us, our Society and the World Around Us'' (grant \# 820437). The support is gratefully acknowledged.
+
 %\section*{References}
 
 \bibliographystyle{IEEEtran}
