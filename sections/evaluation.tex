@@ -61,7 +61,7 @@ The source code and the experiments are available\footnote{The repository is pub
 % existence(0, 1, receive_negative_feedback)
 
 The synthetic log has been generated starting from a Declare model, using a tool \cite{2020-Loreti} based on Abductive Logic Programming. The model has been inspired by the Loan Application process reported in \cite{DBLP:books/sp/DumasRMR18}. In our model, the process starts when the \emph{loan application} is received. Before \emph{assessing the eligibility}, the bank proceeds to \emph{appraise the property} of the customer, and to \emph{assess the loan risk}. Then, the bank can either \emph{reject the application} or \emph{send the acceptance pack} and, optionally, \emph{notify the approval} (if not rejected). During the process execution the bank can also \emph{receive positive} or \emph{negative feedback} (but not both), according to the experience of the loan requester. It is not expected, however, that the bank receives a \emph{negative feedback} if the \emph{acceptance pack} has been sent. Moreover, due to temporal optimization, the bank requires that the \emph{appraise of the property} is done before \emph{assessing the loan risk}.
-To ease the understanding of the loan application process, a Declare model of the process is reported in Fig. \ref{fig:ex}. Moreover, all the activities have been constrained to either not be executed at all, or to be executed at most once: in Declare terminology, all the activities have been constrained to \textsf{absence2(X)}.
+To ease the understanding of the loan application process, a Declare model of the process is reported in Fig. \ref{fig:ex}. Moreover, all the activities have been constrained to either not be executed at all, or to be executed at most once: in Declare terminology, all the activities have been constrained to $\mathsf{absence2(X)}$.
 
 \begin{figure}[t]
 \centering
@@ -73,9 +73,9 @@ To ease the understanding of the loan application process, a Declare model of th
 To test \nd, besides positive traces, we generated also negative traces. In particular, we generated traces that violate two different constraints:
 % \todofc{Non ho messo il terzo test di violazione, perch\`e riguardava ancora una \emph{precedence}\ldots pensiamo se vogliamo aggiungerlo.}
 \begin{enumerate}[label=(\textit{\alph*})]
-\item the \textsf{precedence(assess\_loan\_risk, assess\_eligibility)}, that is violated when either the latter activity is executed and the former is absent, or if both the activities appear in the log, but in the wrong temporal order;
+\item the $\mathsf{precedence(assess\_loan\_risk, assess\_eligibility)}$, that is violated when either the latter activity is executed and the former is absent, or if both the activities appear in the log, but in the wrong temporal order;
 %
-\item the \textsf{exclusive\_choice(send\_acceptance\_pack, receive\_negative\_feedback)}, that is violated when a trace either contains both the activities, or does not contain any of them.
+\item the $\mathsf{exclusive\_choice(send\_acceptance\_pack}$, $\mathsf{receive\_negative\_feedback)}$, that is violated when a trace either contains both the activities, or does not contain any of them.
 \end{enumerate}
 %
 The resulting log consists of 64,000 positives traces, 25,600 traces that violate the constraint as in $(a)$, and 10,240 traces that violate the constraint as specified in $(b)$.
@@ -95,14 +95,14 @@ Scenario & Positive Trace \# & Negative Trace \#  & Time & Originally Violated C
 \midrule
 $\multirow{4}{*}{(a)}$ & \multirow{4}{*}{64,000} & \multirow{4}{*}{25,600} & \bf{Total: \fpeval{81.78 + 1.94 + 109.74 + 3.32 + 15.165}s}  \\
 & & & Compatibles:  \fpeval{81.78 + 1.94}s & \emph{precedence(assess\_loan\_risk,}  & \emph{precedence(assess\_loan\_risk,} \\
-& & & Choices:  \fpeval{109.74 + 3.32}s  & \emph{assess\_eligibility)} & \emph{assess\_eligibility)} \\
+& & & \textit{\sheriff}:  \fpeval{109.74 + 3.32}s  & \emph{assess\_eligibility)} & \emph{assess\_eligibility)} \\
 & & & Optimisation: 15.165s & & \\
 %
 \midrule
 %
 $\multirow{4}{*}{(b)}$ & \multirow{4}{*}{64,000} & \multirow{4}{*}{10,240} & \bf{Total: \fpeval{81.78 + 1.94 + 94.51 + 2.96 + 1.379}s} \\
 & & & Compatibles:  \fpeval{81.78 + 1.94}s & \emph{exclusive\_choice(send\_acceptance\_pack,} & \emph{coExistence(reject\_application,} \\
-& & & Choices:  \fpeval{94.51 + 2.96}s  & \emph{receive\_negative\_ feedback)} & \emph{receive\_negative\_feedback)}\\
+& & & \textit{\sheriff}:  \fpeval{94.51 + 2.96}s  & \emph{receive\_negative\_ feedback)} & \emph{receive\_negative\_feedback)}\\
 & & & Optimisation: 1.379s & & \\
 \bottomrule
 \end{tabular}
@@ -172,7 +172,7 @@ Table~\ref{tab:rl_datasets} summarizes the data related to the five resulting da
 		\label{tab:rl_datasets}
 \end{table}
 
-The results obtained by applying the \nd algorithm are summarised in Table~\ref{tab:rl_results}. The table reports for each dataset, the results related to the \subsetclos (connected to the \emph{generality} criterion of Eq. \ref{eq:most-gen} and \ref{eq:redun}) and \minclos (\emph{simplicity} criterion of Eq. \ref{eq:simpl1} and \ref{eq:simpl2}) optimizations in terms of number of returned models\footnote{We stop generating models after $20$ models, i.e., \para{max} in Table~\ref{tab:rl_results} indicates that more than $20$ models have been returned.}, minimum size of the returned models, as well as percentage of negative traces violated by the returned model. Moreover, the table reports the time required for computing the set of compatibles, the set of choices, as well as the \subsetclos and \minclos optimizations.
+The results obtained by applying the \nd algorithm are summarised in Table~\ref{tab:rl_results}. The table reports for each dataset, the results related to the \subsetclos (connected to the \emph{generality} criterion of Eq. \ref{eq:most-gen} and \ref{eq:redun}) and \minclos (\emph{simplicity} criterion of Eq. \ref{eq:simpl1} and \ref{eq:simpl2}) optimizations in terms of number of returned models\footnote{We stop generating models after $20$ models, i.e., \para{max} in Table~\ref{tab:rl_results} indicates that more than $20$ models have been returned.}, minimum size of the returned models, as well as percentage of negative traces violated by the returned model. Moreover, the table reports the time required for computing the set of compatibles, the set of \sheriff, as well as the \subsetclos and \minclos optimizations.
 
 \begin{table*} [h]
 	\renewcommand{\arraystretch}{1.2}
@@ -182,7 +182,7 @@ The results obtained by applying the \nd algorithm are summarised in Table~\ref{
 		\toprule
 			\multirow{4}{*}{\textbf{Dataset}} & \multicolumn{3}{c}{\textbf{\subsetclos}} &  			\multicolumn{3}{c}{\textbf{\minclos}}  & 	\multicolumn{4}{c}{\textbf{ Required Time (s)}} \\ 
 			\cmidrule(r){2-4} \cmidrule(r){5-7} \cmidrule(r){8-11}
-			& \textbf{Number of} & \textbf{Min model} & \textbf{Violated} & \textbf{Number of } & \textbf{Min model} & \textbf{Violated} & \multirow{2}{*}{\textbf{Comp.}} & \multirow{2}{*}{\textbf{Choices}} & \multirow{2}{*}{\textbf{\subsetclos}} & \multirow{2}{*}{\textbf{\minclos}}  \\			
+			& \textbf{Number of} & \textbf{Min model} & \textbf{Violated} & \textbf{Number of } & \textbf{Min model} & \textbf{Violated} & \multirow{2}{*}{\textbf{Comp.}} & \multirow{2}{*}{\textbf{\textit{\sheriff}}} & \multirow{2}{*}{\textbf{\subsetclos}} & \multirow{2}{*}{\textbf{\minclos}}  \\			
 			& \textbf{models} & \textbf{size} & \textbf{$L^{-}$ trace \%} & \textbf{models} & \textbf{size} & \textbf{$L^{-}$ trace \%} & & & & \\ \midrule
 			 \textsc{cerv$_{compl}$} & \para{max} & 4 & 100\% & \para{max} & 4 & 100\% & 0.12 & 0.33 & 0.065 & 0.045\\ \midrule
 			\textsc{sepsis$_{mean}$} & 1 & 8 & 4.25\% & 1 & 8  & 4.25\% & 0.73 & 1.04 & 0.039 & 0.035\\ 
@@ -201,7 +201,7 @@ The difference of the results obtained with the mean and the median cycle time c
 %(the size of the set of the positive traces is about 4 times, resp. 2 times, the size of the set of the negative traces in \textsc{sepsis$_{mean}$} and \textsc{BPIC12$_{mean}$}, respectively)
  characterizing the high number of traces with a low or medium cycle time while excluding the ones with a very high cycle time can become hard. 
 
-The table also shows that \nd is overall very fast for small datasets (e.g., less than one minute for \textsc{cerv$_{compl}$}), while it requires some more time for large ones (e.g., \textsc{bpic12$_{mean}$} and \textsc{bpic12$_{median}$}). While the time required for computing \textit{compatibles} and \textit{choices} seems to be related to the size of the dataset, the time required for computing the optimizations seems to depend also on other characteristics of the datasets. 
+The table also shows that \nd is overall very fast for small datasets (e.g., less than one minute for \textsc{cerv$_{compl}$}), while it requires some more time for large ones (e.g., \textsc{bpic12$_{mean}$} and \textsc{bpic12$_{median}$}). While the time required for computing \textit{compatibles} and \textit{\sheriff} seems to be related to the size of the dataset, the time required for computing the optimizations seems to depend also on other characteristics of the datasets. 
 
 %We compared the obtained results with the ones obtained with state-of-the-art techniques for the discovery of declarative models starting (i) from  only positive traces; and (ii) from both positive and negative traces. 
 
@@ -212,10 +212,27 @@ Compared to state-of-the-art techniques for the discovery of declarative models 
 Among the classical declarative discovery approach, we selected the state-of-the-art \declareminer algorithm~\cite{2018a-Maggi} implemented in the \rum toolkit~\cite{2020-Alman}. We discovered the models using the only positive traces and setting the \para{support} parameter, which measures the percentage of (positive) traces satisfied by the \declare model, to 100\%\footnote{We run the \declareminer algorithm with vacuity detection disabled, \para{activity support filter} set to 0\%, using both transitive closure and hierarchy-based reduction of the discovered constraints, as well as with the whole set of Declare templates.}.
 %We used the \declareminer algorithm\footnote{We run the \declareminer algorithm with vacuity detection disabled, \par{activity support filter} set to 0\%, using both transitive closure and hierarchy-based reduction of the discovered constraints, as well as with all the Declare templates, except for \dec{NotResponse}, \dec{NotPrecedence}, \dec{NotChainPrecedence}, \dec{NotChainResponse}, \dec{NotRespondedExistence}.} to discover the \declare model starting from the only positive traces with different values of the \para{support} parameter, which measures the percentage of (positive) traces satisfied by the \declare model.  \todocdf{Move this part when the results are presented for the synthetic data}
 
-Table~\ref{tab:rl_declare_miner} summarizes the obtained results. The table reports for each dataset, the size of the model in terms of number of constraints, as well as the percentage of negative traces violated by the model. For lower values of the \para{support} parameter, i.e., for a lower percentage of positive traces satisfied by the model, the model returned by the \declareminer violates a higher percentage of negative traces. In this way, the \para{support} parameter allows for balancing the percentage of positive trace satisfied and negative traces violated. 
+Table~\ref{tab:rl_declare_miner} summarises the obtained results\footnote{Note that the results obtained with DeclareMiner and NegDis are not fully comparable. Indeed, the discovery mechanisms behind the two tools are different, and different is even the information that the tools take as input. DeclareMiner takes as input only the positive log and bases the discovery on the positive log alphabet. Instead, NegDis uses information from both positive and negative logs, including the alphabet of the discovered model that, in general, is not the same as the one retrieved from the positive log only.
+}. The table reports for each dataset, the size of the model in terms of number of constraints, as well as the percentage of negative traces violated by the model. For lower values of the \para{support} parameter, i.e., for a lower percentage of positive traces satisfied by the model, the model returned by the \declareminer violates a higher percentage of negative traces. In this way, the \para{support} parameter allows for balancing the percentage of positive trace satisfied and negative traces violated. 
 
 As hypothesised, the optimisation mechanism in \nd is able to identify a small set of constraints, that guarantees the satisfaction of all traces in $L^+$ and the same percentage of negative trace violations obtained with \declareminer (with \para{support} to 100\%).
 
+%\begin{table} [ht]
+%	\centering
+%	\scalebox{0.8}{
+%		\begin{tabular} {l c c}
+%		\toprule
+%			\textbf{Dataset} & \textbf{Model size} & \textbf{Violated L$^{-}$ trace \%}  \\ \midrule
+%			\textsc{cerv$_{compl}$} & 323 & 100\% \\ \midrule
+%			\textsc{sepsis$_{mean}$} & 210 & 4.25\%\\ 
+%			\textsc{sepsis$_{median}$} & 202 & 26.86\% \\ \midrule
+%      \textsc{bpic12$_{mean}$} & 514 & 1.42\% \\ 
+%			\textsc{bpic12$_{median}$} & 532 & 36.59\% \\ 
+%		\bottomrule
+%		\end{tabular}}
+%		\caption{\declareminer results}
+%		\label{tab:rl_declare_miner}
+%\end{table}
 \begin{table} [ht]
 	\centering
 	\scalebox{0.8}{
@@ -223,10 +240,10 @@ As hypothesised, the optimisation mechanism in \nd is able to identify a small s
 		\toprule
 			\textbf{Dataset} & \textbf{Model size} & \textbf{Violated L$^{-}$ trace \%}  \\ \midrule
 			\textsc{cerv$_{compl}$} & 323 & 100\% \\ \midrule
-			\textsc{sepsis$_{mean}$} & 210 & 4.25\%\\ 
-			\textsc{sepsis$_{median}$} & 202 & 26.86\% \\ \midrule
-      \textsc{bpic12$_{mean}$} & 514 & 1.42\% \\ 
-			\textsc{bpic12$_{median}$} & 532 & 36.59\% \\ 
+			\textsc{sepsis$_{mean}$} & 213 & 4.25\%\\ 
+			\textsc{sepsis$_{median}$} & 203 & 22.29\% \\ \midrule
+      \textsc{bpic12$_{mean}$} & 515 & 0.91\% \\ 
+			\textsc{bpic12$_{median}$} & 532 & 32.7\% \\ 
 		\bottomrule
 		\end{tabular}}
 		\caption{\declareminer results}

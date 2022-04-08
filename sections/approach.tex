@@ -31,7 +31,7 @@ Note that this definition is consistent with that of subsumption between Declare
 %
 %\theoremstyle{plain}
 \begin{example}{}
-The constraint \textsf{INIT(a)} accepts only traces that start with \textsf{a}. Hence, \textsf{a} exists in each one of those accepted traces. In other words, all those traces satisfy also the constraint \textsf{EXISTENCE(a)}. However, the latter constraint accepts also traces that contains \textsf{a} even if they do not start with \textsf{a}. This relation is valid irrespectively of the involved activity. In a sense, we could say that the template \textsf{EXISTENCE(X)} is \emph{more general} than \textsf{INIT(X)}.
+The constraint $\mathsf{INIT(a)}$ accepts only traces that start with $\mathsf{a}$. Hence, $\mathsf{a}$ exists in each one of those accepted traces. In other words, all those traces satisfy also the constraint $\mathsf{EXISTENCE(a)}$. However, the latter constraint accepts also traces that contains $\mathsf{a}$ even if they do not start with $\mathsf{a}$. This relation is valid irrespectively of the involved activity. In a sense, we could say that the template $\mathsf{EXISTENCE(X)}$ is \emph{more general} than $\mathsf{INIT(X)}$.
 \end{example}
 This idea is frequently expressed through the subsumption operator $\sqsupseteq$. Given two templates $d, d' \in D$, we say that $d$ \emph{subsumes} $d'$, i.e. $d$ \emph{is more general than} $d'$ (written $d\sqsupseteq d'$), if for any grounding of the involved parameters w.r.t. the activities in $A$, whenever a trace $t \in A^*$ is compliant with $d'$, it is also compliant with $d$ \cite{2017-DiCiccio} .
 
@@ -46,7 +46,7 @@ For any pair of models $M, M'\subseteq D[A]$, $M\subseteq M'$ implies that $M$ i
 %%%A Declare model is a conjunction of constraints, each imposing some restrictions on the set of allowed traces. Consider two sets fulfilling the premise $M\subseteq M'$ such that $M=\{c_1,...c_m\}$ and $M'=\{c_1,...c_m, c_{m'}\}$. There are two possible cases: either the additional $c_{m'}$ in $M'$ excludes other traces w.r.t. $\{c_1,...c_m\}$---i.e. $M \succ M'$---or it does not because the traces $c_{m'}$ rules out are already disallowed by $\{c_1,...c_m\}$. $M\succeq M'$ follows.
 %%%\end{proof}
 
-Unfortunately, the opposite implication does not hold, i.e. if we have $M, M'\subseteq D[A]$ such that $M\succeq M'$, we cannot guarantee that $M\subseteq M'$. A clear example is $M=\{\textsf{EXISTENCE(a)}\}$ and $M'=\{\textsf{INIT(a)}\}$.
+Unfortunately, the opposite implication does not hold, i.e. if we have $M, M'\subseteq D[A]$ such that $M\succeq M'$, we cannot guarantee that $M\subseteq M'$. A clear example is $M=\{\mathsf{EXISTENCE(a)}\}$ and $M'=\{\mathsf{INIT(a)}\}$.
 
 %\tododl{esempio per chiarire meglio}.
 %a model $M\subseteq D[A]$ is \emph{more general} than $M'\subseteq D[A]$ when for any $t\in A^*$, $t\models M' \Rightarrow t\models M$ (written as $M' \preceq M$ ), and \emph{strictly} more general if there is a $t'\in A^*$ s.t.\ $t'\not\models M'$ and $t'\models M$ (written as $M' \prec M$).
@@ -117,12 +117,12 @@ Given a set $R$ of subsumption rules, a \emph{deductive closure operator} is a f
 \begin{example}
 Let be:
 \begin{itemize}
-\item $R=\{\ \textsf{EXISTENCE(X)} \sqsupseteq \textsf{INIT(X)}\ \}$
-\item $M'=\{ \textsf{INIT(a)}\ \}$
+\item $R=\{\ \mathsf{EXISTENCE(X)} \sqsupseteq \mathsf{INIT(X)}\ \}$
+\item $M'=\{ \mathsf{INIT(a)}\ \}$
 \end{itemize}
 If we apply the deductive closure operator $cl_R$ to $M'$, we get:
 $$
-cl_R(M') = \{\ \textsf{INIT(a), EXISTENCE(a)}\ \}
+cl_R(M') = \{\ \mathsf{INIT(a), EXISTENCE(a)}\ \}
 $$
 \end{example}
 
@@ -145,7 +145,7 @@ Thanks to this property, the deductive closure operator can be used to compare D
 \begin{example}
 Let be:
 \begin{itemize}
-\item $R=\{\ \textsf{EXISTENCE(X)} \sqsupseteq \textsf{INIT(X)}\ \}$
+\item $R=\{\ \mathsf{EXISTENCE(X)} \sqsupseteq \mathsf{INIT(X)}\ \}$
 \item $M = \{\ \mathsf{EXISTENCE(a)}\ \}$
 \item $M' = \{\ \mathsf{INIT(a)}\ \}$
 \end{itemize}
@@ -153,7 +153,7 @@ We cannot express any subset relation between $M$ and $M'$, thus making Remark \
 Nonetheless, if we take into account their closure, we have:
 \begin{align*}
 	& cl(M)=\{\mathsf{EXISTENCE(a)}\}\quad \textnormal{and} \\
-	& cl(M')=\{\textsf{INIT(a)}, \textsf{EXISTENCE(a)}\}
+	& cl(M')=\{\mathsf{INIT(a)}, \mathsf{EXISTENCE(a)}\}
 \end{align*}
 As $cl(M)$ is a subset of $cl(M')$, we conclude that $M$ is more general than $M'$.
 \end{example}
@@ -245,7 +245,7 @@ and the computation of the \textit{\sheriff} function finds:
 In this case, there are two subsets of $\mathcal{C}$ excluding all traces in $L^-$, i.e., $\mathcal{Z}=\{M_1,M_2\}$, where
 \begin{subequations}
  \begin{align*}
-     & M_1=\{\ \mathsf{EXISTENCE(b)},\ \mathsf{EXISTENCE(a)},\ \mathsf{RESPONSE(a,b)}\ \} \\
+     & M_1=\{\mathsf{EXISTENCE(b)},\ \mathsf{EXISTENCE(a)},\ \mathsf{RESPONSE(a,b)}\} \\
      & M_2=\{\ \mathsf{RESPONSE(a,b)},\ \mathsf{EXISTENCE(a)}\ \}
  \end{align*}
 \end{subequations}
@@ -326,7 +326,7 @@ Conversely, the opposite implication in Theorem \ref{th:subset-generality} does 
 \label{subsec:impl}
 %To perform our experiments we decided to separate the implementation of the two stages by reusing as much as possible existing systems.
 
-The first stage is implemented via the Algorithm \ref{algcand}, which starts by collecting the set $compatibles$ of the constraints that accept (are satisfied by) all the positive traces (Line \ref{algcand:candidates}). Subsequently, each negative trace is associated (by means of the function \textit{\sheriff}) with those constraints in $compatibles$ that reject (are violated by) a trace in $L^-$ (Line \ref{algcand:choices}). Notice that for some negative example, i.e. for some trace $t\in L^-$ we might have $\textit{sheriff}(t)=\varnothing$ because the chosen language may not be expressive enough to find a constraint able to reject $t$ while admitting all traces of $L^+$. This situation might arise also in case $t$ belongs to both $L^+$ and $L^-$.
+The first stage is implemented via the Algorithm \ref{algcand}, which starts by collecting the set $compatibles$ of the constraints that accept (are satisfied by) all the positive traces (Line \ref{algcand:candidates}). Subsequently, each negative trace is associated (by means of the function \textit{\sheriff}) with those constraints in $compatibles$ that reject (are violated by) a trace in $L^-$ (Line \ref{algcand:choices}). Notice that for some negative example, i.e. for some trace $t\in L^-$ we might have $\textit{\sheriff}(t)=\varnothing$ because the chosen language may not be expressive enough to find a constraint able to reject $t$ while admitting all traces of $L^+$. This situation might arise also in case $t$ belongs to both $L^+$ and $L^-$.
 %
 
 \makeatletter
@@ -340,10 +340,10 @@ The first stage is implemented via the Algorithm \ref{algcand}, which starts by 
     \textbf{Output:} $\textit{\sheriff} : L^- \rightarrow \mathcal{P}({D[A]})$
     	\begin{algorithmic}[1] 
    \Procedure{\sheriff Generation}{$D[A],\, L^+,\, L^-$} 
-   	\State ${compatibles}= \{c \in D[A]| \forall t \in L^+,\, \Call{compliant}{t,c} = \texttt{True}\}$ 
+   	\State ${compatibles}{=}\{c \in D[A]| \forall t \in L^+,\, \Call{compliant}{t,c} = \texttt{True}\}$ 
 	\label{algcand:candidates}
 	\For {$t \in L^-$}
-		\State $\textit{\sheriff}(t) = \{c \in {compatibles} | \Call{compliant}{t,c} = \texttt{False}\}$\label{algcand:choices}
+		\State $\textit{\sheriff}(t){=}\{c \in {compatibles} | \Call{compliant}{t,c} = \texttt{False}\}$\label{algcand:choices}
 	\EndFor
 	%\State \Return ${compatibles}, {choices}$
 	\State \Return \textit{\sheriff}
@@ -436,7 +436,7 @@ The algorithm starts by computing a set $L'^-$ of all those negative traces that
 Indeed, albeit from the theoretical point of view we assumed that for each trace $t \in L^-$ there exists at least one Declare constraint in $D[A]$ accepting all positive traces and discarding $t$, real cases might not fulfil this assumption.%, and the algorithm implementation must take this into account. 
 When it is not possible to exclude a negative trace $t$, Algorithm \ref{algcand} returns $\textit{\sheriff}(t)=\varnothing$, and Algorithm \ref{alg:select} overlooks this case by computing $L'^-$. 
 %
-The set $\mathcal{C}$ is then build (Line \ref{alg:buildC}) by considering the constraints allowing all traces in $L^+$ and disallowing at least one trace in $L'^-$ (Line \ref{alg:buildC}). From that, the algorithm selects any subset $S$ fulfilling the condition $\forall t \in L'^- \; S\cap {choices}(t) \neq \varnothing$ (Line \ref{alg:subsetS}), i.e., any $S$ accepting all positive traces and rejecting all the negatives that can be actually excluded.
+The set $\mathcal{C}$ is then build (Line \ref{alg:buildC}) by considering the constraints allowing all traces in $L^+$ and disallowing at least one trace in $L'^-$ (Line \ref{alg:buildC}). From that, the algorithm selects any subset $S$ fulfilling the condition $\forall t \in L'^- \; S\cap \textit{\sheriff}(t) \neq \varnothing$ (Line \ref{alg:subsetS}), i.e., any $S$ accepting all positive traces and rejecting all the negatives that can be actually excluded.
 
 Any such $S$ is then included in the solution set $\mathcal{Z}$ if the latter does not contain another solution $S'$ that is better than $S$ according to the custom optimality criterion expressed by the ${is\_better}$ operator (Line \ref{alg:isbetter}). Solutions $S'$ previously founded are kept into $\mathcal{Z}$ only if the newly found solution $S$ is not better than them (Line \ref{alg:previousAreOk}). Notice that both Line \ref{alg:isbetter} and \ref{alg:previousAreOk} make use of the function $is\_better$ in a negated form: this is due to the fact that, according to the chosen optimality criterion, sometimes it would not be possible to compare two solutions.
 
@@ -469,40 +469,40 @@ If the number of solutions provided by the procedure is too high for human intel
 
 %In order to better clarify the approach, we apply it to a very simple example.  
 \begin{example}
-Consider the sets of positive and negative examples composed by only one trace each: $L^+=\{\textsf{bac}\}$ and $L^-=\{\textsf{ab}\}$. Suppose also that:
+Consider the sets of positive and negative examples composed by only one trace each: $L^+=\{\mathsf{bac}\}$ and $L^-=\{\mathsf{ab}\}$. Suppose also that:
 \begin{itemize}
 \item $P=\varnothing$;
-\item $D=\{\ \textsf{EXISTENCE(X), INIT(X)}\ \}$;
-\item the alphabet of activities is just $A=\{\textsf{a, b, c}\}$.
+\item $D=\{\mathsf{EXISTENCE(X), INIT(X)}\}$;
+\item the alphabet of activities is just $A=\{\mathsf{a, b, c}\}$.
 \end{itemize}
 %
-Then, the set of ground constraints can be easily elicited: $D[A]=\{$ \textsf{EXISTENCE(a), EXISTENCE(b), EXISTENCE(c), INIT(a), INIT(b), INIT(c)}$\ \}$.
+Then, the set of ground constraints can be easily elicited: $D[A]=\{\mathsf{EXISTENCE(a)}$, $\mathsf{EXISTENCE(b)}$, $\mathsf{EXISTENCE(c)}$, $\mathsf{INIT(a)}$, $\mathsf{INIT(b)}$, $\mathsf{INIT(c)}\}$.
 
 If we want to learn the most general model, Algorithm \ref{algcand} elects the following compatible constraints:
 \begin{align*}
-	{compatibles}=\{ & \textsf{EXISTENCE(a), EXISTENCE(b)},\\
-	& \textsf{EXISTENCE(c), INIT(b)}\}
+	{compatibles}=\{ & \mathsf{EXISTENCE(a), EXISTENCE(b)},\\
+	& \mathsf{EXISTENCE(c), INIT(b)}\}
 \end{align*}
 \noindent and emits:
-$$\textit{\sheriff}(\textsf{ab})=\{\ \textsf{EXISTENCE(c), INIT(b)}\ \}.$$
+$$\textit{\sheriff}(\mathsf{ab})=\{\mathsf{EXISTENCE(c), INIT(b)}\}.$$
 
 In this simple case, the subsets satisfying the condition of Line \ref{alg:subsetS} in Algorithm \ref{alg:select} would be: 
 \begin{align*}
- S_1= &  \{\textsf{EXISTENCE(c)}\}  \\
- S_2= &  \{\textsf{INIT(b)}\}   \\
- S_3= &  \{\textsf{EXISTENCE(c)}, \textsf{INIT(b)}\} \\
- S_4= & \{\textsf{EXISTENCE(c)}, \textsf{EXISTENCE(a)}\} \\
+ S_1= &  \{\mathsf{EXISTENCE(c)}\}  \\
+ S_2= &  \{\mathsf{INIT(b)}\}   \\
+ S_3= &  \{\mathsf{EXISTENCE(c)}, \mathsf{INIT(b)}\} \\
+ S_4= & \{\mathsf{EXISTENCE(c)}, \mathsf{EXISTENCE(a)}\} \\
   ... & \\
- S_n= & \{\textsf{EXISTENCE(c)}, \textsf{INIT(b)}, \textsf{EXISTENCE(a)}\} \\
+ S_n= & \{\mathsf{EXISTENCE(c)}, \mathsf{INIT(b)}, \mathsf{EXISTENCE(a)}\} \\
  ... &
 \end{align*}
 
-As we are interested in the most general models, both $S_1=$ $\{\ \textsf{EXISTENCE(c)}\ \}$ and $S_2=\{\ \textsf{INIT(b)}\ \}$ are optimal solutions. Note that these two solutions cannot be compared according to the definitions of generality because there exist traces (such as the unknown trace $\textsf{b}$) compliant with $S_2$ and non-compliant with $S_1$ (i.e., there is no subset relation between ${C}_{S_1}$ and ${C}_{S_2}$).
+As we are interested in the most general models, both $S_1=$ $\{\ \mathsf{EXISTENCE(c)}\ \}$ and $S_2=\{\ \mathsf{INIT(b)}\ \}$ are optimal solutions. Note that these two solutions cannot be compared according to the definitions of generality because there exist traces (such as the unknown trace $\mathsf{b}$) compliant with $S_2$ and non-compliant with $S_1$ (i.e., there is no subset relation between ${C}_{S_1}$ and ${C}_{S_2}$).
 Obviously, the choice of one model over another influences the classification of all those unknown traces that---being not part of the input log---are not labelled as positive of negative.
 
-If we were interested in the most simple solution instead, $S_1=\{\ \textsf{EXISTENCE(c)}\ \}$ would have been our choice, because its closure is the smaller in cardinality.
+If we were interested in the most simple solution instead, $S_1=\{\ \mathsf{EXISTENCE(c)}\ \}$ would have been our choice, because its closure is the smaller in cardinality.
 
-Finally, if we were interested in the most specific set of constraints, the application of a convenient ${is\_better}$ function would have determined the choice of $\{$\textsf{EXISTENCE(a), EXISTENCE(c), INIT(b)}$\}$---where the redundancy check of Eq. \eqref{eq:redun} operated by discarding \textsf{EXISTENCE(b)}. 
+Finally, if we were interested in the most specific set of constraints, the application of a convenient ${is\_better}$ function would have determined the choice of $\{\mathsf{EXISTENCE(a)}$, $\mathsf{EXISTENCE(c)}$, $\mathsf{INIT(b)}\}$---where the redundancy check of Eq. \eqref{eq:redun} operated by discarding $\mathsf{EXISTENCE(b)}$. 
 \end{example}
 
 %
