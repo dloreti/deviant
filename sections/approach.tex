@@ -84,13 +84,15 @@ We are aware that often state-of-the-art approaches do not emit a model complian
 Given the initial model $P$, a \emph{candidate solution} for the discovery task is any $S\subseteq D[A]$ s.t.
 \begin{enumerate} [label=\textit{(\roman*)}]
   \item $P\subseteq S$;
-  \item $\forall t\in L^+$ we have $t\models S$;
+  \item $\forall t\in L^+$ we have $t\models S$;\label{def:cand:sound}
   \item $\forall t\in L^-$ we have $t\not\models S$.
 \end{enumerate}
 \end{definition}
 %\todo[inline]{ST: the third condition is too restrictive, since prevents solutions that exclude only part of $L^-$, also when this is due to the language bias induced by $L^+$. Possible solutions: i) drop it (doesn't make much sense); ii) substitute $L^-$ with the subset of traces that can be excluded by the language bias induced by $L^+$; iii) any other?
 
 %One way of doing (ii) is to define $D[A]_{L^+} = \{ c \in D[A] \mid \forall t\in L^+$ $t\models c\}$ (the \emph{compatibles}) and $L'^- = \{t\in L^-\mid t\not\models D[A]_{L^+}\}$}
+
+Note that condition~\ref{def:cand:sound} in the definition above ensures that any candidate solution is consistent (i.e., there are no conflicting constraints) when ${L^+}$ is non-empty.
 
 \paragrafo{Optimality criterion} Clearly, there can be several sets satisfying these conditions. They differ from the way they classify the unknown traces, which are not in $L^+$, nor in $L^-$. Therefore, we need to introduce some way to compare the multiple output models in order to identify the preferable ones.
 %Clearly, there can be several sets satisfying these conditions and we need to introduce a notion of \emph{fitness} to identify the preferred ones. 
@@ -202,9 +204,11 @@ Starting from the set of all constraints $D[A]$, the first stage aims at identif
 {compatibles(D[A], L^+)} = \{c\in D[A]~|~\forall t\in L^+,~ t\models c \} \\
 \end{equation}
 %
+By construction, any subset of ${compatibles(D[A], L^+)}$ is non-conflicting, because any trace in ${L^+}$ is accepted by all its constraints. This simplifies the optimisation step, since there is no need to verify whether any of the selected models are conflicting (see point~\ref{def:cand:sound} of Definition~\ref{def:cand}).
+
 For simplicity of the notation, since the set of constraints $D[A]$ and the log $L^+$ are given, we will omit them in the following.
 %
-The \emph{compatibles} set is then used to build a \textit{\sheriff} function that associates to any trace $t$ in $L^-$ the constraints of \textit{compatibles} that rejects $t$.
+The \emph{compatibles} set is then used to build a \textit{\sheriff} function that associates to any trace $t$ in $L^-$ the constraints of \textit{compatibles} that rejects $t$. 
 The result is therefore a function with domain $L^-$ and co-domain $\mathcal{P}({compatibles})$ s.t.:
 \begin{equation}
 {\textit{\sheriff}}(t) = \{c\in {compatibles}~|~t\not\models c\} \\
