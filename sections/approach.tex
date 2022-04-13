@@ -363,14 +363,13 @@ The implementation of the compliance verification \textproc{compliant} (i.e.\ $t
 ~to verify the compliance of the traces. It is implemented in Go language employing a regexp implementation that is guaranteed to run in time linear in the size of the input\footnote{For more details, see the Go package regexp documentation at \url{https://golang.org/pkg/regexp/}}.
 \lstset{language=Prolog}
 
-The second optimisation stage has been implemented using the \ac{ASP} system \textsc{Clingo}~\cite{clingo:2019}. The main reason for selecting an \ac{ASP} system for finite domain optimisation is that rules provide an effective and intuitive framework to implement a large class of closure operators. Indeed, all the deductive systems for Declare that we analysed in the literature (see e.g.~\cite{2016-Bernardi,2017-DiCiccio}) can be recasted as Normal Logic Programs~\cite{2008-Lifschitz} by exploiting the assumption that the set of activities is finite and known in advance.
+The second optimisation stage has been implemented using the \ac{ASP} system \textsc{Clingo}~\cite{clingo:2019}. The main reason for selecting an \ac{ASP} system for finite domain optimisation is that rules provide an effective and intuitive framework to implement a large class of closure operators. Indeed, all the deductive systems for Declare that we analysed in the literature (see e.g.~\cite{2016-Bernardi,2017-DiCiccio}) are expressed in the form of logic rules $c_1\land\ldots\land c_n\implies c_{n+1}$, where $c_i$ are Declare constraints or their negation; therefore they can be equivalently expressed as Normal Logic Programs~\cite{2008-Lifschitz} (NLPs) by exploiting the assumption that the set of activities is finite and known in advance. The declarative semantics of NLPs ensures that the (unique) deductive closure of the rules is taken into account for the optimisation stage.
 %
-For example the valid formula $\textsc{Init}(a)\implies\textsc{Precedence}(a,b)$ that holds for any pair of activities $a, b$ can be written as the rule
-\begin{lstlisting}
-  precedence(A,B) :- init(A), activity(B).
+For example the valid formula $\textsc{Init}(a)\land b\neq a\implies\textsc{Precedence}(a,b)$ that holds for any pair of activities $a, b$ can be written as the rule
+\begin{lstlisting}[language=prolog, breaklines=true]
+precedence(A,B) :- init(A), activity(B), A != B.
 \end{lstlisting}
-using a specific predicate (\lstinline{activity}) holding the set of activities.
-%\tododl{esplicitiamo che occorre imporre anche $A \neq B$?}
+using a specific predicate (\lstinline[language=prolog]$activity/1$) representing the set of all activities.\footnote{The actual ASP code leverages \textsc{Clingo} function symbols and the fact that a constraint can be derived from the selected ones is represented by means of the predicate \lstinline[language=prolog]$holds/1$: e.g., \lstinline[language=prolog]$holds(precedence(A,B))$.}
 
 %Note that the selection of the optimal stable models does not require the compliance verification on the traces, which are therefore not necessary as input. 
 
@@ -447,11 +446,19 @@ Any such $S$ is then included in the solution set $\mathcal{Z}$ if the latter do
 Regarding the optimality criterion, for example we could consider \emph{generality}. In that case, ${is\_better}$ employs the criteria of Eq. \eqref{eq:most-gen} (for generality) and \eqref{eq:redun} (to avoid redundancy). Conversely, if we are interested in the most specific solution, ${is\_better}$ must implement Eq. \eqref{eq:most-spe} and \eqref{eq:redun}.
 Finally, when the optimality criterion is \emph{simplicity}, Eq. \eqref{eq:simpl1} and \eqref{eq:simpl2} must be used.
 %
-In our experiments we implemented the optimisation criteria using ASP \emph{weak constraints}~\cite{ASP:weak:2000}. Describing the underlying technique and precise formulation of the problem is outside the scope of this article; so the reader is referred to our code, available in~\cite{negdis:2021_5158528}, and~\cite{clingo:2019} for details on the usage of weak rules in \textsc{Clingo}. For example, conditions of Equations~\eqref{eq:simpl1} and \eqref{eq:simpl2} are implemented using two predicates \lstinline[language=prolog]$selected/1, holds/1$; representing, respectively, the selected constraints among the candidates and their deduction, and the optimisation statements:
+In our experiments we implemented the optimisation criteria using ASP \emph{weak constraints}~\cite{ASP:weak:2000}. Describing the underlying technique and precise formulation of the problem is outside the scope of this article; so the reader is referred to our code, available in~\cite{negdis:2021_5158528}, and~\cite{clingo:2019} for details on the usage of weak rules in \textsc{Clingo}. For example, conditions of Equations~\eqref{eq:simpl1} and \eqref{eq:simpl2} are implemented using two predicates \lstinline[language=prolog]$selected/1, holds/1$; representing, respectively, the selected constraints among the candidates and their deduction, with the optimisation statements:
 \begin{lstlisting}[language=prolog]
 #minimize{1@2,C: holds(C)}.
 #minimize{1@1,C: selected(C)}.
 \end{lstlisting}
+%
+The selection from the set of candidates is performed by the common \emph{generate and test} ASP paradigm:
+%
+\begin{lstlisting}[language=prolog]
+{ selected(C) : choice(_, C) }.
+\end{lstlisting}
+%
+where \lstinline[language=prolog]$choice/2$ is the input to the ASP program, encoding the above \textit{\sheriff} function. The 
 
 
 %The algorithm starts by computing the set $\mathcal{C}$ of the constraints allowing all traces in $L^+$ and disallowing at least one trace in $L^-$ (Line \ref{alg:buildC}). From that, it selects as solution model a subset $S$ fulfilling two conditions.
