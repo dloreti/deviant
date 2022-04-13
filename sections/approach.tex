@@ -369,7 +369,7 @@ For example the valid formula $\textsc{Init}(a)\land b\neq a\implies\textsc{Prec
 \begin{lstlisting}[language=prolog, breaklines=true]
 precedence(A,B) :- init(A), activity(B), A != B.
 \end{lstlisting}
-using a specific predicate (\lstinline[language=prolog]$activity/1$) representing the set of all activities.\footnote{The actual ASP code leverages \textsc{Clingo} function symbols and the fact that a constraint can be derived from the selected ones is represented by means of the predicate \lstinline[language=prolog]$holds/1$: e.g., \lstinline[language=prolog]$holds(precedence(A,B))$.}
+using a specific predicate (\lstinline[language=prolog]$activity/1$) representing the set of all activities.\footnote{By leveraging \textsc{Clingo} function symbols, Declare constraints are encoded as function terms; for example, the constraints derived are represented using the unary predicate \lstinline[language=prolog]$holds/1$: \lstinline[language=prolog,mathescape=true]|holds(precedence($a_1$,$a_2$))|.}
 
 %Note that the selection of the optimal stable models does not require the compliance verification on the traces, which are therefore not necessary as input. 
 
@@ -455,10 +455,16 @@ In our experiments we implemented the optimisation criteria using ASP \emph{weak
 The selection from the set of candidates is performed by the common \emph{generate and test} ASP paradigm:
 %
 \begin{lstlisting}[language=prolog]
-{ selected(C) : choice(_, C) }.
+{ selected(C) : choice(_,C) }.
 \end{lstlisting}
 %
-where \lstinline[language=prolog]$choice/2$ is the input to the ASP program, encoding the above \textit{\sheriff} function. The 
+where \lstinline[language=prolog]$choice/2$ is the input to the ASP program, encoding the above \textit{\sheriff} function. The \emph{test} part of the paradigm is encoded by constraints enforcing the fact that, for each negative trace, at least one of the constraints in \textit{\sheriff} belongs to the deduction; i.e.
+%
+\begin{lstlisting}[language=prolog]
+rejected(T) :- choice(T,C), holds(C).
+:- choice(T,_), not rejected(T).
+\end{lstlisting}
+
 
 
 %The algorithm starts by computing the set $\mathcal{C}$ of the constraints allowing all traces in $L^+$ and disallowing at least one trace in $L^-$ (Line \ref{alg:buildC}). From that, it selects as solution model a subset $S$ fulfilling two conditions.
