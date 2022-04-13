@@ -128,7 +128,7 @@ cl_R(M') = \{\ \mathsf{INIT(a), EXISTENCE(a)}\ \}
 $$
 \end{example}
 
-\noindent Obviously, we are interested in sets $R$ of \emph{correct} subsumption rules, that is for any $M\subseteq D[A]$ and $t\in A^*$, $t\models M$ iff $t\models cl_R(M)$. In the rest of the paper, for the easy of understanding, we will omit the set $R$ and we will simply write $cl(M)$. The complete set of employed rules is available\footnote{The repository is freely available at \url{https://zenodo.org/record/5158528}, and the experiments can be run through a Jupyter Notebook at \url{https://mybinder.org/v2/zenodo/10.5281/zenodo.5158528/}}.
+\noindent Obviously, we are interested in sets $R$ of \emph{correct} subsumption rules, that is for any $M\subseteq D[A]$ and $t\in A^*$, $t\models M$ iff $t\models cl_R(M)$. In the rest of the paper, for the easy of understanding, we will omit the set $R$ and we will simply write $cl(M)$. The complete set of employed rules is available in~\cite{negdis:2021_5158528}.
 
 
 As the closure of a model is again a subset of $D[A]$, Remark \ref{re:subset-generality} is also applicable, i.e. for any $M, M'\subseteq D[A]$, $cl(M)\subseteq cl(M')$ implies that $M$ is more general than $M'$ ($M\succeq M'$).
@@ -363,7 +363,7 @@ The implementation of the compliance verification \textproc{compliant} (i.e.\ $t
 ~to verify the compliance of the traces. It is implemented in Go language employing a regexp implementation that is guaranteed to run in time linear in the size of the input\footnote{For more details, see the Go package regexp documentation at \url{https://golang.org/pkg/regexp/}}.
 \lstset{language=Prolog}
 
-The second optimisation stage has been implemented using the \ac{ASP} system \textsc{Clingo}~\cite{DBLP:journals/corr/GebserKKS14}. The main reason for selecting an \ac{ASP} system for finite domain optimisation is that rules provide an effective and intuitive framework to implement a large class of closure operators. Indeed, all the deductive systems for Declare that we analysed in the literature (see e.g.~\cite{2016-Bernardi,2017-DiCiccio}) can be recasted as Normal Logic Programs~\cite{2008-Lifschitz} by exploiting the assumption that the set of activities is finite and known in advance.
+The second optimisation stage has been implemented using the \ac{ASP} system \textsc{Clingo}~\cite{clingo:2019}. The main reason for selecting an \ac{ASP} system for finite domain optimisation is that rules provide an effective and intuitive framework to implement a large class of closure operators. Indeed, all the deductive systems for Declare that we analysed in the literature (see e.g.~\cite{2016-Bernardi,2017-DiCiccio}) can be recasted as Normal Logic Programs~\cite{2008-Lifschitz} by exploiting the assumption that the set of activities is finite and known in advance.
 %
 For example the valid formula $\textsc{Init}(a)\implies\textsc{Precedence}(a,b)$ that holds for any pair of activities $a, b$ can be written as the rule
 \begin{lstlisting}
@@ -374,7 +374,7 @@ using a specific predicate (\lstinline{activity}) holding the set of activities.
 
 %Note that the selection of the optimal stable models does not require the compliance verification on the traces, which are therefore not necessary as input. 
 
-The second stage is implemented as described in Algorithm \ref{alg:select}. The required input parameters, properly encoded as an \ac{ASP} program, are the initial model $P$, the \textit{\sheriff} function computed by Algorithm \label{alg:cand} and a custom function ${is\_better}:\mathcal{P}({D[A]})\times\mathcal{P}({D[A]})\rightarrow \{\texttt{True},\ \texttt{False}\}$. The purpose of the latter is to implement the chosen optimality criterion by taking as input two constraint sets and providing as output a boolean value representing whether the first set is better than the second. If the two sets are not comparable according to the criterion, ${is\_better}$ returns \texttt{False}. Indeed, such a function is the expression of the global or partial ordering that the optimality criterion induces on the solutions. 
+The optimisation stage is described in Algorithm \ref{alg:select}. The required input parameters, properly encoded as an \ac{ASP} program, are the initial model $P$, the \textit{\sheriff} function computed by Algorithm \label{alg:cand} and a custom function ${is\_better}:\mathcal{P}({D[A]})\times\mathcal{P}({D[A]})\rightarrow \{\texttt{True},\ \texttt{False}\}$. The purpose of the latter is to implement the chosen optimality criterion by taking as input two constraint sets and providing as output a boolean value representing whether the first set is better than the second. If the two sets are not comparable according to the criterion, ${is\_better}$ returns \texttt{False}. Indeed, such a function is the expression of the global or partial ordering that the optimality criterion induces on the solutions. 
 
 
 %\begin{algorithm}
@@ -446,6 +446,12 @@ Any such $S$ is then included in the solution set $\mathcal{Z}$ if the latter do
 
 Regarding the optimality criterion, for example we could consider \emph{generality}. In that case, ${is\_better}$ employs the criteria of Eq. \eqref{eq:most-gen} (for generality) and \eqref{eq:redun} (to avoid redundancy). Conversely, if we are interested in the most specific solution, ${is\_better}$ must implement Eq. \eqref{eq:most-spe} and \eqref{eq:redun}.
 Finally, when the optimality criterion is \emph{simplicity}, Eq. \eqref{eq:simpl1} and \eqref{eq:simpl2} must be used.
+%
+In our experiments we implemented the optimisation criteria using ASP \emph{weak constraints}~\cite{ASP:weak:2000}. Describing the underlying technique and precise formulation of the problem is outside the scope of this article; so the reader is referred to our code, available in~\cite{negdis:2021_5158528}, and~\cite{clingo:2019} for details on the usage of weak rules in \textsc{Clingo}. For example, conditions of Equations~\eqref{eq:simpl1} and \eqref{eq:simpl2} are implemented using two predicates \lstinline[language=prolog]$selected/1, holds/1$; representing, respectively, the selected constraints among the candidates and their deduction, and the optimisation statements:
+\begin{lstlisting}[language=prolog]
+#minimize{1@2,C: holds(C)}.
+#minimize{1@1,C: selected(C)}.
+\end{lstlisting}
 
 
 %The algorithm starts by computing the set $\mathcal{C}$ of the constraints allowing all traces in $L^+$ and disallowing at least one trace in $L^-$ (Line \ref{alg:buildC}). From that, it selects as solution model a subset $S$ fulfilling two conditions.

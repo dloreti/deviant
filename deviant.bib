@@ -219,6 +219,42 @@
 	volume = {abs/1405.3694},
 	year = {2014}}
 
+
+@article{clingo:2019,
+	title = {Multi-shot {ASP} solving with clingo},
+	volume = {19},
+	issn = {1471-0684, 1475-3081},
+	url = {https://www.cambridge.org/core/journals/theory-and-practice-of-logic-programming/article/abs/multishot-asp-solving-with-clingo/FAED3429900D84CDD5155326A36548F2},
+	doi = {10.1017/S1471068418000054},
+	abstract = {We introduce a new flexible paradigm of grounding and solving in Answer Set Programming (ASP), which we refer to as multi-shot ASP solving, and present its implementation in the ASP system clingo. Multi-shot ASP solving features grounding and solving processes that deal with continuously changing logic programs. In doing so, they remain operative and accommodate changes in a seamless way. For instance, such processes allow for advanced forms of search, as in optimization or theory solving, or interaction with an environment, as in robotics or query answering. Common to them is that the problem specification evolves during the reasoning process, either because data or constraints are added, deleted, or replaced. This evolutionary aspect adds another dimension to ASP since it brings about state changing operations. We address this issue by providing an operational semantics that characterizes grounding and solving processes in multi-shot ASP solving. This characterization provides a semantic account of grounder and solver states along with the operations manipulating them. The operative nature of multi-shot solving avoids redundancies in relaunching grounder and solver programs and benefits from the solver's learning capacities. clingo accomplishes this by complementing ASP's declarative input language with control capacities. On the declarative side, a new directive allows for structuring logic programs into named and parameterizable subprograms. The grounding and integration of these subprograms into the solving process is completely modular and fully controllable from the procedural side. To this end, clingo offers a new application programming interface that is conveniently accessible via scripting languages. By strictly separating logic and control, clingo also abolishes the need for dedicated systems for incremental and reactive reasoning, like iclingo and oclingo, respectively, and its flexibility goes well beyond the advanced yet still rigid solving processes of the latter.},
+	language = {en},
+	number = {1},
+	urldate = {2022-04-12},
+	journal = {Theory and Practice of Logic Programming},
+	author = {Gebser, Martin and Kaminski, Roland and Kaufmann, Benjamin and Schaub, Torsten},
+	month = jan,
+	year = {2019},
+	note = {Publisher: Cambridge University Press},
+	pages = {27--82},
+}
+
+
+@article{ASP:weak:2000,
+	title = {Enhancing {Disjunctive} {Datalog} by constraints},
+	volume = {12},
+	issn = {1558-2191},
+	doi = {10.1109/69.877512},
+	abstract = {This paper presents an extension of Disjunctive Datalog (DATALOG/sup V,/spl sim//) by integrity constraints. These are of two types: strong, that is, classical integrity constraints and weak, that is, constraints that are satisfied if possible. While strong constraints must be satisfied, weak constraints express desiderata, that is, they may be violated-actually, their semantics tends to minimize the number of violated instances of weak constraints. Weak constraints may be ordered according to their importance to express different priority levels. As a result, the proposed language (call it, DATALOG/sup V,/spl sim/,c/) is well-suited to represent common sense reasoning and knowledge-based problems arising in different areas of computer science such as planning, graph theory optimizations, and abductive reasoning. The formal definition of the language is first given. The declarative semantics of DATALOG/sup V,/spl sim/,c/ is defined in a general way that allows us to put constraints on top of any existing (model-theoretic) semantics for DATALOG/sup V,/spl sim// programs. Knowledge representation issues are then addressed and the complexity of reasoning on DATALOG/sup V,/spl sim/,c/ programs is carefully determined. An in-depth discussion on complexity and expressiveness of DATALOG/sup V,/spl sim/,c/ is finally reported. The discussion contrasts DATALOG/sup V,/spl sim/,c/ to DATALOG/sup V,/spl sim// and highlights the significant increase in knowledge modeling ability carried out by constraints.},
+	number = {5},
+	journal = {IEEE Transactions on Knowledge and Data Engineering},
+	author = {Buccafurri, F. and Leone, N. and Rullo, P.},
+	month = sep,
+	year = {2000},
+	keywords = {ASP, Computational complexity, Computer science, Constraint optimization, Deductive databases, Graph theory, Knowledge representation, Polynomials, Proposals},
+	pages = {845--860}
+}
+
+
 @inproceedings{2012-Aalst,
 	abstract = {Process mining techniques are able to extract knowledge from event logs commonly available in today's information systems. These techniques provide new means to discover, monitor, and improve processes in a variety of application domains. There are two main drivers for the growing interest in process mining. On the one hand, more and more events are being recorded, thus, providing detailed information about the history of processes. On the other hand, there is a need to improve and support business processes in competitive and rapidly changing environments. This manifesto is created by the IEEE Task Force on Process Mining and aims to promote the topic of process mining. Moreover, by defining a set of guiding principles and listing important challenges, this manifesto hopes to serve as a guide for software developers, scientists, consultants, business managers, and end-users. The goal is to increase the maturity of process mining as a new tool to improve the (re)design, control, and support of operational business processes.},
 	address = {Berlin, Heidelberg},
@@ -778,4 +814,17 @@
 	editor = {Polyvyanyy, Artem and Wynn, Moe Thandar and Van Looy, Amy and Reichert, Manfred},
 	year = {2021},
 	pages = {47--64},
+}
+
+@software{negdis:2021_5158528,
+  author       = {Tessaris, Sergio and
+                  Di Francescomarino, Chiara and
+                  Chesani, Federico},
+  title        = {Code for {Negdis} experiments},
+  month        = aug,
+  year         = 2021,
+  publisher    = {Zenodo},
+  version      = {v1.0},
+  doi          = {10.5281/zenodo.5158528},
+  url          = {https://doi.org/10.5281/zenodo.5158528}
 }
