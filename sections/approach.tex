@@ -555,4 +555,16 @@ Finally, if we were interested in the most specific set of constraints, the appl
 %
 %Per ridurre ulteriormente il numero di S in output (oppure per ordinare le soluzioni trovate) potremmo contare gli elementi della closure. oppure puo` essere una preferenza tra template
 
+\subsection{Complexity considerations}\label{sec:complexity}
 
+To understand the complexity of the above algorithms we focus on the size of the input logs; i.e., we do not consider the Declare language bias as part of the input. This assumption fits most of the use cases, where the set of Declare templates is fixed. 
+%
+The choice of templates affects the maximum arity of the templates (commonly used templates restrict to 1 or 2 arguments), regular expressions used in Algorithm~\ref{algcand}, and the deductive rules; therefore, also the rule part of ASP program can be considered fixed.
+
+The size of the input ($n$) is therefore the sum of positive and negative log traces. We can also assume that all actions appear in the logs, so the input size bounds also the number of actions. Note that the set $D[A]$ of all grounded templates is linearly bound by the number of actions; in particular $|D[A]|\leq |A|^{\delta}$, where ${\delta}$ is the maximum arity of the selected Declare templates. This bounds linearly both the complexity of Algorithm~\ref{algcand} and the size of {\textit{\sheriff}}; the latter because each negative trace is associated to a subset of \textit{compatibles}. In general, we expect that the {\textit{\sheriff}} function is going to be much smaller than all the traces; note that a larger number of positive traces further restricts the size of \textit{compatibles}.
+
+To understand the linear bound of Algorithm~\ref{algcand} we consider that each grounded template must be checked at most once for each trace (both positive and negative), and we use an optimal implementation of regexp that guarantees liner time w.r.t.\ the input to be checked.
+
+The size of the input to the optimisation stage is the size of {\textit{\sheriff}} and, since we do not consider the ASP rules as part of the input, the size of the \emph{grounded} ASP program is linearly bound w.r.t.\ the size of {\textit{\sheriff}}. Since we do not use Disjunctive ASP, the complexity of ASP optimisation using weak constraints is $\Delta^P_2$~\cite{ASP_constraints:2000}.
+
+Characterising the theoretical complexity analysis of the general problem of optimisation in the context of binary process discovery~\cite{slaats_weighing_2021} is outside the objectives of this work. However, the fact that verifying that a given trace satisfies a set of Declare constraints can be performed in linear time, suggests that the problem of optimising the choice of a Declare model falls under the general umbrella of NP-complete optimisation problems analysed in~\cite{opt_complexity:1988}. Therefore its complexity should be $\Delta^P_2$ as well.
