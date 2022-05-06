@@ -95,14 +95,14 @@ Scenario & Positive Trace \# & Negative Trace \#  & Time & Originally Violated C
 \midrule
 $\multirow{4}{*}{(a)}$ & \multirow{4}{*}{64,000} & \multirow{4}{*}{25,600} & \bf{Total: \fpeval{81.78 + 1.94 + 109.74 + 3.32 + 15.165}s}  \\
 & & & Compatibles:  \fpeval{81.78 + 1.94}s & \emph{precedence(assess\_loan\_risk,}  & \emph{precedence(assess\_loan\_risk,} \\
-& & & \textit{\sheriff}:  \fpeval{109.74 + 3.32}s  & \emph{assess\_eligibility)} & \emph{assess\_eligibility)} \\
+& & & \textit{\sheriff}: \fpeval{(109.74 + 3.32)-(81.78 + 1.94)}s  & \emph{assess\_eligibility)} & \emph{assess\_eligibility)} \\
 & & & Optimisation: 15.165s & & \\
 %
 \midrule
 %
 $\multirow{4}{*}{(b)}$ & \multirow{4}{*}{64,000} & \multirow{4}{*}{10,240} & \bf{Total: \fpeval{81.78 + 1.94 + 94.51 + 2.96 + 1.379}s} \\
 & & & Compatibles:  \fpeval{81.78 + 1.94}s & \emph{exclusive\_choice(send\_acceptance\_pack,} & \emph{coExistence(reject\_application,} \\
-& & & \textit{\sheriff}:  \fpeval{94.51 + 2.96}s  & \emph{receive\_negative\_ feedback)} & \emph{receive\_negative\_feedback)}\\
+& & & \textit{\sheriff}:  \fpeval{(94.51 + 2.96)-(81.78 + 1.94)}s  & \emph{receive\_negative\_ feedback)} & \emph{receive\_negative\_feedback)}\\
 & & & Optimisation: 1.379s & & \\
 \bottomrule
 \end{tabular}
@@ -184,11 +184,11 @@ The results obtained by applying the \nd algorithm are summarised in Table~\ref{
 			\cmidrule(r){2-4} \cmidrule(r){5-7} \cmidrule(r){8-11}
 			& \textbf{Number of} & \textbf{Min model} & \textbf{Violated} & \textbf{Number of } & \textbf{Min model} & \textbf{Violated} & \multirow{2}{*}{\textbf{Comp.}} & \multirow{2}{*}{\textbf{\textit{\sheriff}}} & \multirow{2}{*}{\textbf{\subsetclos}} & \multirow{2}{*}{\textbf{\minclos}}  \\			
 			& \textbf{models} & \textbf{size} & \textbf{$L^{-}$ trace \%} & \textbf{models} & \textbf{size} & \textbf{$L^{-}$ trace \%} & & & & \\ \midrule
-			 \textsc{cerv$_{compl}$} & \para{max} & 4 & 100\% & \para{max} & 4 & 100\% & 0.12 & 0.33 & 0.065 & 0.045\\ \midrule
-			\textsc{sepsis$_{mean}$} & 1 & 8 & 4.25\% & 1 & 8  & 4.25\% & 0.73 & 1.04 & 0.039 & 0.035\\ 
-			\textsc{sepsis$_{median}$} & \para{max} & 14 & 26.86\% & 16 & 14 & 26.86\% & 0.45 &	1.5 & 0.2 & 0.087 \\ \midrule
-			\textsc{bpic12$_{mean}$} & \para{max} & 12 & 1.42\% & \para{max} & 12 & 1.42\% & 13.51 & 31 & 0.096 & 0.066  \\ 
-			\textsc{bpic12$_{median}$} & \para{max} & 23 & 36.59\% & \para{max} & 22 & 36.59\% & 13.32 & 37.63 & 359.164 & 43.846 \\ 			
+			 \textsc{cerv$_{compl}$} & \para{max} & 4 & 100\% & \para{max} & 4 & 100\% & 0.12 & 0.21 & 0.065 & 0.045\\ \midrule
+			\textsc{sepsis$_{mean}$} & 1 & 8 & 4.25\% & 1 & 8  & 4.25\% & 0.73 & 0.31 & 0.039 & 0.035\\ 
+			\textsc{sepsis$_{median}$} & \para{max} & 14 & 26.86\% & 16 & 14 & 26.86\% & 0.45 &	1.05 & 0.2 & 0.087 \\ \midrule
+			\textsc{bpic12$_{mean}$} & \para{max} & 12 & 1.42\% & \para{max} & 12 & 1.42\% & 13.51 & 17.49 & 0.096 & 0.066  \\ 
+			\textsc{bpic12$_{median}$} & \para{max} & 23 & 36.59\% & \para{max} & 22 & 36.59\% & 13.32 & 24.31 & 359.164 & 43.846 \\ 			
 			\bottomrule
 		\end{tabular}}
 		\caption{\nd results on the real-life logs}
