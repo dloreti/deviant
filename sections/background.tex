@@ -8,12 +8,12 @@ Our technique relies on the key concept of \emph{event log}, intending it as a \
 %
 In this work, we adopt the \ac{XES} storing standard \cite{XES} for the input log. According to this standard, each \emph{event} is related to a specific process \emph{instance}, and describes the occurrence of a well-defined step in the process, namely an \emph{activity}, at a specific timestamp. The logged set of events composing a process instance is addressed as \emph{trace} or \emph{case}. 
 From the analysis of the \emph{event log}, we want to extract a Declare \cite{2008-Pesic,2009-Aalst} \emph{model} of the process.
-Declare is one of the most used languages for declarative process modeling. Thanks to its declarative nature, it does not represent the process as a sequence of activities from a start to an end, but through a set of constraints, which can be mapped into \ac{LTL} formulae over finite traces \cite{DBLP:journals/tweb/MontaliPACMS10,DBLP:conf/ijcai/GiacomoV13}. These constraints must all hold true when a trace complete.
+Declare is one of the most used languages for declarative process modeling. Thanks to its declarative nature, it does not represent the process as a sequence of activities from a start to an end, but through a set of constraints, which can be mapped into \ac{LTL} formulae over finite traces (\ltlf) \cite{DBLP:journals/tweb/MontaliPACMS10,DBLP:conf/ijcai/GiacomoV13}. These constraints must all hold true when a trace is complete.
 
 Declare specifies a set of templates that can be used to model the process. 
 A constraint is a concrete instantiation of a template involving one ore more process activities.
 For example, the constraint $\mathsf{EXISTENCE(a)}$ is an instantiation of the template $\mathsf{EXISTENCE(X)}$, and is used to specify that activity $\mathsf{a}$ must occur in every trace; $\mathsf{INIT(a)}$ specifies that all traces must start with $\mathsf{a}$. $\mathsf{RESPONSE(a,b)}$ imposes that if the $\mathsf{a}$ occurs, then $\mathsf{b}$ must follow, possibly with other activities in between. %\tododl{Necessaria notazione grafica in figura?}.
-For a description of the most common Declare templates see \cite{2008-Pesic}. 
+For a description of the most common Declare templates see \cite{2008-Pesic}. \todo{Outdated}
 
 We assume that the log contains both \emph{positive} traces---i.e., satisfying all the constraints in the business model---and \emph{negative} traces---i.e., diverging from the expected behaviour by violating at least one constraint in the (intended) model. 
 
@@ -30,7 +30,7 @@ Usually a log is defined as a multi-set of traces, thus allowing multiple occurr
 % Multiple occurrences of the same trace will not affect our discovery process.
 %
 
-\paragrafo{Declare constraints satisfaction and violation} Recalling the $LTL_f$ semantics \cite{DBLP:journals/tweb/MontaliPACMS10,DBLP:conf/ijcai/GiacomoV13}, and referring to the standard Declare semantics as in \cite{2008-Pesic}, we say that a constraint $c$ \emph{accepts} a trace $t$, or equivalently that $t$ \emph{satisfies} $c$, if $t \models c$. Similarly, a constraint $c$ rejects a trace $t$, or equivalently $t$ \emph{violates} $c$, if $t \not\models c$. Given that a Declare model $M$ is a conjunction of constraints, it follows that $M$ \emph{accepts} a trace $t$ ($t$ \emph{satisfies} $M$) if $\forall c \in M, t \models c$. Analogously, a model $M$ \emph{rejects} a trace $t$ ($t$ \emph{violates} $M$) if $\exists c \in M, t\not\models c$. In the following, we will write $t \models M$ meaning that M accepts t.
+\paragrafo{Declare constraints satisfaction and violation} Recalling the \ltlf semantics \cite{DBLP:journals/tweb/MontaliPACMS10,DBLP:conf/ijcai/GiacomoV13}, and referring to the standard Declare semantics as in \cite{2008-Pesic}, we say that a constraint $c$ \emph{accepts} a trace $t$, or equivalently that $t$ \emph{satisfies} $c$, if $t \models c$. Similarly, a constraint $c$ rejects a trace $t$, or equivalently $t$ \emph{violates} $c$, if $t \not\models c$. Given that a Declare model $M$ is a conjunction of constraints, it follows that $M$ \emph{accepts} a trace $t$ ($t$ \emph{satisfies} $M$) if $\forall c \in M, t \models c$. Analogously, a model $M$ \emph{rejects} a trace $t$ ($t$ \emph{violates} $M$) if $\exists c \in M, t\not\models c$. In the following, we will write $t \models M$ meaning that M accepts t.
 
 
 \paragrafo{Positive and negative examples} Finally, we respectively denote with $L^+$ and $L^-$ the sets of positive and negative examples (traces), reported in the input event log. We assume that:

@@ -17,7 +17,7 @@ Before introducing our approach, we hereby provide some preliminary definitions 
 %\begin{definition}{\emph{Trace compliance.}} Given a trace $t\in A^*$ and a set of constraints $M\subseteq D[A]$, in the following we will use the notation $t\models M$ to indicate that none of the constraints in $M$ are violated in $t$.
 %\end{definition}
 
-\paragrafo{Model generality.} The notion of a model accepting a trace, often referred as the compliance of a trace w.r.t. the model, naturally introduces the relation of \emph{generality} (or the converse \emph{specificity}) between models.
+\paragrafo{Model generality} The notion of a model accepting a trace, often referred as the compliance of a trace w.r.t. the model, naturally introduces the relation of \emph{generality} (or the converse \emph{specificity}) between models.
 %
 Intuitively, a model $M$ is more general than another $M'$ if $M$ accepts a superset of the traces accepted by $M'$. That is, denoting with $T_M$ the set of all traces compliant with a model $M$, $M$ is more general than another model $M'$---and symmetrically $M'$ is more specific than $M$---if and only if $T_{M'} \subseteq T_M$. 
 %
@@ -38,7 +38,7 @@ This idea is frequently expressed through the subsumption operator $\sqsupseteq$
 
 % \theoremstyle{definition}
 \begin{remark}{}\label{re:subset-generality}
-For any pair of models $M, M'\subseteq D[A]$, $M\subseteq M'$ implies that $M$ is more general than $M'$ ($M\succeq M'$). This stems from the Declare semantics \cite{2008-Pesic} on $LTL_f$ \cite{DBLP:conf/ijcai/GiacomoV13}.
+For any pair of models $M, M'\subseteq D[A]$, $M\subseteq M'$ implies that $M$ is more general than $M'$ ($M\succeq M'$). This stems from the Declare semantics \cite{2008-Pesic} on \ltlf \cite{DBLP:conf/ijcai/GiacomoV13}.
 \end{remark} 
 %\todo[inline]{ST: I don't think the proof works, theorem is true because of Declare monotonicity, which is not mentioned in the proof. Probably not worth a theorem but needs a reference for Declare monotonicity.}
 %%% Proof rimossa dopo commento di MarcoM, e sostituica con un riferimento diretto alla semantica.
