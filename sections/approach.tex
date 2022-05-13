@@ -92,7 +92,7 @@ Given the initial model $P$, a \emph{candidate solution} for the discovery task 
 
 %One way of doing (ii) is to define $D[A]_{L^+} = \{ c \in D[A] \mid \forall t\in L^+$ $t\models c\}$ (the \emph{compatibles}) and $L'^- = \{t\in L^-\mid t\not\models D[A]_{L^+}\}$}
 
-Note that condition~\ref{def:cand:sound} in the definition above ensures that any candidate solution is consistent (i.e., there are no conflicting constraints) when ${L^+}$ is non-empty.
+\tcolor{blue}{Note that condition~\ref{def:cand:sound} in the definition above ensures that any candidate solution is consistent (i.e., there are no conflicting constraints) when ${L^+}$ is non-empty.}
 
 \paragrafo{Optimality criterion} Clearly, there can be several sets satisfying these conditions. They differ from the way they classify the unknown traces, which are not in $L^+$, nor in $L^-$. Therefore, we need to introduce some way to compare the multiple output models in order to identify the preferable ones.
 %Clearly, there can be several sets satisfying these conditions and we need to introduce a notion of \emph{fitness} to identify the preferred ones. 
@@ -204,7 +204,7 @@ Starting from the set of all constraints $D[A]$, the first stage aims at identif
 {compatibles(D[A], L^+)} = \{c\in D[A]~|~\forall t\in L^+,~ t\models c \} \\
 \end{equation}
 %
-By construction, any subset of ${compatibles(D[A], L^+)}$ is non-conflicting, because any trace in ${L^+}$ is accepted by all its constraints. This simplifies the optimisation step, since there is no need to verify whether any of the selected models are conflicting (see point~\ref{def:cand:sound} of Definition~\ref{def:cand}).
+\tcolor{blue}{By construction, any subset of ${compatibles(D[A], L^+)}$ is non-conflicting, because any trace in ${L^+}$ is accepted by all its constraints. This simplifies the optimisation step, since there is no need to verify whether any of the selected models are conflicting (see point~\ref{def:cand:sound} of Definition~\ref{def:cand}).}
 
 For simplicity of the notation, since the set of constraints $D[A]$ and the log $L^+$ are given, we will omit them in the following.
 %
@@ -359,17 +359,18 @@ The first stage is implemented via the Algorithm \ref{algcand}, which starts by 
 \algrenewcommand\ALG@beginalgorithmic{\normalsize}
 \makeatother
 
-The implementation of the compliance verification \textproc{compliant} (i.e.\ $t\models c$) leverages the semantics of Declare patterns defined by means of regular expressions \cite{2017-DiCiccio}%\tododl{x sergio, hai aggiunto altre regexp oltre a quelle del paper di Di Ciccio?}
-~to verify the compliance of the traces. It is implemented in Go language employing a regexp implementation that is guaranteed to run in time linear in the size of the input\footnote{For more details, see the Go package regexp documentation at \url{https://golang.org/pkg/regexp/}}.
+The implementation of the compliance verification \textproc{compliant} (i.e.\ $t\models c$) leverages the semantics of Declare patterns defined by means of regular expressions \cite{2017-DiCiccio}~to verify the compliance of the traces. It is implemented in Go language employing a regexp implementation that is guaranteed to run in time linear in the size of the input\footnote{For more details, see the Go package regexp documentation at \url{https://golang.org/pkg/regexp/}}.
 \lstset{language=Prolog}
 
-The second optimisation stage has been implemented using the \ac{ASP} system \textsc{Clingo}~\cite{clingo:2019}. The main reason for selecting an \ac{ASP} system for finite domain optimisation is that rules provide an effective and intuitive framework to implement a large class of closure operators. Indeed, all the deductive systems for Declare that we analysed in the literature (see e.g.~\cite{2016-Bernardi,2017-DiCiccio}) are expressed in the form of logic rules $c_1\land\ldots\land c_n\implies c_{n+1}$, where $c_i$ are Declare constraints or their negation; therefore they can be equivalently expressed as Normal Logic Programs~\cite{2008-Lifschitz} (NLPs) by exploiting the assumption that the set of activities is finite and known in advance. The declarative semantics of NLPs ensures that the (unique) deductive closure of the rules is taken into account for the optimisation stage.
+The second optimisation stage has been implemented using the \ac{ASP} system \textsc{Clingo}~\cite{clingo:2019}. The main reason for selecting an \ac{ASP} system for finite domain optimisation is that rules provide an effective and intuitive framework to implement a large class of closure operators.
+% 
+\tcolor{blue}{Indeed, all the deductive systems for Declare that we analysed in the literature (see e.g.~\cite{2016-Bernardi,2017-DiCiccio}) are expressed in the form of logic rules $c_1\land\ldots\land c_n\implies c_{n+1}$, where $c_i$ are Declare constraints or their negation; therefore they can be equivalently expressed as Normal Logic Programs~\cite{2008-Lifschitz} (NLPs) by exploiting the assumption that the set of activities is finite and known in advance. The declarative semantics of NLPs ensures that the (unique) deductive closure of the rules is taken into account for the optimisation stage.
 %
-For example the valid formula $\textsc{Init}(a)\land b\neq a\implies\textsc{Precedence}(a,b)$ that holds for any pair of activities $a, b$ can be written as the rule
+For example the valid formula $\textsc{Init}(a)\land b\neq a\implies\textsc{Precedence}(a,b)$ that holds for any pair of activities $a, b$ can be written as the rule}
 \begin{lstlisting}[language=prolog, breaklines=true]
 precedence(A,B) :- init(A), activity(B), A != B.
 \end{lstlisting}
-using a specific predicate (\lstinline[language=prolog]$activity/1$) representing the set of all activities.\footnote{By leveraging \textsc{Clingo} function symbols, Declare constraints are encoded as function terms; for example, the constraints derived are represented using the unary predicate \lstinline[language=prolog]$holds/1$: \lstinline[language=prolog,mathescape=true]|holds(precedence($a_1$,$a_2$))|.}
+\tcolor{blue}{using a specific predicate (\lstinline[language=prolog]$activity/1$) representing the set of all activities.}\footnote{\tcolor{blue}{By leveraging \textsc{Clingo} function symbols, Declare constraints are encoded as function terms; for example, the constraints derived are represented using the unary predicate \lstinline[language=prolog]$holds/1$: \lstinline[language=prolog,mathescape=true]|holds(precedence($a_1$,$a_2$))|.}}
 
 %Note that the selection of the optimal stable models does not require the compliance verification on the traces, which are therefore not necessary as input. 
 
@@ -446,23 +447,23 @@ Any such $S$ is then included in the solution set $\mathcal{Z}$ if the latter do
 Regarding the optimality criterion, for example we could consider \emph{generality}. In that case, ${is\_better}$ employs the criteria of Eq. \eqref{eq:most-gen} (for generality) and \eqref{eq:redun} (to avoid redundancy). Conversely, if we are interested in the most specific solution, ${is\_better}$ must implement Eq. \eqref{eq:most-spe} and \eqref{eq:redun}.
 Finally, when the optimality criterion is \emph{simplicity}, Eq. \eqref{eq:simpl1} and \eqref{eq:simpl2} must be used.
 %
-In our experiments we implemented the optimisation criteria using ASP \emph{weak constraints}~\cite{ASP:weak:2000}. Describing the underlying technique and precise formulation of the problem is outside the scope of this article; so the reader is referred to our code, available in~\cite{negdis:2021_5158528}, and~\cite{clingo:2019} for details on the usage of weak rules in \textsc{Clingo}. For example, conditions of Equations~\eqref{eq:simpl1} and \eqref{eq:simpl2} are implemented using two predicates \lstinline[language=prolog]$selected/1, holds/1$; representing, respectively, the selected constraints among the candidates and their deduction, with the optimisation statements:
-\begin{lstlisting}[language=prolog]
-#minimize{1@2,C: holds(C)}.
-#minimize{1@1,C: selected(C)}.
+\tcolor{blue}{In our experiments we implemented the optimisation criteria using ASP \emph{weak constraints}~\cite{ASP:weak:2000}. Describing the underlying technique and precise formulation of the problem is outside the scope of this article; so the reader is referred to our code, available in~\cite{negdis:2021_5158528}, and~\cite{clingo:2019} for details on the usage of weak rules in \textsc{Clingo}. For example, conditions of Equations~\eqref{eq:simpl1} and \eqref{eq:simpl2} are implemented using two predicates \lstinline[language=prolog]$selected/1, holds/1$; representing, respectively, the selected constraints among the candidates and their deduction, with the optimisation statements:}
+\begin{lstlisting}[language=prolog, style=base]
+°#minimize{1@2,C: holds(C)}.
+#minimize{1@1,C: selected(C)}.°
 \end{lstlisting}
 %
-The selection from the set of candidates is performed by the common \emph{generate and test} ASP paradigm:
+\tcolor{blue}{The selection from the set of candidates is performed by the common \emph{generate and test} ASP paradigm:}
 %
-\begin{lstlisting}[language=prolog]
-{ selected(C) : choice(_,C) }.
+\begin{lstlisting}[language=prolog, style=base]
+°{ selected(C) : choice(_,C) }.°
 \end{lstlisting}
 %
-where \lstinline[language=prolog]$choice/2$ is the input to the ASP program, encoding the above \textit{\sheriff} function. The \emph{test} part of the paradigm is encoded by constraints enforcing the fact that, for each negative trace, at least one of the constraints in \textit{\sheriff} belongs to the deduction; i.e.
+\tcolor{blue}{where \lstinline[language=prolog]$choice/2$ is the input to the ASP program, encoding the above \textit{\sheriff} function. The \emph{test} part of the paradigm is encoded by constraints enforcing the fact that, for each negative trace, at least one of the constraints in \textit{\sheriff} belongs to the deduction; i.e.}
 %
-\begin{lstlisting}[language=prolog]
-rejected(T) :- choice(T,C), holds(C).
-:- choice(T,_), not rejected(T).
+\begin{lstlisting}[language=prolog, style=base]
+°rejected(T) :- choice(T,C), holds(C).
+:- choice(T,_), not rejected(T).°
 \end{lstlisting}
 
 
@@ -555,6 +556,7 @@ Finally, if we were interested in the most specific set of constraints, the appl
 %
 %Per ridurre ulteriormente il numero di S in output (oppure per ordinare le soluzioni trovate) potremmo contare gli elementi della closure. oppure puo` essere una preferenza tra template
 
+\tcolor{blue}{
 \subsection{Complexity considerations}\label{sec:complexity}
 
 To understand the complexity of the above algorithms we focus on the size of the input logs; i.e., we do not consider the Declare language bias as part of the input. This assumption fits most of the use cases, where the set of Declare templates is fixed. 
@@ -568,3 +570,4 @@ To understand the linear bound of Algorithm~\ref{algcand} we consider that each 
 The size of the input to the optimisation stage is the size of {\textit{\sheriff}} and, since we do not consider the ASP rules as part of the input, the size of the \emph{grounded} ASP program is linearly bound w.r.t.\ the size of {\textit{\sheriff}}. Since we do not use Disjunctive ASP, the complexity of ASP optimisation using weak constraints is $\Delta^P_2$~\cite{ASP_constraints:2000}.
 
 Characterising the theoretical complexity analysis of the general problem of optimisation in the context of binary process discovery~\cite{slaats_weighing_2021} is outside the objectives of this work. However, the fact that verifying that a given trace satisfies a set of Declare constraints can be performed in linear time, suggests that the problem of optimising the choice of a Declare model falls under the general umbrella of NP-complete optimisation problems analysed in~\cite{opt_complexity:1988}. Therefore its complexity should be $\Delta^P_2$ as well.
+}
