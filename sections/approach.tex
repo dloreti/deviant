@@ -162,7 +162,30 @@ As $cl(M)$ is a subset of $cl(M')$, we conclude that $M$ is more general than $M
 %
 \noindent In other words, the closure operator (being based on the subsumption rules) captures the logical consequences deriving from the Declare semantics.
 Due to the nature of the Declare language we cannot provide a complete calculus for the language of conjunctions of Declare constraints. For this reason, we cannot guarantee the strictness, nor the opposite implication (i.e. $M'\preceq M$ does not implies $cl(M)\subseteq cl(M')$). Anyway, the closure operator provide us a powerful tool for confronting candidate solutions w.r.t. the generality criterion.
-
+\tcolor{blue}{Table \ref{tab:symbols} summarises all the symbols used in this paper.}
+\begin{table} [ht]
+	\centering
+	\scalebox{0.8}{
+		\begin{tabular} {>{\color{blue}}r p{7.5cm}}
+		\toprule
+			\textbf{Symbol} & \textbf{Definition} \\ \midrule
+			$D$ & set of Declare templates (language bias)\\
+			$A$ & set of activities \\
+			$D[A]$ & set of all grounding of templates in $D$ w.r.t. $A$ \\
+			$L^+$ & set log traces labelled as positive. $L^+ \subseteq A^*$ \\
+			$L^-$ & set log traces labelled as negative. $L^- \subseteq A^*$ \\
+			$P$ & initial model. $P\subseteq \{c\in D[A]~|~ \forall t\in L^+,\, t\models c\}$ \\
+			$\mathcal{P}(D[A])$ & power set of $D[A]$ \\
+			$cl_R$ or simply $cl$ & closure operator equipped with a set $R$ of subsumption rules \\
+			$compatibles$ & set of constraints that accepts all traces in $L^+$\\
+			${\textit{\sheriff}}(t)$ & constraints accepting all traces in $L^+$ and rejecting $t\in L^-$\\
+			$\mathcal{C}$ & set of all constraints in $D[A]$ accepting all traces in $L^+$ and rejecting at least one $t\in L^-$\\
+			$\mathcal{Z}$ & set of models accepting all traces in $L^+$ and rejecting all traces in $L^-$\\
+		\bottomrule
+		\end{tabular}}
+		\caption{Symbols}
+		\label{tab:symbols}
+\end{table}
 
 %To provide an intuition let us consider two possible candidates $S' = \{\mathsf{INIT(a)}\}$ and $S = \{\mathsf{EXISTENCE(a)}\}$. It's easy to see that any trace compliant with $\mathsf{INIT(a)}$ must be compliant also with $\mathsf{EXISTENCE(a)}$, therefore $\{\mathsf{INIT(a), EXISTENCE(a)}\}$ is equivalent to $S'$. If we compare the deductive closure of the two sets we can conclude that $S$ is more general that $S'$.\footnote{Not necessarily \emph{strictly} more general.}
 
@@ -187,15 +210,16 @@ Due to the nature of the Declare language we cannot provide a complete calculus 
 
 \subsection{Two-step procedure}
 
-In this section we introduce the theoretical basis of our \nd approach. The parameters of the problem are the following.
-\begin{itemize}
-  \item $D$ set of Declare templates (language bias)
-  \item $A$ set of activities
-  \item $cl$ closure operator equipped with a set $R$ of subsumption rules. $cl: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$
-  \item $L^+$ log traces labelled as positive. $L^+ \subseteq A^*$
-  \item $L^-$ log traces labelled as negative. $L^- \subseteq A^*$
-  \item $P$ initial model. $P\subseteq \{c\in D[A]\quad | \quad \forall t\in L^+,\, t\models c\}$
-\end{itemize}
+In this section we introduce the theoretical basis of our \nd approach. 
+%The parameters of the problem are the following.
+%\begin{itemize}
+%  \item $D$ set of Declare templates (language bias)
+%  \item $A$ set of activities
+%  \item $cl$ closure operator equipped with a set $R$ of subsumption rules. $cl: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$
+%  \item $L^+$ log traces labelled as positive. $L^+ \subseteq A^*$
+%  \item $L^-$ log traces labelled as negative. $L^- \subseteq A^*$
+%  \item $P$ initial model. $P\subseteq \{c\in D[A]\quad | \quad \forall t\in L^+,\, t\models c\}$
+%\end{itemize}
 
 For the sake of modularity and easiness of experimenting with different hypotheses and parameters, we divide our approach into two clearly separate stages: the first which identifies the candidate constraints, and a second optimisation stage which selects the solutions. However, these two steps are merged into a single monolithic search-based approach. 
 
@@ -368,7 +392,8 @@ The second optimisation stage has been implemented using the \ac{ASP} system \te
 %
 For example the valid formula $\textsc{Init}(a)\land b\neq a\implies\textsc{Precedence}(a,b)$ that holds for any pair of activities $a, b$ can be written as the rule}
 \begin{lstlisting}[language=prolog, breaklines=true]
-precedence(A,B) :- init(A), activity(B), A != B.
+precedence(A,B) :- init(A), activity(B), 
+		   A != B.
 \end{lstlisting}
 \tcolor{blue}{using a specific predicate (\lstinline[language=prolog]$activity/1$) representing the set of all activities.}\footnote{\tcolor{blue}{By leveraging \textsc{Clingo} function symbols, Declare constraints are encoded as function terms; for example, the constraints derived are represented using the unary predicate \lstinline[language=prolog]$holds/1$: \lstinline[language=prolog,mathescape=true]|holds(precedence($a_1$,$a_2$))|.}}
 
@@ -564,7 +589,7 @@ To understand the complexity of the above algorithms we focus on the size of the
 The choice of templates affects the maximum arity of the templates (commonly used templates restrict to 1 or 2 arguments), regular expressions used in Algorithm~\ref{algcand}, and the deductive rules; therefore, also the rule part of ASP program can be considered fixed.
 
 The size of the input ($n$) is therefore the sum of positive and negative log traces. We can also assume that all actions appear in the logs, so the input size bounds also the number of actions. Note that the set $D[A]$ of all grounded templates is linearly bound by the number of actions; in particular $|D[A]|\leq |A|^{\delta}$, where ${\delta}$ is the maximum arity of the selected Declare templates. This bounds linearly both the complexity of Algorithm~\ref{algcand} and the size of {\textit{\sheriff}}; the latter because each negative trace is associated to a subset of \textit{compatibles}. In general, we expect that the {\textit{\sheriff}} function is going to be much smaller than all the traces; note that a larger number of positive traces further restricts the size of \textit{compatibles}.
-
+%
 To understand the linear bound of Algorithm~\ref{algcand} we consider that each grounded template must be checked at most once for each trace (both positive and negative), and we use an optimal implementation of regexp that guarantees liner time w.r.t.\ the input to be checked.
 
 The size of the input to the optimisation stage is the size of {\textit{\sheriff}} and, since we do not consider the ASP rules as part of the input, the size of the \emph{grounded} ASP program is linearly bound w.r.t.\ the size of {\textit{\sheriff}}. Since we do not use Disjunctive ASP, the complexity of ASP optimisation using weak constraints is $\Delta^P_2$~\cite{ASP_constraints:2000}.

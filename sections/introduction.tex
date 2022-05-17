@@ -66,8 +66,10 @@ Independently of the chosen criteria for splitting the log, we adopt the terms n
 
 For this reason, we hereby focus on learning a set of constraints that is able to reconstruct which traces belong to which set, while---whenever possible---reflecting the user expectations on the quality of the extracted model according to predefined metrics. 
 %
-In particular our approach, namely \nd, aims to discover a minimal set of constraints that allow to distinguish between the two classes of examples: in this sense, it can enrich existing approaches that instead provide richer descriptions of the positive example set only. Indeed, our exploitation of the ``upside-down world'' is useful not only to better clarify what should be deemed compliant with the model and what should not, but also to better control the degree of generalisation of the resulting model, as well as to improve its simplicity.
+In particular our approach, namely \nd, aims to discover a minimal set of constraints that allow to distinguish between the two classes of examples: in this sense, it can enrich existing approaches that provide descriptions of the positive example set only. Indeed, our exploitation of the ``upside-down world'' is useful not only to better clarify what should be deemed compliant with the model and what should not, but also to better control the degree of generalisation of the resulting model, as well as to improve its simplicity.
 
+\tcolor{blue}{To explain our approach we start by providing an overview of the background and relevant concepts in Section \ref{sec:back}, then we describe the approach in detail in Section \ref{sec:approach}, and we evaluate it in Section \ref{sec:eval}. Related work and conclusion follow. %Section \ref{sec:related} provides a literature review of other relevant works in the filed of process discovery, and Section \ref{sec:concl} summarises our achievements and suggests future research directions.
+}
 %Our approach can be combined with other process discovery techniques as a post processing step to further refine and simplify complex models.
 %
 %Like the allowed traces can be exploited to extract information about the usual process model, we explore the possibility that the ``upside-down world'' of negative execution traces can be used---if made accessible---to understand the reasons why deviations from the common process model occur. This information is useful not only to better clarify what should be deemed compliant with the model and what should not, but also to specify parts of the business process in a more synthetic and effective way---by converting for example, a set of positive execution constraints into a single negative one.  
@@ -75,15 +77,25 @@ In particular our approach, namely \nd, aims to discover a minimal set of constr
 %Our work, which envisages the process discovery task as a \emph{satisfiability problem}, can also be combined with other process discovery approaches as a post processing step to further refine and simplify complex models.
 
 %\tcolor{blue}{This attempt yields ... \tododl{qualit\`a del nostro lavoro che emergono dagli esperimenti.}}
+\tcolor{blue}{
+\subsection{Contributions}
 
-
-The contributions of our work can be listed as follows.
+In the framework described so far, our work advances the state of the art by proposing the following contributions.
 \begin{itemize}
-\item A novel discovery approach, \nd, based on the underlying logic semantics of Declare, which makes use of the information brought by the positive and negative example sets to produce declarative models.
+%\item A novel discovery approach, \nd, based on the underlying logic semantics of Declare, which makes use of the information brought by the positive and negative example sets to produce declarative models. 
+\item A novel discovery approach, \nd, based on the underlying logic semantics of Declare, which makes use of the information brought by the positive and negative example sets to produce declarative models. The resulting technique can be used to either mine Declare process models from scratch, or refine an existing model with additional knowledge. 
+%\item The adoption of a satisfiability-based technique to identify the models
 \item The adoption of a satisfiability-based technique to identify the models.
-\item A heuristic to select the preferred models according to input parameters dealing with generalisation or simplicity.
-\item An evaluation of the performance of \nd w.r.t. other relevant works in the same field.
+%\item A heuristic to select the preferred models according to input parameters dealing with generalisation or simplicity.
+\item A heuristic to select the models according to user preferences of generalisation or simplicity, where--differently from other relevant works in this field--the language bias and the subsumption rules between Declare templates are not hard-coded in the discovery algorithm, but provided as an input for a finer-grain configurability.
+\item An evaluation of the performance of \nd w.r.t. other relevant works in the same field, highlithing strengths and weaknesses of our approach.
 \end{itemize}
+
+%\todoindl{Therefore, this paper advances the state of the art in ...bla bla }
+%può esser usato sia per discovery da zero che per raffinare un modello già esistente.
+%il fatto che proponiamo un algoritmo in cui il check dei constraint non è cablato ma deriva automaticamente dal set di regole di sussunzione che decidiamo di usare.
+%
+}
 
 %\todoindl{struttura dell'articolo?}
 %Our work envisage the process discovery task as a \emph{satisfiability problem} and intertwines the constructive elements of both classification- and inductive-logic-oriented approaches into a single technique able to discover declarative process models by actively making use of both the positive traces and the ``upside-down world'' of deviant and negative examples---whenever they are available in the log. %\tododl{To say so, we'd need to put thresholds in the selection algorithm or propose an alternative version with thresholds. As for language bias, can we express it though the choice of $D$?}

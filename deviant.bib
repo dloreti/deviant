@@ -1,12 +1,28 @@
 %% This BibTeX bibliography file was created using BibDesk.
 %% http://bibdesk.sourceforge.net/
 
-%% Created for Daniela Loreti at 2021-09-10 15:15:00 +0200 
+%% Created for Daniela Loreti at 2022-05-16 16:08:28 +0200 
 
 
 %% Saved with string encoding Unicode (UTF-8) 
 
 
+
+@article{YUREK:2018ww,
+	author = {Ismail  Y{\"u}rek and Derya Birant and K{\"o}kten  Birant},
+	date-added = {2022-05-16 16:03:23 +0200},
+	date-modified = {2022-05-16 16:08:20 +0200},
+	doi = {10.3906/elk-1708-112},
+	issn = {1300-0632},
+	journal = {Turkish Journal of Electrical Engineering and Computer Sciences},
+	number = {3},
+	pages = {1314--1328},
+	title = {Interactive process miner: a new approach for process mining},
+	url = {https://journals.tubitak.gov.tr/elektrik/vol26/iss3/16},
+	volume = {26},
+	year = {2018},
+	bdsk-url-1 = {https://journals.tubitak.gov.tr/elektrik/vol26/iss3/16},
+	bdsk-url-2 = {https://doi.org/10.3906/elk-1708-112}}
 
 @article{2021-Back,
 	author = {Christoffer Olling Back and Tijs Slaats and Thomas Troels Hildebrandt and Morten Marquard},
@@ -16,8 +32,8 @@
 	publisher = {Springer Science and Business Media {LLC}},
 	title = {{DisCoveR}: accurate and efficient discovery of declarative process models},
 	year = 2021,
-	Bdsk-Url-1 = {https://doi.org/10.1007%2Fs10009-021-00616-0},
-	Bdsk-Url-2 = {https://doi.org/10.1007/s10009-021-00616-0}}
+	bdsk-url-1 = {https://doi.org/10.1007%2Fs10009-021-00616-0},
+	bdsk-url-2 = {https://doi.org/10.1007/s10009-021-00616-0}}
 
 @book{DBLP:books/sp/DumasRMR18,
 	author = {Marlon Dumas and Marcello La Rosa and Jan Mendling and Hajo A. Reijers},
@@ -166,7 +182,7 @@
 	series = {Beta dissertation},
 	title = {Constraint-based workflow management systems : shifting control to users},
 	year = {2008},
-	Bdsk-Url-1 = {https://doi.org/10.6100/IR638413}}
+	bdsk-url-1 = {https://doi.org/10.6100/IR638413}}
 
 @article{2009-Aalst,
 	author = {Wil M. P. van der Aalst and Maja Pesic and Helen Schonenberg},
@@ -219,41 +235,39 @@
 	volume = {abs/1405.3694},
 	year = {2014}}
 
-
 @article{clingo:2019,
-	title = {Multi-shot {ASP} solving with clingo},
-	volume = {19},
-	issn = {1471-0684, 1475-3081},
-	url = {https://www.cambridge.org/core/journals/theory-and-practice-of-logic-programming/article/abs/multishot-asp-solving-with-clingo/FAED3429900D84CDD5155326A36548F2},
-	doi = {10.1017/S1471068418000054},
 	abstract = {We introduce a new flexible paradigm of grounding and solving in Answer Set Programming (ASP), which we refer to as multi-shot ASP solving, and present its implementation in the ASP system clingo. Multi-shot ASP solving features grounding and solving processes that deal with continuously changing logic programs. In doing so, they remain operative and accommodate changes in a seamless way. For instance, such processes allow for advanced forms of search, as in optimization or theory solving, or interaction with an environment, as in robotics or query answering. Common to them is that the problem specification evolves during the reasoning process, either because data or constraints are added, deleted, or replaced. This evolutionary aspect adds another dimension to ASP since it brings about state changing operations. We address this issue by providing an operational semantics that characterizes grounding and solving processes in multi-shot ASP solving. This characterization provides a semantic account of grounder and solver states along with the operations manipulating them. The operative nature of multi-shot solving avoids redundancies in relaunching grounder and solver programs and benefits from the solver's learning capacities. clingo accomplishes this by complementing ASP's declarative input language with control capacities. On the declarative side, a new directive allows for structuring logic programs into named and parameterizable subprograms. The grounding and integration of these subprograms into the solving process is completely modular and fully controllable from the procedural side. To this end, clingo offers a new application programming interface that is conveniently accessible via scripting languages. By strictly separating logic and control, clingo also abolishes the need for dedicated systems for incremental and reactive reasoning, like iclingo and oclingo, respectively, and its flexibility goes well beyond the advanced yet still rigid solving processes of the latter.},
-	language = {en},
-	number = {1},
-	urldate = {2022-04-12},
-	journal = {Theory and Practice of Logic Programming},
 	author = {Gebser, Martin and Kaminski, Roland and Kaufmann, Benjamin and Schaub, Torsten},
+	doi = {10.1017/S1471068418000054},
+	issn = {1471-0684, 1475-3081},
+	journal = {Theory and Practice of Logic Programming},
+	language = {en},
 	month = jan,
-	year = {2019},
 	note = {Publisher: Cambridge University Press},
+	number = {1},
 	pages = {27--82},
-}
-
+	title = {Multi-shot {ASP} solving with clingo},
+	url = {https://www.cambridge.org/core/journals/theory-and-practice-of-logic-programming/article/abs/multishot-asp-solving-with-clingo/FAED3429900D84CDD5155326A36548F2},
+	urldate = {2022-04-12},
+	volume = {19},
+	year = {2019},
+	bdsk-url-1 = {https://www.cambridge.org/core/journals/theory-and-practice-of-logic-programming/article/abs/multishot-asp-solving-with-clingo/FAED3429900D84CDD5155326A36548F2},
+	bdsk-url-2 = {https://doi.org/10.1017/S1471068418000054}}
 
 @article{ASP:weak:2000,
+	abstract = {This paper presents an extension of Disjunctive Datalog (DATALOG/sup V,/spl sim//) by integrity constraints. These are of two types: strong, that is, classical integrity constraints and weak, that is, constraints that are satisfied if possible. While strong constraints must be satisfied, weak constraints express desiderata, that is, they may be violated-actually, their semantics tends to minimize the number of violated instances of weak constraints. Weak constraints may be ordered according to their importance to express different priority levels. As a result, the proposed language (call it, DATALOG/sup V,/spl sim/,c/) is well-suited to represent common sense reasoning and knowledge-based problems arising in different areas of computer science such as planning, graph theory optimizations, and abductive reasoning. The formal definition of the language is first given. The declarative semantics of DATALOG/sup V,/spl sim/,c/ is defined in a general way that allows us to put constraints on top of any existing (model-theoretic) semantics for DATALOG/sup V,/spl sim// programs. Knowledge representation issues are then addressed and the complexity of reasoning on DATALOG/sup V,/spl sim/,c/ programs is carefully determined. An in-depth discussion on complexity and expressiveness of DATALOG/sup V,/spl sim/,c/ is finally reported. The discussion contrasts DATALOG/sup V,/spl sim/,c/ to DATALOG/sup V,/spl sim// and highlights the significant increase in knowledge modeling ability carried out by constraints.},
+	author = {Buccafurri, F. and Leone, N. and Rullo, P.},
+	doi = {10.1109/69.877512},
+	issn = {1558-2191},
+	journal = {IEEE Transactions on Knowledge and Data Engineering},
+	keywords = {ASP, Computational complexity, Computer science, Constraint optimization, Deductive databases, Graph theory, Knowledge representation, Polynomials, Proposals},
+	month = sep,
+	number = {5},
+	pages = {845--860},
 	title = {Enhancing {Disjunctive} {Datalog} by constraints},
 	volume = {12},
-	issn = {1558-2191},
-	doi = {10.1109/69.877512},
-	abstract = {This paper presents an extension of Disjunctive Datalog (DATALOG/sup V,/spl sim//) by integrity constraints. These are of two types: strong, that is, classical integrity constraints and weak, that is, constraints that are satisfied if possible. While strong constraints must be satisfied, weak constraints express desiderata, that is, they may be violated-actually, their semantics tends to minimize the number of violated instances of weak constraints. Weak constraints may be ordered according to their importance to express different priority levels. As a result, the proposed language (call it, DATALOG/sup V,/spl sim/,c/) is well-suited to represent common sense reasoning and knowledge-based problems arising in different areas of computer science such as planning, graph theory optimizations, and abductive reasoning. The formal definition of the language is first given. The declarative semantics of DATALOG/sup V,/spl sim/,c/ is defined in a general way that allows us to put constraints on top of any existing (model-theoretic) semantics for DATALOG/sup V,/spl sim// programs. Knowledge representation issues are then addressed and the complexity of reasoning on DATALOG/sup V,/spl sim/,c/ programs is carefully determined. An in-depth discussion on complexity and expressiveness of DATALOG/sup V,/spl sim/,c/ is finally reported. The discussion contrasts DATALOG/sup V,/spl sim/,c/ to DATALOG/sup V,/spl sim// and highlights the significant increase in knowledge modeling ability carried out by constraints.},
-	number = {5},
-	journal = {IEEE Transactions on Knowledge and Data Engineering},
-	author = {Buccafurri, F. and Leone, N. and Rullo, P.},
-	month = sep,
 	year = {2000},
-	keywords = {ASP, Computational complexity, Computer science, Constraint optimization, Deductive databases, Graph theory, Knowledge representation, Polynomials, Proposals},
-	pages = {845--860}
-}
-
+	bdsk-url-1 = {https://doi.org/10.1109/69.877512}}
 
 @inproceedings{2012-Aalst,
 	abstract = {Process mining techniques are able to extract knowledge from event logs commonly available in today's information systems. These techniques provide new means to discover, monitor, and improve processes in a variety of application domains. There are two main drivers for the growing interest in process mining. On the one hand, more and more events are being recorded, thus, providing detailed information about the history of processes. On the other hand, there is a need to improve and support business processes in competitive and rapidly changing environments. This manifesto is created by the IEEE Task Force on Process Mining and aims to promote the topic of process mining. Moreover, by defining a set of guiding principles and listing important challenges, this manifesto hopes to serve as a guide for software developers, scientists, consultants, business managers, and end-users. The goal is to increase the maturity of process mining as a new tool to improve the (re)design, control, and support of operational business processes.},
@@ -728,7 +742,7 @@
 	title = {Toward the Construct Definition of Positive Deviance},
 	volume = {47},
 	year = {2004},
-	Bdsk-Url-1 = {https://doi.org/10.1177/0002764203260212}}
+	bdsk-url-1 = {https://doi.org/10.1177/0002764203260212}}
 
 @book{2011-Aalst,
 	author = {Wil M. P. van der Aalst},
@@ -775,7 +789,7 @@
 	title = {BPI Challenge 2012},
 	url = {https://data.4tu.nl/articles/dataset/BPI_Challenge_2012/12689204/1},
 	year = {2012},
-	Bdsk-Url-1 = {https://data.4tu.nl/articles/dataset/BPI_Challenge_2012/12689204/1}}
+	bdsk-url-1 = {https://data.4tu.nl/articles/dataset/BPI_Challenge_2012/12689204/1}}
 
 @misc{Sepsis,
 	abstractnote = {This real-life event log contains events of sepsis cases from a hospital. Sepsis is a life threatening condition typically caused by an infection. One case represents the pathway through the hospital. The events were recorded by the ERP (Enterprise Resource Planning) system of the hospital. There are about 1000 cases with in total 15,000 events that were recorded for 16 different activities. Moreover, 39 data attributes are recorded, e.g., the group responsible for the activity, the results of tests and information from checklists. Events and attribute values have been anonymized. The time stamps of events have been randomized, but the time between events within a trace has not been altered.},
@@ -786,7 +800,7 @@
 	title = {Sepsis Cases - Event Log},
 	url = {https://data.4tu.nl/articles/dataset/Sepsis_Cases_-_Event_Log/12707639/1},
 	year = {2016},
-	Bdsk-Url-1 = {https://data.4tu.nl/articles/dataset/Sepsis_Cases_-_Event_Log/12707639/1}}
+	bdsk-url-1 = {https://data.4tu.nl/articles/dataset/Sepsis_Cases_-_Event_Log/12707639/1}}
 
 @inproceedings{2020-Alman,
 	author = {Anti Alman and Claudio {Di Ciccio} and Dominik Haas and Fabrizio Maria Maggi and Alexander Nolte},
@@ -798,69 +812,65 @@
 	publisher = {{IEEE}},
 	title = {Rule Mining with RuM},
 	year = {2020}}
-	
 
 @inproceedings{slaats_weighing_2021,
-	address = {Cham},
-	title = {Weighing the {Pros} and {Cons}: {Process} {Discovery} with {Negative} {Examples}},
-	isbn = {978-3-030-85469-0},
-	shorttitle = {Weighing the {Pros} and {Cons}},
-	doi = {10.1007/978-3-030-85469-0_6},
 	abstract = {Contemporary process discovery methods take as inputs only positive examples of process executions, and so they are one-class classification algorithms. However, we have found negative examples to also be available in industry, hence we propose to treat process discovery as a binary classification problem. This approach opens the door to many well-established methods and metrics from machine learning, in particular to improve the distinction between what should and should not be allowed by the output model. Concretely, we (1) present a formalisation of process discovery as a binary classification problem; (2) provide cases with negative examples from industry, including real-life logs; (3) propose the Rejection Miner binary classification procedure, applicable to any process notation that has a suitable syntactic composition operator; and (4) apply this miner to the real world logs obtained from our industry partner, showing increased output model quality in terms of accuracy and model size.},
-	language = {en},
+	address = {Cham},
+	author = {Slaats, Tijs and Debois, S{\o}ren and Back, Christoffer Olling},
 	booktitle = {Business {Process} {Management}},
-	publisher = {Springer International Publishing},
-	author = {Slaats, Tijs and Debois, Søren and Back, Christoffer Olling},
+	doi = {10.1007/978-3-030-85469-0_6},
 	editor = {Polyvyanyy, Artem and Wynn, Moe Thandar and Van Looy, Amy and Reichert, Manfred},
-	year = {2021},
+	isbn = {978-3-030-85469-0},
+	language = {en},
 	pages = {47--64},
-}
+	publisher = {Springer International Publishing},
+	shorttitle = {Weighing the {Pros} and {Cons}},
+	title = {Weighing the {Pros} and {Cons}: {Process} {Discovery} with {Negative} {Examples}},
+	year = {2021},
+	bdsk-url-1 = {https://doi.org/10.1007/978-3-030-85469-0_6}}
 
 @software{negdis:2021_5158528,
-  author       = {Tessaris, Sergio and
-                  Di Francescomarino, Chiara and
-                  Chesani, Federico},
-  title        = {Code for {Negdis} experiments},
-  month        = aug,
-  year         = 2021,
-  publisher    = {Zenodo},
-  version      = {v1.0},
-  doi          = {10.5281/zenodo.5158528},
-  url          = {https://doi.org/10.5281/zenodo.5158528}
-}
-
+	author = {Tessaris, Sergio and Di Francescomarino, Chiara and Chesani, Federico},
+	doi = {10.5281/zenodo.5158528},
+	month = aug,
+	publisher = {Zenodo},
+	title = {Code for {Negdis} experiments},
+	url = {https://doi.org/10.5281/zenodo.5158528},
+	version = {v1.0},
+	year = 2021,
+	bdsk-url-1 = {https://doi.org/10.5281/zenodo.5158528}}
 
 @article{ASP_constraints:2000,
-	title = {Enhancing {Disjunctive} {Datalog} by constraints},
-	volume = {12},
-	issn = {1558-2191},
-	doi = {10.1109/69.877512},
 	abstract = {This paper presents an extension of Disjunctive Datalog (DATALOG/sup V,/spl sim//) by integrity constraints. These are of two types: strong, that is, classical integrity constraints and weak, that is, constraints that are satisfied if possible. While strong constraints must be satisfied, weak constraints express desiderata, that is, they may be violated-actually, their semantics tends to minimize the number of violated instances of weak constraints. Weak constraints may be ordered according to their importance to express different priority levels. As a result, the proposed language (call it, DATALOG/sup V,/spl sim/,c/) is well-suited to represent common sense reasoning and knowledge-based problems arising in different areas of computer science such as planning, graph theory optimizations, and abductive reasoning. The formal definition of the language is first given. The declarative semantics of DATALOG/sup V,/spl sim/,c/ is defined in a general way that allows us to put constraints on top of any existing (model-theoretic) semantics for DATALOG/sup V,/spl sim// programs. Knowledge representation issues are then addressed and the complexity of reasoning on DATALOG/sup V,/spl sim/,c/ programs is carefully determined. An in-depth discussion on complexity and expressiveness of DATALOG/sup V,/spl sim/,c/ is finally reported. The discussion contrasts DATALOG/sup V,/spl sim/,c/ to DATALOG/sup V,/spl sim// and highlights the significant increase in knowledge modeling ability carried out by constraints.},
-	number = {5},
-	journal = {IEEE Transactions on Knowledge and Data Engineering},
-	author = {Buccafurri, F. and Leone, N. and Rullo, P.},
-	month = sep,
-	year = {2000},
-	keywords = {ASP, Computational complexity, Computer science, Constraint optimization, Deductive databases, Graph theory, Knowledge representation, Polynomials, Proposals},
-	pages = {845--860},
 	annote = {Complexity results of ASP with weak constraints
 },
-}
+	author = {Buccafurri, F. and Leone, N. and Rullo, P.},
+	doi = {10.1109/69.877512},
+	issn = {1558-2191},
+	journal = {IEEE Transactions on Knowledge and Data Engineering},
+	keywords = {ASP, Computational complexity, Computer science, Constraint optimization, Deductive databases, Graph theory, Knowledge representation, Polynomials, Proposals},
+	month = sep,
+	number = {5},
+	pages = {845--860},
+	title = {Enhancing {Disjunctive} {Datalog} by constraints},
+	volume = {12},
+	year = {2000},
+	bdsk-url-1 = {https://doi.org/10.1109/69.877512}}
 
 @article{opt_complexity:1988,
-	title = {The complexity of optimization problems},
-	volume = {36},
-	issn = {0022-0000},
-	url = {https://www.sciencedirect.com/science/article/pii/0022000088900396},
-	doi = {10.1016/0022-0000(88)90039-6},
-	abstract = {We consider NP-complete optimization problems at the level of computing their optimal value, and define a class of functions called OptP to capture this level of structure. We show that TRAVELING SALESPERSON and KNAPSACK are complete for OptP, and that CLIQUE and COLORING are complete for a subclass of OptP. These results show a deeper level of structure in these problems than was previously known. We also show that OptP is closely related to FPSAT, the class of functions computable in polynomial time with an oracle for NP. This allows us to quantify exactly “how much” NP-completeness is in these problems. In particular, in this measure, we show that TRAVELING SALESPERSON is strictly harder than CLIQUE and that CLIQUE is strictly harder than BIN PACKING. A further result is that an OptP-completeness result implies NP-, Dp-, and Δ2P-completeness results, thus tying these four classes closely together.},
-	language = {en},
-	number = {3},
-	urldate = {2022-04-13},
-	journal = {Journal of Computer and System Sciences},
+	abstract = {We consider NP-complete optimization problems at the level of computing their optimal value, and define a class of functions called OptP to capture this level of structure. We show that TRAVELING SALESPERSON and KNAPSACK are complete for OptP, and that CLIQUE and COLORING are complete for a subclass of OptP. These results show a deeper level of structure in these problems than was previously known. We also show that OptP is closely related to FPSAT, the class of functions computable in polynomial time with an oracle for NP. This allows us to quantify exactly ``how much'' NP-completeness is in these problems. In particular, in this measure, we show that TRAVELING SALESPERSON is strictly harder than CLIQUE and that CLIQUE is strictly harder than BIN PACKING. A further result is that an OptP-completeness result implies NP-, Dp-, and Δ2P-completeness results, thus tying these four classes closely together.},
 	author = {Krentel, Mark W.},
+	doi = {10.1016/0022-0000(88)90039-6},
+	issn = {0022-0000},
+	journal = {Journal of Computer and System Sciences},
+	language = {en},
 	month = jun,
-	year = {1988},
+	number = {3},
 	pages = {490--509},
-}
-
+	title = {The complexity of optimization problems},
+	url = {https://www.sciencedirect.com/science/article/pii/0022000088900396},
+	urldate = {2022-04-13},
+	volume = {36},
+	year = {1988},
+	bdsk-url-1 = {https://www.sciencedirect.com/science/article/pii/0022000088900396},
+	bdsk-url-2 = {https://doi.org/10.1016/0022-0000(88)90039-6}}
