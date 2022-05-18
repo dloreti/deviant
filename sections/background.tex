@@ -13,7 +13,7 @@ Declare is one of the most used languages for declarative process modeling. Than
 Declare specifies a set of templates that can be used to model the process. 
 A constraint is a concrete instantiation of a template involving one ore more process activities.
 For example, the constraint $\mathsf{EXISTENCE(a)}$ is an instantiation of the template $\mathsf{EXISTENCE(X)}$, and is used to specify that activity $\mathsf{a}$ must occur in every trace; $\mathsf{INIT(a)}$ specifies that all traces must start with $\mathsf{a}$. $\mathsf{RESPONSE(a,b)}$ imposes that if the $\mathsf{a}$ occurs, then $\mathsf{b}$ must follow, possibly with other activities in between. %\tododl{Necessaria notazione grafica in figura?}.
-For a description of the most common Declare templates see \cite{2008-Pesic}. \tododl{Outdated?}
+For a description of the most common Declare templates see \cite{2008-Pesic}. \todo{Outdated?}
 
 We assume that the log contains both \emph{positive} traces---i.e., satisfying all the constraints in the business model---and \emph{negative} traces---i.e., diverging from the expected behaviour by violating at least one constraint in the (intended) model. 
 
