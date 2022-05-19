@@ -91,7 +91,7 @@ Table \ref{tab:syntResults} summarize the obtained results and reports the first
 \scalebox{.87}{
 \begin{tabular}{c c c c l l}
 \toprule
-Scenario & Positive Trace \# & Negative Trace \#  & Time & Originally Violated Constraint & First Discovered Model \\
+Scenario & Positive Trace \# & Negative Trace \#  & Time & Originally Violated Constraint & \tcolor{blue}{Best } Discovered Model \\
 \midrule
 $\multirow{4}{*}{(a)}$ & \multirow{4}{*}{64,000} & \multirow{4}{*}{25,600} & \bf{Total: \fpeval{81.78 + 1.94 + 109.74 + 3.32 + 15.165}s}  \\
 & & & Compatibles:  \fpeval{81.78 + 1.94}s & \emph{precedence(assess\_loan\_risk,}  & \emph{precedence(assess\_loan\_risk,} \\
@@ -109,7 +109,7 @@ $\multirow{4}{*}{(b)}$ & \multirow{4}{*}{64,000} & \multirow{4}{*}{10,240} & \bf
 }
 \caption{Models discovered when dealing with the synthetic data set.}
 \label{tab:syntResults}
-\end{table*}
+\end{table*}\tododl{Best invece di First in Table\ref{tab:syntResults}?} 
 
 % PARAMETRI RuM usati:
 % Templates: devi selezionarli tutti eccetto:
@@ -123,7 +123,7 @@ $\multirow{4}{*}{(b)}$ & \multirow{4}{*}{64,000} & \multirow{4}{*}{10,240} & \bf
 % Vacuity detection: deve essere OFF
 % Activity support filter: deve essere a 0%
 
-For the sake of completeness, we decided to experiment also with the Process Discovery Tool of the Rum Framework\footnote{\url{https://rulemining.org/}}, that is based on the Declare Miner algorithm \cite{2018a-Maggi}. Based on the exploitation of positive traces only, Declare Miner discovers a rich model that describes as ``most exactly'' as possible the given traces. When fed with the positive traces of our artificial log, and with the \emph{coverage} parameter set to 100\% (i.e., prefer constraints that are valid for all the traces in the logs), the RuM Framework discovers a model made of 514 constraints. If the coverage is relaxed to 80\% (prefer constraints that are satisfied by at least the 80\% of the traces), the model cardinality grows up to 1031 constraints.
+For the sake of completeness, we decided to experiment also with the Process Discovery Tool of the RuM Framework\footnote{\url{https://rulemining.org/}}, that is based on the Declare Miner algorithm \cite{2018a-Maggi}. Based on the exploitation of positive traces only, Declare Miner discovers a rich model that describes as ``most exactly'' as possible the given traces. When fed with the positive traces of our artificial log, and with the \emph{coverage} parameter set to 100\% (i.e., prefer constraints that are valid for all the traces in the logs), the RuM Framework discovers a model made of 514 constraints. If the coverage is relaxed to 80\% (prefer constraints that are satisfied by at least the 80\% of the traces), the model cardinality grows up to 1031 constraints.
 
 In both cases the discovered model is able to distinguish between the positive and the negative traces. This is not surprising, since Declare Miner aims to identify all the constraints that hold for a given log: hence, it will discover also those constraints that allow to discern positive from negative traces. Rather, this result is a clear indication that indeed our artificial log has been constructed ``correctly'', since negative traces differ from the positive ones for some specific constraints, and the positive traces exhaustively elicit the cases that can occur. 
 %In a sense we could say that the log is sufficiently exhaustive of all positive cases that can occurr.Declare Miner performance are enhanced 

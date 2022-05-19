@@ -14,32 +14,32 @@ Like most procedural approaches to process discovery, all these works contemplat
 %Like most procedural approaches to process discovery, all the works described so far consider deviant examples as a form of non-informative noise in the log, which should be separated from the rest of the log and disregarded.
  
 Traditional declarative approaches to process discovery stem from the necessity of a more friendly language to express loosely-structured processes. Indeed---as also pointed out by \cite{2012-Maggi}---process models are sometimes less structured than one could expect. The application of a procedural discovery could produce spaghetti-models. In that case, a declarative approach is more suitable to briefly list all the required or prohibited behaviours in a business process.
-Similarly to our technique, the one exposed by Maggi et al. in \cite{2011-Maggi} starts by considering the set of all activities in the log and building a set of all possible candidate Declare constraints. That work stems from the idea that Apriori-like approaches---such as sequence mining \cite{1994-Agrawal} and episode mining \cite{1997-Mannila}---can discover local patterns in a log, but not rules representing prohibited behaviours and choices. Therefore, differently from our algorithm, the candidate Declare constraints are then translated into the equivalent \ac{LTL} and checked (one at a time) against all the log content employing the technique of \cite{2005-Aalst}. The process continue until certain levels of recall and specificity are reached. The performance of this technique is improved in \cite{2012-Maggi} with an interesting two-step approach to both reduce the search space of candidate constraints and exclude from the model those \ac{LTL} formulas that are vacuously satisfied.
-Also the work \cite{2012-Schunselaar} by Schunselaar et al. proposes a model refinement to efficiently exclude vacuously satisfied constraints. %Interestingly, instead of learning the model from the structure of a single trace, this approach works on sets of traces in the event log.
-
+Similarly to our technique, the one exposed by Maggi et al. in \cite{2011-Maggi} starts by considering the set of all activities in the log and building a set of all possible candidate Declare constraints. 
+%That work stems from the idea that Apriori-like approaches---such as sequence mining \cite{1994-Agrawal} and episode mining \cite{1997-Mannila}---can discover local patterns in a log, but not rules representing prohibited behaviours and choices. 
+Then, differently from our algorithm, the candidate Declare constraints are translated into the equivalent \ac{LTL} and checked (one at a time) against all the log content employing the technique of \cite{2005-Aalst}. The process continue until certain levels of recall and specificity are reached. The performance of this technique is improved in \cite{2012-Maggi} with an interesting two-step approach to both reduce the search space of candidate constraints and exclude from the model those \ac{LTL} formulas that are vacuously satisfied.
+Also the work \cite{2012-Schunselaar} by Schunselaar et al. proposes a model refinement to efficiently exclude vacuously satisfied constraints. 
 
 %%%%%%%%%%% TODO
-%\tcolor{blue}{
-%Declarative behavioural constraints have been employed also in the field of sequence classification \cite{2020-DeSmedt} in order to enrich the expressiveness of the discovered models. Indeed, the various approaches in thi
+\tcolor{blue}{
+Declarative process discovery is sometimes related to sequence mining and classification \cite{2016-Fowkes,2017-Egho,2000-Zaki,2014-Lam}. In \cite{2016-Fowkes} the authors propose a probabilistic machine learning approach that infers subsequences which best compress a sequence database. 
+A similar Bayesian technique is used by Egho et al.\cite{2017-Egho} to mine Standard Classification Rule Models, where the antecedent is the relevant subsequence and the consequent expresses the support of that subsequence in each class.
 %
-%In the field of sequence mining, the work by Fowkes and Sutton \cite{2016-Fowkes} propose to employ a probabilistic model of the sequence database to define a subsequence interleaving model 
+The above-mentioned work by Maggi et al.\cite{2011-Maggi} originated precisely from the idea that Apriori-like approaches---such as sequence mining \cite{1994-Agrawal} and episode mining \cite{1997-Mannila}---can discover local patterns in a log, but not rules representing prohibited behaviours and choices. 
+The same motivation is behind the work by De Smedt et al. \cite{2020-DeSmedt}, which significantly enriches the expressiveness of the discovered models employing Declare behavioural constraints in sequence classification.
+%Differently from \cite{2020-DeSmedt}, our work does not focus on characterising the traces of multiple input classes, but rather on the traditional process discovery tasks---where (at most) two disjoints classes of log traces are envisaged---and propose to extract from one class (the negative example set) the information relevant to characterise the other class (positive). In other words, the information that is relevant for our purpose is the fact that a trace \emph{does not belong} to a certain class.
+Differently from \cite{2020-DeSmedt}, our work does not focus on characterising the traces of multiple, possibly intersected, input classes, but rather on refining the relevant feature of the traces belonging to a single class (the positive). In order to do so, we suggest extracting from one class (the negative example set) the information relevant to characterise the other class (the positive)---besides assuming these classes are disjunct. In other words, the information that is relevant for our purpose is the fact that a trace \emph{does not belong} to a certain class.
 %
-%
-%The need to enrich the expressiveness of the discovered models w.r.t. sequence mining and classification is also the focus of the work by De Smedt et al. \cite{2020-DeSmedt}. 
-%Indeed, the authors start by underlining how the progresses of relevant works applying a probabilistic approach to the task of mining subsequences \cite{2016-Fowkes} and classification rules models \cite{2017-Egho}, but 
-%
-%(such as \cite{2016-Fowkes,2017-Egho}, which employ a probabilistic approach to characterize with efficient techniques to classify the input dataset using the frequency of occurrence of a sequence in the input dataset to classify] 
-%intrinsically suffer from the lack of expressiveness because they cannot discover rules about the absence of a behaviour 
-%%loro cercano di estrarre le caratteristiche delle classi, noi usiamo la classe delle negative come un'informazione per caratterizzare le positive.
-%%gerarchia di sussunzione cablata
-%
-%through Bayesian networks to build conditional formulas where the antecedent is the found relevant sequence and the consequent is 
-%}
+Another important difference regards the mining algorithm: while \cite{2020-DeSmedt} explicitly considers each relevant Declare constraint, we envisage the language bias, as well as the subsumption hierarchy as input and we exploit the power of a satisfiability-based solver to determine the best model according to the user preferences. 
+}
 
 The MINERFul approach described in \cite{2015-DiCiccio} proposes to employ four metrics to guide the declarative discovery approach: support, confidence and interest factor for each constraint w.r.t. the log, and the possibility to include in the search space constraints on prohibited behaviours.
 Particularly relevant for our purposes is the work by Di Ciccio et al. \cite{2017-DiCiccio}, who focus on refining Declare models to remove the frequent redundancies and inconsistencies. The algorithms and the hierarchy of constraints described in that work were particularly inspiring to define our discovery procedure.
 Similarly to the procedural approaches, all the declarative ones described so far do not deal with negative examples, although the vast majority of them envisage the possibility to discard a portion of the log by setting thresholds on the value of specific metrics that the discovered model should satisfy.
 In the work \cite{2021-Back}  the authors propose a declarative miner for learning Dynamic Condition Response (DCR) graphs from event logs. Similarly to our approach, they focus on control-flow-related aspects only, and disregard timing, data and resource perspectives. Negative examples are not exploited in the learning process, albeit they are taken into account when measuring underfitting and overfitting of the resulting model.
+
+\tcolor{blue}{Another recent related work is the one by Slaats et al. \cite{slaats_weighing_2021}, which analogously to our vision, considers the process discovery task as a binary classification. The authors also report a set of real-life logs containing negative examples, which we employ in our evaluation. }
+\tcolor{red}{Analogously to \cite{2020-DeSmedt} the algorithm of \cite{slaats_weighing_2021} explicitly considers each relevant constraint while mining the model.\tododl{hard-coded check}.}
+\tcolor{blue}{Interestingly, the authors of \cite{slaats_weighing_2021} also provide a demonstration of the reasons why Declare is not able to perfectly separate any pair of positive/negative traces. Despite its limits, we believe that Declare's diffusion in both industry an academia motivates the need to further investigate process discovery with this notation.}
 
 %In the work ... the authors propose a declarative miner for learning Dynamic Condition Response (DCR) Graphs from event logs. Similarly to our approach, they focus only control-flow-related aspects disregarding timing, data and resource perspectives. Furthermore, their approach relays also on negative examples, albeit only in the evaluation step to measure underfitting and overfitting of the resulting model.
 
