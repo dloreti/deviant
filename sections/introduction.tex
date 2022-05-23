@@ -64,8 +64,8 @@ For example, in order to avoid underfitting and overfitting \cite{2010-Aalst}, m
 
 %For example, an approach would be to consider \emph{deviant} traces \cite{2016-Nguyen} as negative examples. Alternatively, domain-related criteria would allow to identify ``stranger'' execution traces: a common case, for example, is to label as negative those execution traces that, to terminate, ask for more (or less) time than expected.
 %
-Independently of the chosen criteria for splitting the log, we adopt the terms negative and positive example sets to identify the resulting partitioning, keeping in mind that the ``negative'' adjective is not necessarily connected to unwanted traces, but rather connected to a sort of ``upside-down world'' of ``stranger'' behaviours. The information carried by the negative example set diverges from that containing the positive examples but---coupled with it---can be used to understand the reasons why differences occur, ultimately providing a more accurate insight of the business process. 
-
+%Independently of the chosen criteria for splitting the log, we adopt the terms negative and positive example sets to identify the resulting partitioning, keeping in mind that \tcolor{red}{the ``negative'' adjective is not necessarily connected to unwanted traces}, but rather connected to a sort of ``upside-down world'' of ``stranger'' behaviours. The information carried by the negative example set diverges from that containing the positive examples but---coupled with it---can be used to understand the reasons why differences occur, ultimately providing a more accurate insight of the business process. 
+Independently of the chosen criteria for splitting the log, we adopt the terms negative and positive example sets to identify the resulting partitioning, keeping in mind that \tcolor{blue}{the ``negative'' adjective is not only connected to unwanted traces, but also to a sort of ``upside-down world'' of ``stranger'' behaviours. The information carried by this world diverges from that of the positive examples }but---coupled with it---can be used to understand the reasons why differences occur, ultimately providing a more accurate insight of the business process.
 
 %Independently of the chosen criteria for splitting the log, we envisage the negative example set as a sort of ``upside-down world'' of ``stranger'' behaviours, whose information can be coupled with the that of the positive example set, to understand the reasons why differences occur, and ultimately to provide a more accurate insight of the business process. 
 
@@ -73,8 +73,7 @@ Independently of the chosen criteria for splitting the log, we adopt the terms n
 %
 In particular our approach, namely \nd, aims to discover a minimal set of constraints that allow to distinguish between the two classes of examples: in this sense, it can enrich existing approaches that provide descriptions of the positive example set only. Indeed, our exploitation of the ``upside-down world'' is useful not only to better clarify what should be deemed compliant with the model and what should not, but also to better control the degree of generalisation of the resulting model, as well as to improve its simplicity.
 
-\tcolor{blue}{To explain our approach we start by providing an overview of the background and relevant concepts in Section \ref{sec:back}, then we describe the approach in detail in Section \ref{sec:approach}, and we evaluate it in Section \ref{sec:eval}. Related work and conclusion follow. %Section \ref{sec:related} provides a literature review of other relevant works in the filed of process discovery, and Section \ref{sec:concl} summarises our achievements and suggests future research directions.
-}
+
 %Our approach can be combined with other process discovery techniques as a post processing step to further refine and simplify complex models.
 %
 %Like the allowed traces can be exploited to extract information about the usual process model, we explore the possibility that the ``upside-down world'' of negative execution traces can be used---if made accessible---to understand the reasons why deviations from the common process model occur. This information is useful not only to better clarify what should be deemed compliant with the model and what should not, but also to specify parts of the business process in a more synthetic and effective way---by converting for example, a set of positive execution constraints into a single negative one.  
@@ -95,13 +94,9 @@ In the framework described so far, our work advances the state of the art by pro
 \item A heuristic to select the models according to user preferences of generalisation or simplicity, where--differently from other relevant works in this field--the language bias and the subsumption rules between Declare templates are not hard-coded in the discovery algorithm, but provided as an input for a finer-grain configurability.
 \item An evaluation of the performance of \nd w.r.t. other relevant works in the same field, highlighting strengths and weaknesses of our approach.
 \end{itemize}
-
-%\todoindl{Therefore, this paper advances the state of the art in ...bla bla }
-%può esser usato sia per discovery da zero che per raffinare un modello già esistente.
-%il fatto che proponiamo un algoritmo in cui il check dei constraint non è cablato ma deriva automaticamente dal set di regole di sussunzione che decidiamo di usare.
 %
+To explain our approach we start by providing an overview of the background and relevant concepts in Section \ref{sec:back}, then we describe the approach in detail in Section \ref{sec:approach}, and we evaluate it in Section \ref{sec:eval}. Related work and conclusion follow. %Section \ref{sec:related} provides a literature review of other relevant works in the filed of process discovery, and Section \ref{sec:concl} summarises our achievements and suggests future research directions.
 }
-
 %\todoindl{struttura dell'articolo?}
 %Our work envisage the process discovery task as a \emph{satisfiability problem} and intertwines the constructive elements of both classification- and inductive-logic-oriented approaches into a single technique able to discover declarative process models by actively making use of both the positive traces and the ``upside-down world'' of deviant and negative examples---whenever they are available in the log. %\tododl{To say so, we'd need to put thresholds in the selection algorithm or propose an alternative version with thresholds. As for language bias, can we express it though the choice of $D$?}
 
