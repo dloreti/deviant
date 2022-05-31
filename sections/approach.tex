@@ -464,7 +464,14 @@ The optimisation stage is described in Algorithm \ref{alg:select}. The required 
 \end{algorithm}
 
 The algorithm starts by computing a set $L'^-$ of all those negative traces that can be excluded by at least a constraint ($\textit{\sheriff}(t)\neq\varnothing$) and are still instead accepted by the initial model $P$ ($t\models P$). 
-Indeed, albeit from the theoretical point of view we assumed that for each trace $t \in L^-$ there exists at least one Declare constraint in $D[A]$ accepting all positive traces and discarding $t$, real cases might not fulfil this assumption. %, and the algorithm implementation must take this into account. 
+Indeed, albeit from the theoretical point of view we assumed that for each trace $t \in L^-$ there exists at least one Declare constraint in $D[A]$ accepting all positive traces and discarding $t$, real cases might not fulfil this assumption. 
+%
+\tcolor{blue}{
+\begin{example}
+Consider for example the case of a chosen language bias $D$ including $\mathsf{EXISTENCE1(X)}$, $\mathsf{EXISTENCE2(X)}$, $\mathsf{ABSENCE(X)}$, $\mathsf{ABSENCE2(X)}$ and all binary Declare templates. Let $L^+=\{\mathsf{bbb}\}$, $L^-=\{\mathsf{bbbb}\}$. In this case, there is no way to distinguish the input sets because existence1/2 and absence1/2 are not enough, and all binary constraints must be used with two distinct activities.
+\end{example}
+}
+%
 When it is not possible to exclude a negative trace $t$, Algorithm \ref{algcand} returns $\textit{\sheriff}(t)=\varnothing$, and Algorithm \ref{alg:select} overlooks this case by computing $L'^-$. 
 %
 The set $\mathcal{C}$ is then \tcolor{blue}{built }(Line \ref{alg:buildC}) by considering the constraints allowing all traces in $L^+$ and disallowing at least one trace in $L'^-$ (Line \ref{alg:buildC}). From that, the algorithm selects any subset $S$ fulfilling the condition $\forall t \in L'^- \; S\cap \textit{\sheriff}(t) \neq \varnothing$ (Line \ref{alg:subsetS}), i.e., any $S$ accepting all positive traces and rejecting all the negatives that can be actually excluded.
