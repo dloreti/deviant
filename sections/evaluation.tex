@@ -87,6 +87,7 @@ Table \ref{tab:syntResults} summarize the obtained results and reports the first
 % source of this data:
 % file:///Users/federico/Google%20Drive/on-negative-traces/experiments/2020-07-14%20Federico/run_experiments_2020-07-30_130357_CEST.html
 %\todoinfc{I tempi di calcolo riportati in tabella potrebbero non essere giusti. Chiedere a Sergio\ldots in particolare, Sergio suggeriva che per gli step \texttt{compatibles} e \texttt{choices} dovremmo prendere i tempi \texttt{user + system}; per lo step \texttt{opt} invece nel caso di minclose dovremmo prendere la \texttt{CPUtime}, mentre per la subsetclose dovremmo prendere \texttt{CPUtime * (numconstraints bigger model) } }
+
 \begin{table*}
 \scalebox{.87}{
 \begin{tabular}{c c c c l l}
@@ -110,6 +111,31 @@ $\multirow{4}{*}{(b)}$ & \multirow{4}{*}{64,000} & \multirow{4}{*}{10,240} & \bf
 \caption{Models discovered when dealing with the synthetic data set.}
 \label{tab:syntResults}
 \end{table*}\tododl{Best invece di First in Table\ref{tab:syntResults}?} 
+
+
+%\begin{table*}
+%\scalebox{.87}{
+%\begin{tabular}{c c c c l l}
+%\toprule
+%Scenario & Positive Trace \# & Negative Trace \#  & Time & Originally Violated Constraint & \tcolor{blue}{Best } Discovered Model \\
+%\midrule
+%$\multirow{4}{*}{(a)}$ & \multirow{4}{*}{64,000} & \multirow{4}{*}{25,600} & \bf{Total: \fpeval{81.78 + 1.94 + 109.74 + 3.32 + 15.165}s}  \\
+%& & & Compatibles:  \fpeval{81.78 + 1.94}s & \emph{precedence(assess\_loan\_risk,}  & \emph{precedence(assess\_loan\_risk,} \\
+%& & & \textit{\sheriff}: \fpeval{(109.74 + 3.32)-(81.78 + 1.94)}s  & \emph{assess\_eligibility)} & \emph{assess\_eligibility)} \\
+%& & & Optimisation: 15.165s & & \\
+%
+%\midrule
+%
+%$\multirow{4}{*}{(b)}$ & \multirow{4}{*}{64,000} & \multirow{4}{*}{10,240} & \bf{Total: \fpeval{81.78 + 1.94 + 94.51 + 2.96 + 1.379}s} \\
+%& & & Compatibles:  \fpeval{81.78 + 1.94}s & \emph{exclusive\_choice(send\_acceptance\_pack,} & \emph{coExistence(reject\_application,} \\
+%& & & \textit{\sheriff}:  \fpeval{(94.51 + 2.96)-(81.78 + 1.94)}s  & \emph{receive\_negative\_ feedback)} & %\emph{receive\_negative\_feedback)}\\
+%& & & Optimisation: 1.379s & & \\
+%\bottomrule
+%\end{tabular}
+%}
+%\caption{Models discovered when dealing with the synthetic data set.}
+%\label{tab:syntResults}
+%\end{table*}\tododl{Best invece di First in Table\ref{tab:syntResults}?} 
 
 % PARAMETRI RuM usati:
 % Templates: devi selezionarli tutti eccetto:
@@ -140,37 +166,111 @@ Another consideration is about the cardinality of the discovered model: the Decl
 
 %\todoindl{Chiara DFM\&Sergio\&Fabrizio: descrizione dataset e risultati di esperimenti coi dati veri}
 
-For the experimentation with real datasets, we used three real-life event logs: \textsc{cerv}, \textsc{sepsis} and \textsc{bpic12}. Starting from these event logs we generated 5 different datasets, each composed of a set of positive and a set of negative traces, by applying different criteria to distinguish between positive and negative traces, i.e., by labeling the event log with different labeling functions. 
+For the experimentation with real datasets, we used \btext{six} real-life event logs: \btext{\textsc{bpic12}, \textsc{cerv}, \textsc{dreyers}, \textsc{prod}, \textsc{sepsis} and \textsc{traffic\_fines}.} Starting from these event logs we generated \btext{15} different datasets, each composed of a set of positive and a set of negative traces, by applying different criteria to distinguish between positive and negative traces, i.e., by labeling the event log with different labeling functions. \btext{All logs have been labeled according to three criteria: the first one is domain dependent and varies for each dataset, while the remaining two datasets (\textsc{XXX$_{mean}$} and \textsc{XXX$_{median}$}) for each log are generated based on the execution cycle time. In the \textsc{XXX$_{mean}$} dataset (resp. \textsc{XXX$_{median}$}), traces with a cycle time lower than the mean (resp. median) duration of the traces in the event log are labeled as positive; as negative otherwise.}
+ 
+%For the experimentation with real datasets, we used three real-life event logs: \textsc{cerv}, \textsc{sepsis} and \textsc{bpic12}. Starting from these event logs we generated 5 different datasets, each composed of a set of positive and a set of negative traces, by applying different criteria to distinguish between positive and negative traces, i.e., by labeling the event log with different labeling functions. 
 
-\textsc{cerv} is an event log related to the process of cervical cancer screening carried out in an Italian cervical cancer screening center~\cite{2007b-Lamma}. Cervical cancer is a disease in which malignant (cancer) cells form in the tissues of the cervix of the uterus. The screening program proposes several tests in order to early detect and treat cervical cancer. It is usually composed by five phases: Screening planning; Invitation management; First level test with pap-test; Second level test with colposcopy, and eventually biopsy. The traces contained in the event log have been analyzed by a domain expert and labeled as compliant (positive traces) or non-compliant (negative traces) with respect to the cervical cancer screening protocol adopted by the screening center.
+\btext{\textsc{bpic12} is a real-life logs from the Business Process Intelligence Challenge 2012~\cite{BPIC2012}. The log pertains to the application process for personal loans or overdrafts in a Dutch financial institute. It merges three intertwined sub-processes. Besides the cycle-time datasets, for the \textsc{bpic12$_{CANC}$} dataset the traces have been labeled based on the occurrence of the activity \textsc{O\_CANCELLED}) \cite{DBLP:journals/tkdd/TeinemaaDRM19}.}
+%The traces have been labeled based on the occurrence of the activity \textsc{O\_CANCELLED} (\textsc{bpic12$_{CANC}$}), as well as based on the trace cycle execution time. In the \textsc{bpic12$_{mean}$} dataset (resp. \textsc{bpic12$_{mean}$}), traces with a cycle time lower than the mean (resp. median) duration of the traces in the event log (\textasciitilde\xspace 8 days, resp. \textasciitilde\xspace 19 hours) have been labeled as positive; as negative otherwise.}
+
+\textsc{cerv} is an event log related to the process of cervical cancer screening carried out in an Italian cervical cancer screening center~\cite{2007b-Lamma}. Cervical cancer is a disease in which malignant (cancer) cells form in the tissues of the cervix of the uterus. The screening program proposes several tests in order to early detect and treat cervical cancer. It is usually composed by five phases: Screening planning; Invitation management; First level test with pap-test; Second level test with colposcopy, and eventually biopsy. The traces contained in the event log have been analyzed by a domain expert and labeled as compliant (positive traces) or non-compliant (negative traces) with respect to the cervical cancer screening protocol adopted by the screening center (\textsc{cerv$_{compl}$}).
+
+\btext{The \textsc{Dreyers} log~\cite{DBLP:conf/ssci/DeboisS15} is an event log documenting the application grant process of the Dreyers Foundation, a Danish foundation supporting budding lawyers and architects. The application requests are traced through a system and the \textsc{Dreyers} event log also collects the early stages of deployment and the testing phase of the system.
+%Three different labellings are provided for this event log. The first one (\textsc{dreyers$_{reset}$)} is the labelling 
+The domain-specific labeling for the \textsc{dreyers$_{reset}$} dataset is the one used in~\cite{slaats_weighing_2021}. It classifies the executions based on whether they were reset due to a system failure (negative traces) or not (positive traces).} %The second (\textsc{dreyers$_{mean}$}) and the third (\textsc{dreyers$_{median}$}) labeling classify the traces according to whether their cycle time is lower (positive) or higher (negative) than the average (resp. median) duration of the traces in the event log.}
+
+\btext{The \textsc{prod} event log~\cite{DBLP:journals/tkdd/TeinemaaDRM19} contains data from a manufacturing process. Each trace records information about activities, workers and machines involved in the production of items. 
+%Three labelings have been considered also for this event log. The first labeling (\textsc{prod$_{rej}$}) 
+The labeling for the \textsc{prod$_{rej}$} dataset distinguishes between executions with at least a rejected work order (negative traces) and executions with no rejected order (positive traces) \cite{DBLP:journals/tkdd/TeinemaaDRM19}.}
+%The other two labeling (\textsc{prod$_{mean}$} and \textsc{prod$_{median}$}) are based on the executions' cycle time: positive traces have cycle time lower than the average (resp. median) duration of the traces in the log; negative traces have cycle time higher.}
 
 \textsc{sepsis}~\cite{Sepsis} is an event log that records trajectories of patients with symptoms of the life-threatening sepsis condition in a Dutch hospital.
 %\textsc{Sepsis} is an event log that records trajectories of patients with symptoms of the life-threatening sepsis condition in a Dutch hospital. 
-Each case logs events since the patient's registration in the emergency room until her discharge from the hospital. Among others, laboratory tests together with their results are recorded as events. The traces contained in the event log have been labelled based on their cycle execution time. In the \textsc{sepsis$_{mean}$} dataset, traces with a cycle time lower than the mean duration of the traces in the event log (\textasciitilde\xspace28 days) have been labelled as positive, as negative otherwise. Similarly, in the \textsc{sepsis$_{median}$}, traces with a cycle time lower than the median duration of the traces in the event log (\textasciitilde\xspace 5 days)  have been labeled as positive; as negative otherwise.  
+Each case logs events since the patient's registration in the emergency room until her discharge from the hospital. Among others, laboratory tests together with their results are recorded as events. The traces contained in the event log have been labeled \btext{based on the formula \scriptsize{$\phi_1 = \mathsf{RESPONSE(IV Antibiotics, Leucocytes)} \wedge \mathsf{RESPONSE(LacticAcid,IV Antibiotics)} \wedge \mathsf{RESPONSE(ER Triage, CRP)}$}}
+%described in \ref{phi}$}
+%\scriptsize{
+%\begin{align*}
+%\label{phi}
+%\phi_1 =& \mathsf{RESPONSE(IV Antibiotics, Leucocytes)} \wedge \\ 
+%& \mathsf{RESPONSE(LacticAcid,IV Antibiotics)} \wedge \\
+%& \mathsf{RESPONSE(ER Triage, CRP)}
+%\end{align*}
+%}}
+%\btext{(\textsc{sepsis$_{\phi_1}$}), as well as based on their} cycle execution time. In the \textsc{sepsis$_{mean}$} dataset, traces with a cycle time lower than the mean duration of the traces in the event log (\textasciitilde\xspace28 days) have been labeled as positive, as negative otherwise. Similarly, in the \textsc{sepsis$_{median}$}, traces with a cycle time lower than the median duration of the traces in the event log (\textasciitilde\xspace 5 days)  have been labeled as positive; as negative otherwise.} 
 
-\tcolor{blue}{\textsc{bpic12} is a real-life event log from the Business Process Intelligence Challenge of 2012 ~\cite{BPIC2012}. It pertains to the application process for personal loans or overdrafts in a Dutch financial institute}. It merges three intertwined sub-processes. Also in this case, the traces have been labelled based on their cycle execution time. In the \textsc{bpic12$_{mean}$} dataset (resp. \textsc{bpic12$_{mean}$}), traces with a cycle time lower than the mean (resp. median) duration of the traces in the event log (\textasciitilde\xspace 8 days, resp. \textasciitilde\xspace 19 hours) have been labelled as positive; as negative otherwise. 
+\btext{Finally, the \textsc{traffic} fine event log~\cite{deLeoni2015}, which comes from an Italian local police force, contains events about notifications sent about a fine, as well as (partial) repayments. %Additional information related to the case and to the individual events include, for instance, the reason, the total amount, and the amount of repayments for each fine.
+ This event log has also been labeled based on whether the fine is finally repaid in full (positive traces) or sent for credit collection (negative traces) \cite{DBLP:journals/tkdd/TeinemaaDRM19} for the \textsc{traffic$_{paid}$} dataset.}
+%Moreover the \textsc{traffic$_{mean}$} and \textsc{traffic$_{median}$} datasets have also been generated by considering whether the cycle time is higher or lower than the average (resp. median) cycle time.}
+
+%\btext{\textsc{bpic11} and \textsc{bpic12} are real-life logs from the Business Process Intelligence Challenge of 2011~\cite{} and 2012~\cite{BPIC2012}, respectively. \textsc{bpic11} contains cases from the Gynaecology department of a Dutch Academic Hospital. Each case represents the medical history of a given patient with procedures and treatments representing the activities of the case.
+%The dataset is labeled $F(``tumor marker CA\-19.9'') \vee F(``ca \- 125 using meia'')$.
+
+%\textsc{bpic12} pertains to the application process for personal loans or overdrafts in a Dutch financial institute}. It merges three intertwined sub-processes. Also in this case, the traces have been labelled based on their cycle execution time. In the \textsc{bpic12$_{mean}$} dataset (resp. \textsc{bpic12$_{mean}$}), traces with a cycle time lower than the mean (resp. median) duration of the traces in the event log (\textasciitilde\xspace 8 days, resp. \textasciitilde\xspace 19 hours) have been labelled as positive; as negative otherwise. 
 
 
-Table~\ref{tab:rl_datasets} summarizes the data related to the five resulting datasets.
+%\tcolor{blue}{\textsc{bpic12} is a real-life event log from the Business Process Intelligence Challenge of 2012 ~\cite{BPIC2012}. It pertains to the application process for personal loans or overdrafts in a Dutch financial institute}. It merges three intertwined sub-processes. Also in this case, the traces have been labelled based on their cycle execution time. In the \textsc{bpic12$_{mean}$} dataset (resp. \textsc{bpic12$_{mean}$}), traces with a cycle time lower than the mean (resp. median) duration of the traces in the event log (\textasciitilde\xspace 8 days, resp. \textasciitilde\xspace 19 hours) have been labelled as positive; as negative otherwise. 
+
+
+
+
+
+Table~\ref{tab:rl_datasets} summarizes the data related to the \btext{15}
+%five
+ resulting datasets.
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.2}
 	\centering
-	\scalebox{0.7}{
+	\scalebox{0.65}{
 		\begin{tabular} {l l c c c c c}
 		\toprule
 			\multirow{2}{*}{\textbf{Dataset}} & \multirow{2}{*}{\textbf{Log}} & \multirow{2}{*}{\textbf{Trace \#}} & \multirow{2}{*}{\textbf{Activity \#}} & \multirow{2}{*}{\textbf{Label}} & \textbf{Positive} & \textbf{Negative}  \\ 
 			& & & & & \textbf{Trace \#} & \textbf{Trace \#} \\ \midrule
-			\textsc{cerv$_{compl}$} & \textsc{cerv} & 157 & 16 & compliant & 55 & 102 \\ \midrule
-			\textsc{sepsis$_{mean}$} & \multirow{2}{*}{\textsc{sepsis}} & \multirow{2}{*}{1000} & \multirow{2}{*}{16} & mean duration & 838 & 212 \\
+			\btext{\textsc{bpic12$_{CANC}$}} & \multirow{3}{*}{\textsc{bpic12}} & \multirow{3}{*}{13087} & \multirow{3}{*}{36} & \btext{\textsc{O\_CANCELLED} occurs} & \btext{2660} & \btext{10427}  \\
+			\textsc{bpic12$_{mean}$} &  &  & &  mean duration & 8160 & 4927  \\
+			\textsc{bpic12$_{median}$} &  &  &  & median duration & 6544  & 6543 \\ \midrule
+			\textsc{cerv$_{compl}$} & \multirow{3}{*}{\textsc{cerv}} & \multirow{3}{*}{157} & \multirow{3}{*}{16} & compliant & 55 & 102 \\ 
+			\btext{\textsc{cerv$_{mean}$}} &  &  &  & \btext{mean duration} & \btext{93} & \btext{64} \\ 
+			\btext{\textsc{cerv$_{median}$}} &  &  &  & \btext{median duration} & \btext{92} & \btext{65} \\ \midrule
+			\btext{\textsc{dreyers$_{reset}$}} & \multirow{3}{*}{\btext{\textsc{dreyers}}} & \multirow{3}{*}{\btext{700}} & \multirow{3}{*}{\btext{33}} & \btext{reset executions} & \btext{492} & \btext{208} \\ 
+			\btext{\textsc{dreyers$_{mean}$}} &  &  &  & \btext{mean duration} & \btext{206} & \btext{494} \\ 
+			\btext{\textsc{dreyers$_{median}$}} &  &  &  & \btext{median duration} & \btext{406} & \btext{294} \\ \midrule		
+			\btext{\textsc{prod$_{rej}$}} & \multirow{3}{*}{\btext{\textsc{prod}}} & \multirow{3}{*}{\btext{220}} & \multirow{3}{*}{\btext{26}} & \btext{reset executions} & \btext{103} & \btext{117} \\ 
+			\btext{\textsc{prod$_{mean}$}} &  &  &  & \btext{mean duration} & \btext{148} & \btext{72} \\ 
+			\btext{\textsc{prod$_{median}$}} &  &  &  & \btext{median duration} & \btext{110} & \btext{110} \\ \midrule	
+			\btext{\textsc{sepsis$_{\phi_1}$}} & \multirow{3}{*}{\btext{\textsc{sepsis}}} & \multirow{3}{*}{\btext{1050}} & \multirow{3}{*}{\btext{16}} & \btext{$\phi_1$} & \btext{685} & \btext{365} \\
+			\textsc{sepsis$_{mean}$} &  &  &  & mean duration & 838 & 212 \\
 			\textsc{sepsis$_{median}$} &  &  &  & median duration & 525 & 525 \\ \midrule
-			\textsc{bpic12$_{mean}$} & \multirow{2}{*}{\textsc{bpic12}} & \multirow{2}{*}{13087} & \multirow{2}{*}{36} & mean duration & 8160 & 4927  \\
-			\textsc{bpic12$_{median}$} &  &  &  & median duration & 6544  & 6543 \\ 			
+			\btext{\textsc{traffic$_{paid}$}} & \multirow{3}{*}{\btext{\textsc{traffic}}} & \multirow{3}{*}{\btext{129\,615}} & \multirow{3}{*}{\btext{10}} & \btext{fine paid} & \btext{70\,602} & \btext{59\,013} \\ 
+			\btext{\textsc{traffic$_{mean}$}} &  &  &  & \btext{mean duration} & \btext{70\,585} & \btext{59\,030} \\ 
+			\btext{\textsc{traffic$_{median}$}} &  &  &  & \btext{median duration} & \btext{65\,003} & \btext{64\,6122} \\ \midrule		
 			\bottomrule
 		\end{tabular}}
 		\caption{Dataset description}
 		\label{tab:rl_datasets}
 \end{table}
+
+
+%\begin{table}[h]
+%	\renewcommand{\arraystretch}{1.2}
+%	\centering
+%	\scalebox{0.7}{
+%		\begin{tabular} {l l c c c c c}
+%		\toprule
+%			\multirow{2}{*}{\textbf{Dataset}} & \multirow{2}{*}{\textbf{Log}} & \multirow{2}{*}{\textbf{Trace \#}} & \multirow{2}{*}{\textbf{Activity \#}} & \multirow{2}{*}{\textbf{Label}} & \textbf{Positive} & \textbf{Negative}  \\ 
+%			& & & & & \textbf{Trace \#} & \textbf{Trace \#} \\ \midrule
+%			\textsc{cerv$_{compl}$} & \textsc{cerv} & 157 & 16 & compliant & 55 & 102 \\ \midrule
+%			\textsc{sepsis$_{mean}$} & \multirow{2}{*}{\textsc{sepsis}} & \multirow{2}{*}{1000} & \multirow{2}{*}{16} & mean duration & 838 & 212 \\
+%			\textsc{sepsis$_{median}$} &  &  &  & median duration & 525 & 525 \\ \midrule
+%			%%\btext{\textsc{bpic11$_f1$}} & \btext{\textsc{bpic11}} & \btext{1140} & \btext{193} & \btext{F(``tumor marker CA-19.9'') $\vee$ F(``ca - 125 using meia'')} & \btext{682} & \btext{458}\\ \midrule 
+%			%\btext{\textsc{bpic11$_{f1}$}} & \btext{\textsc{bpic11}} & \btext{1140} & \btext{193} & \btext{$f1$} & \btext{682} & \btext{458}\  \\ %\midrule
+%			\textsc{bpic12$_{mean}$} & \multirow{2}{*}{\textsc{bpic12}} & \multirow{2}{*}{13087} & \multirow{2}{*}{36} & mean duration & 8160 & 4927  \\
+%			\textsc{bpic12$_{median}$} &  &  &  & median duration & 6544  & 6543 \\ 			
+%			\bottomrule
+%		\end{tabular}}
+%		\caption{Dataset description}
+%		\label{tab:rl_datasets}
+%\end{table}
 
 The results obtained by applying the \nd algorithm are summarised in Table~\ref{tab:rl_results}. The table reports for each dataset, the results related to the \subsetclos (connected to the \emph{generality} criterion of Eq. \ref{eq:most-gen} and \ref{eq:redun}) and \minclos (\emph{simplicity} criterion of Eq. \ref{eq:simpl1} and \ref{eq:simpl2}) optimizations in terms of number of returned models\footnote{We stop generating models after $20$ models, i.e., \para{max} in Table~\ref{tab:rl_results} indicates that more than $20$ models have been returned.}, minimum size of the returned models, as well as percentage of negative traces violated by the returned model. Moreover, the table reports the time required for computing the set of compatibles, the set of \sheriff, as well as the \subsetclos and \minclos optimizations.
 
@@ -184,16 +284,52 @@ The results obtained by applying the \nd algorithm are summarised in Table~\ref{
 			\cmidrule(r){2-4} \cmidrule(r){5-7} \cmidrule(r){8-11}
 			& \textbf{Number of} & \textbf{Min model} & \textbf{Violated} & \textbf{Number of } & \textbf{Min model} & \textbf{Violated} & \multirow{2}{*}{\textbf{Comp.}} & \multirow{2}{*}{\textbf{\textit{\sheriff}}} & \multirow{2}{*}{\textbf{\subsetclos}} & \multirow{2}{*}{\textbf{\minclos}}  \\			
 			& \textbf{models} & \textbf{size} & \textbf{$L^{-}$ trace \%} & \textbf{models} & \textbf{size} & \textbf{$L^{-}$ trace \%} & & & & \\ \midrule
-			 \textsc{cerv$_{compl}$} & \para{max} & 4 & 100\% & \para{max} & 4 & 100\% & 0.12 & 0.21 & 0.065 & 0.045\\ \midrule
-			\textsc{sepsis$_{mean}$} & 1 & 8 & 4.25\% & 1 & 8  & 4.25\% & 0.73 & 0.31 & 0.039 & 0.035\\ 
-			\textsc{sepsis$_{median}$} & \para{max} & 14 & 26.86\% & 16 & 14 & 26.86\% & 0.45 &	1.05 & 0.2 & 0.087 \\ \midrule
-			\textsc{bpic12$_{mean}$} & \para{max} & 12 & 1.42\% & \para{max} & 12 & 1.42\% & 13.51 & 17.49 & 0.096 & 0.066  \\ 
-			\textsc{bpic12$_{median}$} & \para{max} & 23 & 36.59\% & \para{max} & 22 & 36.59\% & 13.32 & 24.31 & 359.164 & 43.846 \\ 			
+			\btext{\textsc{bpic12$_{CANC}$}} & \btext{>22} & \btext{1} & \btext{100\%} & \btext{13} & \btext{1} & \btext{100\%} & \btext{5.07} & \btext{12.28} & \btext{22.28} & \btext{3.98}  \\ 
+			\textsc{bpic12$_{mean}$} & \btext{>146} & \btext{13} & \btext{1\%} & \btext{\para{max}}& \btext{13} & \btext{1\%} & \btext{2.84} & \btext{6.14} & \btext{15.65} & \btext{7.73}  \\ 
+			\textsc{bpic12$_{median}$} & \btext{> 27} & \btext{21} & \btext{33\%} & \btext{\para{max}} & \btext{21} & \btext{33\%} & \btext{2.15} & \btext{7.19} & \btext{5.67} & \btext{77.62} \\ 	\midrule
+			\btext{\textsc{cerv$_{compl}$}} & \btext{> 254} & \btext{4} & 100\% & \para{max} & 4 & 100\% & \btext{0.39} & \btext{0.08} & \btext{19.24} & \btext{0.08}\\ 
+			\btext{\textsc{cerv$_{mean}$}} & \btext{> 20} & \btext{1} & \btext{100\%} & \btext{\para{max}}& \btext{1} & \btext{100\%} & \btext{0.01} & \btext{0.92} & \btext{10.22} & \btext{5.21}  \\ 
+			\btext{\textsc{cerv$_{median}$}} & \btext{> 21} & \btext{1} & \btext{100\%} & \btext{\para{max}} & \btext{1} & \btext{100\%} & \btext{0.02} & \btext{0.97} & \btext{11.47} & \btext{7.04} \\ 	\midrule
+			\btext{\textsc{dreyers$_{reset}$}} & \btext{> 80} & \btext{8} & \btext{99\%} & \btext{\para{max}} & \btext{8} & \btext{99\%} & \btext{1.67} & \btext{0.17} & \btext{16.42} & \btext{0.11}\\ 
+			\btext{\textsc{dreyers$_{mean}$}} & \btext{> 20} & \btext{3} & \btext{100\%} & \btext{\para{max}}& \btext{3} & \btext{100\%} & \btext{0.56} & \btext{2.69} & \btext{20.03} & \btext{230.44}  \\ 
+			\btext{\textsc{dreyers$_{median}$}} & \btext{> 21} & \btext{14} & \btext{97\%} & \btext{1} & \btext{14} & \btext{97\%} & \btext{1.14} & \btext{1.24} & \btext{10.89} & \btext{599.76} \\ 	\midrule
+			\btext{\textsc{prod$_{rej}$}} & \btext{> 24} & \btext{21} & \btext{41\%} & \btext{1} & \btext{21} & \btext{41\%} & \btext{0.8} & \btext{0.54} & \btext{6.151} & \btext{599.74}\\ 
+			\btext{\textsc{prod$_{mean}$}} & \btext{> 21} & \btext{20} & \btext{82\%} & \btext{1}& \btext{20} & \btext{82\%} & \btext{0.72} & \btext{0.68} & \btext{7.19} & \btext{599.74}  \\ 
+			\btext{\textsc{prod$_{median}$}} & \btext{> 22} & \btext{25} & \btext{79\%} & \btext{1} & \btext{25} & \btext{79\%} & \btext{0.55} & \btext{0.96} & \btext{8.95} & \btext{599.75} \\ 	\midrule	
+			\btext{\textsc{sepsis$_{\phi_1}$}} & \btext{4} & \btext{3} & \btext{1\%} & \btext{4} & \btext{3} & \btext{1\%} & \btext{0.69} & \btext{0.27} & \btext{0.43} & \btext{0.047}\\									
+			\textsc{sepsis$_{mean}$} & \btext{> 26} & 8 & 5\% & \btext{\para{max}} & 8  & 5\% & 0.73 & \btext{0.29} & \btext{1.97} & \btext{0.051}\\ 
+			\textsc{sepsis$_{median}$} &\btext{> 21} & \btext{13} & 27\% & \btext{\para{max}} & \btext{13} & 27\% & \btext{0.45} &	\btext{0.64} & \btext{2.52} & \btext{13.94} \\ \midrule
+			\btext{\textsc{traffic$_{paid}$}} & \btext{1} & \btext{1} & \btext{1\%} & \btext{1} & \btext{1} & \btext{1\%} & \btext{20.55} & \btext{21.94} & \btext{0.25} & \btext{0.06}\\									
+			\textsc{traffic$_{paid}$} & \btext{> 62} & \btext{11} & \btext{1\%} & \btext{\para{max}} & \btext{11}  & \btext{1\%} & \btext{18.85} & \btext{24.05} & \btext{2.18} & \btext{0.04}\\ 
+			\textsc{traffic$_{median}$} &\btext{> 38} & \btext{11} & \btext{1\%} & \btext{\para{max}} & \btext{11} & \btext{1\%} & \btext{15.71} &	\btext{27.67} & \btext{1.5} & \btext{0.05} \\ \midrule			
 			\bottomrule
 		\end{tabular}}
 		\caption{\nd results on the real-life logs}
 		\label{tab:rl_results}
 \end{table*}
+
+
+%\begin{table*} [h]
+%	\renewcommand{\arraystretch}{1.2}
+%	\centering
+%	\scalebox{0.7}{
+%		\begin{tabular} {l c c c  c c c c c c c}
+%		\toprule
+%			\multirow{4}{*}{\textbf{Dataset}} & \multicolumn{3}{c}{\textbf{\subsetclos}} &  			\multicolumn{3}{c}{\textbf{\minclos}}  & 	\multicolumn{4}{c}{\textbf{ Required Time (s)}} \\ 
+%			\cmidrule(r){2-4} \cmidrule(r){5-7} \cmidrule(r){8-11}
+%			& \textbf{Number of} & \textbf{Min model} & \textbf{Violated} & \textbf{Number of } & \textbf{Min model} & \textbf{Violated} & \multirow{2}{*}{\textbf{Comp.}} & \multirow{2}{*}{\textbf{\textit{\sheriff}}} & \multirow{2}{*}{\textbf{\subsetclos}} & \multirow{2}{*}{\textbf{\minclos}}  \\			
+%			& \textbf{models} & \textbf{size} & \textbf{$L^{-}$ trace \%} & \textbf{models} & \textbf{size} & \textbf{$L^{-}$ trace \%} & & & & \\ \midrule
+%			 \textsc{cerv$_{compl}$} & \para{max} & 4 & 100\% & \para{max} & 4 & 100\% & 0.12 & 0.21 & 0.065 & 0.045\\ \midrule
+%			\textsc{sepsis$_{mean}$} & 1 & 8 & 4.25\% & 1 & 8  & 4.25\% & 0.73 & 0.31 & 0.039 & 0.035\\ 
+%			\textsc{sepsis$_{median}$} & \para{max} & 14 & 26.86\% & 16 & 14 & 26.86\% & 0.45 &	1.05 & 0.2 & 0.087 \\ \midrule
+%			\textsc{bpic12$_{mean}$} & \para{max} & 12 & 1.42\% & \para{max} & 12 & 1.42\% & 13.51 & 17.49 & 0.096 & 0.066  \\ 
+%			\textsc{bpic12$_{median}$} & \para{max} & 23 & 36.59\% & \para{max} & 22 & 36.59\% & 13.32 & 24.31 & 359.164 & 43.846 \\ 			
+%			\bottomrule
+%		\end{tabular}}
+%		\caption{\nd results on the real-life logs}
+%		\label{tab:rl_results}
+%\end{table*}
+
 
 The table shows that for the \textsc{cerv$_{compl}$} dataset, \nd is able to return models that satisfy the whole set of positive traces and violate the whole set of negative traces (the percentage of violated traces in $L^-$ is equal to 100\%) with a very low number of constraints (4). For the other datasets, the returned models are always able to satisfy all traces in $L^+$, however not all the negative traces are violated by the returned models. In case of the datasets built by using the mean of the trace cycle time, the percentage of violated traces is relatively small ($4.25\%$ for \textsc{sepsis$_{mean}$} and $1.24\%$ for \textsc{bpic12$_{mean}$}), as the number of constraints of the returned models ($8$ for \textsc{sepsis$_{mean}$} and $12$ for \textsc{bpic12$_{mean}$}). Nevertheless, \nd is able to obtain reasonable results with the real life datasets built with the median of the trace cycle time. Indeed, it is able to identify $14$ (resp. $22$-$23$) constraints able to accept all traces in $L^+$ and to cover about $27\%$ (resp. $37\%$) of the traces in $L^-$ for \textsc{sepsis$_{median}$} (resp. \textsc{bpic12$_{median}$}). The difference in terms of results between the \textsc{cerv$_{compl}$} and the other datasets is not surprising. Indeed, while what characterizes positive and negative traces in the \textsc{cerv$_{compl}$} dataset depends upon the control flow (i.e., it depends on whether each execution complies with the cervical cancer screening protocol adopted by the screening center), when mean and median cycle time are used, the difference between positive and negative traces could likely not exclusively depend upon the control flow of the considered traces. Overall, the inability to identify a set of constraints that is able to fulfil all traces  in $L^+$ and to violate all negative ones is due to a bias of the considered language (Declare without data) that does not allow to explain the positive traces without the negative ones.
 
