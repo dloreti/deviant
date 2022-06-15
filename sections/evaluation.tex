@@ -94,17 +94,17 @@ Table \ref{tab:syntResults} summarize the obtained results and reports the first
 \toprule
 Scenario & Positive Trace \# & Negative Trace \#  & Time & Originally Violated Constraint & \tcolor{blue}{Best } Discovered Model \\
 \midrule
-$\multirow{4}{*}{(a)}$ & \multirow{4}{*}{64,000} & \multirow{4}{*}{25,600} & \bf{Total: \fpeval{81.78 + 1.94 + 109.74 + 3.32 + 15.165}s}  \\
-& & & Compatibles:  \fpeval{81.78 + 1.94}s & \emph{precedence(assess\_loan\_risk,}  & \emph{precedence(assess\_loan\_risk,} \\
-& & & \textit{\sheriff}: \fpeval{(109.74 + 3.32)-(81.78 + 1.94)}s  & \emph{assess\_eligibility)} & \emph{assess\_eligibility)} \\
-& & & Optimisation: 15.165s & & \\
+$\multirow{4}{*}{(a)}$ & \multirow{4}{*}{$64\,000$} & \multirow{4}{*}{$25\,600$} & \bf{Total: \btext{\fpeval{14.3+8.01+1.15}s}}  \\
+& & & Compatibles:  \btext{14.3s} & \emph{precedence(assess\_loan\_risk,}  & \emph{precedence(assess\_loan\_risk,} \\
+& & & \textit{\sheriff}: \btext{8.01s}  & \emph{assess\_eligibility)} & \emph{assess\_eligibility)} \\
+& & & Optimisation: \btext{1.15s} & & \\
 %
 \midrule
 %
-$\multirow{4}{*}{(b)}$ & \multirow{4}{*}{64,000} & \multirow{4}{*}{10,240} & \bf{Total: \fpeval{81.78 + 1.94 + 94.51 + 2.96 + 1.379}s} \\
-& & & Compatibles:  \fpeval{81.78 + 1.94}s & \emph{exclusive\_choice(send\_acceptance\_pack,} & \emph{coExistence(reject\_application,} \\
-& & & \textit{\sheriff}:  \fpeval{(94.51 + 2.96)-(81.78 + 1.94)}s  & \emph{receive\_negative\_ feedback)} & \emph{receive\_negative\_feedback)}\\
-& & & Optimisation: 1.379s & & \\
+$\multirow{4}{*}{(b)}$ & \multirow{4}{*}{$64\,000$} & \multirow{4}{*}{$10\,240$} & \bf{Total: \btext{\fpeval{14.3+3.2+0.17}s}} \\
+& & & Compatibles:  \btext{14.3s} & \emph{exclusive\_choice(send\_acceptance\_pack,} & \emph{coExistence(reject\_application,} \\
+& & & \textit{\sheriff}:  \btext{3.2s}  & \emph{receive\_negative\_ feedback)} & \emph{receive\_negative\_feedback)}\\
+& & & Optimisation: \btext{0.17s} & & \\
 \bottomrule
 \end{tabular}
 }
@@ -292,10 +292,14 @@ The results obtained by applying the \nd algorithm are summarised in Table~\ref{
 			\btext{\textsc{cerv$_{median}$}} & \btext{> 21} & \btext{1} & \btext{100\%} & \btext{\para{max}} & \btext{1} & \btext{100\%} & \btext{0.02} & \btext{0.97} & \btext{11.47} & \btext{7.04} \\ 	\midrule
 			\btext{\textsc{dreyers$_{reset}$}} & \btext{> 80} & \btext{8} & \btext{99\%} & \btext{\para{max}} & \btext{8} & \btext{99\%} & \btext{1.67} & \btext{0.17} & \btext{16.42} & \btext{0.11}\\ 
 			\btext{\textsc{dreyers$_{mean}$}} & \btext{> 20} & \btext{3} & \btext{100\%} & \btext{\para{max}}& \btext{3} & \btext{100\%} & \btext{0.56} & \btext{2.69} & \btext{20.03} & \btext{230.44}  \\ 
-			\btext{\textsc{dreyers$_{median}$}} & \btext{> 21} & \btext{14} & \btext{97\%} & \btext{1} & \btext{14} & \btext{97\%} & \btext{1.14} & \btext{1.24} & \btext{10.89} & \btext{599.76} \\ 	\midrule
-			\btext{\textsc{prod$_{rej}$}} & \btext{> 24} & \btext{21} & \btext{41\%} & \btext{1} & \btext{21} & \btext{41\%} & \btext{0.8} & \btext{0.54} & \btext{6.151} & \btext{599.74}\\ 
-			\btext{\textsc{prod$_{mean}$}} & \btext{> 21} & \btext{20} & \btext{82\%} & \btext{1}& \btext{20} & \btext{82\%} & \btext{0.72} & \btext{0.68} & \btext{7.19} & \btext{599.74}  \\ 
-			\btext{\textsc{prod$_{median}$}} & \btext{> 22} & \btext{25} & \btext{79\%} & \btext{1} & \btext{25} & \btext{79\%} & \btext{0.55} & \btext{0.96} & \btext{8.95} & \btext{599.75} \\ 	\midrule	
+			\btext{\textsc{dreyers$_{median}$}} & \btext{> 21} & \btext{14} & \btext{97\%} & \btext{1} & \btext{14} & \btext{97\%} & \btext{1.14} & \btext{1.24} & \btext{10.89} & \btext{timeout} \\ 	\midrule
+			%\btext{599.76} \\ 	\midrule
+			\btext{\textsc{prod$_{rej}$}} & \btext{> 24} & \btext{21} & \btext{41\%} & \btext{1} & \btext{21} & \btext{41\%} & \btext{0.8} & \btext{0.54} & \btext{6.151} & \btext{timeout} \\
+			%\btext{599.74}\\ 
+			\btext{\textsc{prod$_{mean}$}} & \btext{> 21} & \btext{20} & \btext{82\%} & \btext{1}& \btext{20} & \btext{82\%} & \btext{0.72} & \btext{0.68} & \btext{7.19} & \btext{timeout}\\
+			%\btext{599.74}  \\ 
+			\btext{\textsc{prod$_{median}$}} & \btext{> 22} & \btext{25} & \btext{79\%} & \btext{1} & \btext{25} & \btext{79\%} & \btext{0.55} & \btext{0.96} & \btext{8.95} & \btext{timeout} \\ \midrule
+			%\btext{599.75} \\ 	\midrule	
 			\btext{\textsc{sepsis$_{\phi_1}$}} & \btext{4} & \btext{3} & \btext{1\%} & \btext{4} & \btext{3} & \btext{1\%} & \btext{0.69} & \btext{0.27} & \btext{0.43} & \btext{0.047}\\									
 			\textsc{sepsis$_{mean}$} & \btext{> 26} & 8 & 5\% & \btext{\para{max}} & 8  & 5\% & 0.73 & \btext{0.29} & \btext{1.97} & \btext{0.051}\\ 
 			\textsc{sepsis$_{median}$} &\btext{> 21} & \btext{13} & 27\% & \btext{\para{max}} & \btext{13} & 27\% & \btext{0.45} &	\btext{0.64} & \btext{2.52} & \btext{13.94} \\ \midrule
