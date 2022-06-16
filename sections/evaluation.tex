@@ -94,17 +94,17 @@ Table \ref{tab:syntResults} summarize the obtained results and reports the first
 \toprule
 Scenario & Positive Trace \# & Negative Trace \#  & Time & Originally Violated Constraint & \tcolor{blue}{Best } Discovered Model \\
 \midrule
-$\multirow{4}{*}{(a)}$ & \multirow{4}{*}{$64\,000$} & \multirow{4}{*}{$25\,600$} & \bf{Total: \btext{\fpeval{14.3+8.01+1.15}s}}  \\
-& & & Compatibles:  \btext{14.3s} & \emph{precedence(assess\_loan\_risk,}  & \emph{precedence(assess\_loan\_risk,} \\
-& & & \textit{\sheriff}: \btext{8.01s}  & \emph{assess\_eligibility)} & \emph{assess\_eligibility)} \\
-& & & Optimisation: \btext{1.15s} & & \\
+$\multirow{4}{*}{(a)}$ & \multirow{4}{*}{$64\,000$} & \multirow{4}{*}{$25\,600$} & \bf{Total: \btext{\fpeval{13.96+7.85+1.12}s}}  \\
+& & & Compatibles:  \btext{13.96s} & \emph{precedence(assess\_loan\_risk,}  & \emph{precedence(assess\_loan\_risk,} \\
+& & & \textit{\sheriff}: \btext{7.85s}  & \emph{assess\_eligibility)} & \emph{assess\_eligibility)} \\
+& & & Optimisation: \btext{1.12s} & & \\
 %
 \midrule
 %
-$\multirow{4}{*}{(b)}$ & \multirow{4}{*}{$64\,000$} & \multirow{4}{*}{$10\,240$} & \bf{Total: \btext{\fpeval{14.3+3.2+0.17}s}} \\
-& & & Compatibles:  \btext{14.3s} & \emph{exclusive\_choice(send\_acceptance\_pack,} & \emph{coExistence(reject\_application,} \\
-& & & \textit{\sheriff}:  \btext{3.2s}  & \emph{receive\_negative\_ feedback)} & \emph{receive\_negative\_feedback)}\\
-& & & Optimisation: \btext{0.17s} & & \\
+$\multirow{4}{*}{(b)}$ & \multirow{4}{*}{$64\,000$} & \multirow{4}{*}{$10\,240$} & \bf{Total: \btext{\fpeval{14.3+3.2+0.18}s}} \\
+& & & Compatibles:  \btext{13.96s} & \emph{exclusive\_choice(send\_acceptance\_pack,} & \emph{coExistence(reject\_application,} \\
+& & & \textit{\sheriff}:  \btext{3.4s}  & \emph{receive\_negative\_ feedback)} & \emph{receive\_negative\_feedback)}\\
+& & & Optimisation: \btext{0.18s} & & \\
 \bottomrule
 \end{tabular}
 }
@@ -284,28 +284,28 @@ The results obtained by applying the \nd algorithm are summarised in Table~\ref{
 			\cmidrule(r){2-4} \cmidrule(r){5-7} \cmidrule(r){8-11}
 			& \textbf{Number of} & \textbf{Min model} & \textbf{Violated} & \textbf{Number of } & \textbf{Min model} & \textbf{Violated} & \multirow{2}{*}{\textbf{Comp.}} & \multirow{2}{*}{\textbf{\textit{\sheriff}}} & \multirow{2}{*}{\textbf{\subsetclos}} & \multirow{2}{*}{\textbf{\minclos}}  \\			
 			& \textbf{models} & \textbf{size} & \textbf{$L^{-}$ trace \%} & \textbf{models} & \textbf{size} & \textbf{$L^{-}$ trace \%} & & & & \\ \midrule
-			\btext{\textsc{bpic12$_{CANC}$}} & \btext{\para{max}} & \btext{1} & \btext{100\%} & \btext{13} & \btext{1} & \btext{100\%} & \btext{5.07} & \btext{12.28} & \btext{22.28} & \btext{3.98}  \\ 
-			\textsc{bpic12$_{mean}$} & \btext{\para{max}} & \btext{13} & \btext{0.91\%} & \btext{\para{max}}& \btext{13} & \btext{0.91\%} & \btext{2.84} & \btext{6.14} & \btext{15.65} & \btext{7.73}  \\ 
-			\textsc{bpic12$_{median}$} & \btext{\para{max}} & \btext{21} & \btext{32.71\%} & \btext{\para{max}} & \btext{21} & \btext{32.71\%} & \btext{2.15} & \btext{7.19} & \btext{5.67} & \btext{77.62} \\ 	\midrule
-			\btext{\textsc{cerv$_{compl}$}} & \btext{\para{max}} & \btext{4} & 100\% & \para{max} & 4 & 100\% & \btext{0.39} & \btext{0.08} & \btext{19.24} & \btext{0.08}\\ 
-			\btext{\textsc{cerv$_{mean}$}} & \btext{\para{max}} & \btext{1} & \btext{100\%} & \btext{\para{max}}& \btext{1} & \btext{100\%} & \btext{0.01} & \btext{0.92} & \btext{10.22} & \btext{5.21}  \\ 
-			\btext{\textsc{cerv$_{median}$}} & \btext{\para{max}} & \btext{1} & \btext{100\%} & \btext{1} & \btext{1} & \btext{100\%} & \btext{0.02} & \btext{0.97} & \btext{11.47} & \btext{7.04} \\ 	\midrule
-			\btext{\textsc{dreyers$_{reset}$}} & \btext{\para{max}} & \btext{8} & \btext{98.56\%} & \btext{\para{max}} & \btext{8} & \btext{98.56\%} & \btext{1.67} & \btext{0.17} & \btext{16.42} & \btext{0.11}\\ 
-			\btext{\textsc{dreyers$_{mean}$}} & \btext{\para{max}} & \btext{3} & \btext{100\%} & \btext{\para{max}}& \btext{3} & \btext{100\%} & \btext{0.56} & \btext{2.69} & \btext{20.03} & \btext{230.44}  \\ 
-			\btext{\textsc{dreyers$_{median}$}} & \btext{\para{max}} & \btext{14} & \btext{96.94\%} & \btext{1} & \btext{14} & \btext{96.94\%} & \btext{1.14} & \btext{1.24} & \btext{10.89} & \btext{timeout} \\ 	\midrule
+			\btext{\textsc{bpic12$_{CANC}$}} & \btext{\para{max}} & \btext{1} & \btext{100\%} & \btext{2} & \btext{1} & \btext{100\%} & \btext{4.92} & \btext{12.39} & \btext{22.15} & \btext{4}  \\ 
+			\textsc{bpic12$_{mean}$} & \btext{\para{max}} & \btext{13} & \btext{0.91\%} & \btext{\para{max}}& \btext{13} & \btext{0.91\%} & \btext{2.83} & \btext{5.87} & \btext{19.99} & \btext{0.08}  \\ 
+			\textsc{bpic12$_{median}$} & \btext{\para{max}} & \btext{23} & \btext{32.71\%} & \btext{\para{max}} & \btext{23} & \btext{32.71\%} & \btext{2.13} & \btext{7.24} & \btext{6.59} & \btext{54.24} \\ 	\midrule
+			\btext{\textsc{cerv$_{compl}$}} & \btext{\para{max}} & \btext{4} & 100\% & \para{max} & 4 & 100\% & \btext{0.4} & \btext{0.06} & \btext{19.24} & \btext{0.05}\\ 
+			\btext{\textsc{cerv$_{mean}$}} & \btext{\para{max}} & \btext{2} & \btext{100\%} & \btext{\para{max}}& \btext{2} & \btext{100\%} & \btext{0.01} & \btext{0.91} & \btext{10.86} & \btext{7.79}  \\ 
+			\btext{\textsc{cerv$_{median}$}} & \btext{\para{max}} & \btext{1} & \btext{100\%} & \btext{1} & \btext{1} & \btext{100\%} & \btext{0.01} & \btext{0.84} & \btext{11.8} & \btext{0.5} \\ 	\midrule
+			\btext{\textsc{dreyers$_{reset}$}} & \btext{\para{max}} & \btext{8} & \btext{98.56\%} & \btext{4} & \btext{8} & \btext{98.56\%} & \btext{1.62} & \btext{0.1} & \btext{78.03} & \btext{0.12}\\ 
+			\btext{\textsc{dreyers$_{mean}$}} & \btext{\para{max}} & \btext{4} & \btext{100\%} & \btext{\para{max}}& \btext{4} & \btext{100\%} & \btext{0.6} & \btext{2.56} & \btext{23.77} & \btext{462.09}  \\ 
+			\btext{\textsc{dreyers$_{median}$}} & \btext{\para{max}} & \btext{14} & \btext{96.94\%} & \btext{1} & \btext{14} & \btext{96.94\%} & \btext{1.25} & \btext{1.07} & \btext{81.16} & \btext{timeout} \\ 	\midrule
 			%\btext{599.76} \\ 	\midrule
-			\btext{\textsc{prod$_{rej}$}} & \btext{\para{max}} & \btext{21} & \btext{40.17\%} & \btext{1} & \btext{21} & \btext{40.17\%} & \btext{0.8} & \btext{0.54} & \btext{6.151} & \btext{timeout} \\
+			\btext{\textsc{prod$_{rej}$}} & \btext{\para{max}} & \btext{21} & \btext{40.17\%} & \btext{1} & \btext{21} & \btext{40.17\%} & \btext{0.8} & \btext{0.41} & \btext{7.03} & \btext{timeout} \\
 			%\btext{599.74}\\ 
-			\btext{\textsc{prod$_{mean}$}} & \btext{\para{max}} & \btext{20} & \btext{81.94\%} & \btext{1}& \btext{20} & \btext{81.94\%} & \btext{0.72} & \btext{0.68} & \btext{7.19} & \btext{timeout}\\
+			\btext{\textsc{prod$_{mean}$}} & \btext{\para{max}} & \btext{21} & \btext{81.94\%} & \btext{1}& \btext{21} & \btext{81.94\%} & \btext{0.71} & \btext{0.66} & \btext{8} & \btext{timeout}\\
 			%\btext{599.74}  \\ 
-			\btext{\textsc{prod$_{median}$}} & \btext{\para{max}} & \btext{25} & \btext{78.18\%} & \btext{1} & \btext{25} & \btext{78.18\%} & \btext{0.55} & \btext{0.96} & \btext{8.95} & \btext{timeout} \\ \midrule
+			\btext{\textsc{prod$_{median}$}} & \btext{\para{max}} & \btext{30} & \btext{78.18\%} & \btext{1} & \btext{30} & \btext{78.18\%} & \btext{0.56} & \btext{0.93} & \btext{12.31} & \btext{timeout} \\ \midrule
 			%\btext{599.75} \\ 	\midrule	
-			\btext{\textsc{sepsis$_{\phi_1}$}} & \btext{4} & \btext{3} & \btext{0.82\%} & \btext{4} & \btext{3} & \btext{0.82\%} & \btext{0.69} & \btext{0.27} & \btext{0.43} & \btext{0.05}\\									
-			\textsc{sepsis$_{mean}$} & \btext{\para{max}} & 8 & 4.25\% & \btext{\para{max}} & 8  & 4.25\% & 0.73 & \btext{0.29} & \btext{1.97} & \btext{0.05}\\ 
-			\textsc{sepsis$_{median}$} &\btext{\para{max}} & \btext{13} & 26.86\% & \btext{\para{max}} & \btext{13} & 26.86\% & \btext{0.45} &	\btext{0.64} & \btext{2.52} & \btext{13.94} \\ \midrule
-			\btext{\textsc{traffic$_{paid}$}} & \btext{1} & \btext{1} & \btext{0.01\%} & \btext{1} & \btext{1} & \btext{0.01\%} & \btext{20.55} & \btext{21.94} & \btext{0.25} & \btext{0.06}\\									
-			\btext{\textsc{traffic$_{mean}$}} & \btext{\para{max}} & \btext{11} & \btext{0.76\%} & \btext{\para{max}} & \btext{11}  & \btext{0.76\%} & \btext{18.85} & \btext{24.05} & \btext{2.18} & \btext{0.04}\\ 
-			\btext{\textsc{traffic$_{median}$}} &\btext{\para{max}} & \btext{11} & \btext{0.75\%} & \btext{\para{max}} & \btext{11} & \btext{0.75\%} & \btext{15.71} &	\btext{27.67} & \btext{1.5} & \btext{0.05} \\ \midrule			
+			\btext{\textsc{sepsis$_{\phi_1}$}} & \btext{3} & \btext{3} & \btext{0.82\%} & \btext{2} & \btext{3} & \btext{0.82\%} & \btext{0.67} & \btext{0.32} & \btext{0.37} & \btext{0.05}\\									
+			\textsc{sepsis$_{mean}$} & \btext{2} & 8 & 4.25\% & \btext{2} & 8  & 4.25\% & \btext{0.72} & \btext{0.26} & \btext{0.4} & \btext{0.06}\\ 
+			\textsc{sepsis$_{median}$} &\btext{\para{max}} & \btext{14} & 26.86\% & \btext{\para{max}} & \btext{14} & 26.86\% & \btext{0.46} &	\btext{0.62} & \btext{2.99} & \btext{0.12} \\ \midrule
+			\btext{\textsc{traffic$_{paid}$}} & \btext{1} & \btext{1} & \btext{0.01\%} & \btext{1} & \btext{1} & \btext{0.01\%} & \btext{20.51} & \btext{20.82} & \btext{0.26} & \btext{0.07}\\									
+			\btext{\textsc{traffic$_{mean}$}} & \btext{\para{max}} & \btext{13} & \btext{0.76\%} & \btext{2} & \btext{13}  & \btext{0.76\%} & \btext{18.98} & \btext{23.4} & \btext{5.63} & \btext{0.05}\\ 
+			\btext{\textsc{traffic$_{median}$}} &\btext{\para{max}} & \btext{13} & \btext{0.75\%} & \btext{4} & \btext{13} & \btext{0.75\%} & \btext{15.35} &	\btext{28.03} & \btext{2.02} & \btext{0.04} \\ \midrule			
 			\bottomrule
 		\end{tabular}}
 		\caption{\nd results on the real-life logs}
@@ -335,7 +335,7 @@ The results obtained by applying the \nd algorithm are summarised in Table~\ref{
 %\end{table*}
 
 
-The table shows that for the \textsc{cerv$_{compl}$} dataset, \nd is able to return models that satisfy the whole set of positive traces and violate the whole set of negative traces (the percentage of violated traces in $L^-$ is equal to 100\%) with a very low number of constraints (4). \btext{A similar result is obtained also with the \textsc{BPIC12$_{CANC}$} dataset (with a minimum model of a single constraint) and with the \textsc{Dreyers$_{mean}$} dataset (with a minimum model composed of $3$ constraints).} For the other datasets, the returned models are always able to satisfy all traces in $L^+$, however not all the negative traces are violated by the returned models. \btext{For some of the datasets, as for instance, the \textsc{Dreyers$_{reset}$} and the \textsc{Dreyers$_{median}$}, the percentage of violated traces is quite close to $100\%$ ($98.56\%$ and $96.94\%$, respectively), with relatively small models ($8$ and $14$ constraints, respectively). For other datasets, as the \textsc{BPIC12$_{mean}$}, \textsc{Sepsis$_{\phi1}$}, \textsc{Sepsis$_{mean}$}, \textsc{traffic$_{paid}$}, \textsc{traffic$_{mean}$} and \textsc{traffic$_{median}$}, the percentage of violated traces is relatively small ($4.25\%$ for \textsc{sepsis$_{mean}$} and less than $1\%$ for all the other datasets), as the number of constraints of the returned models (ranging from $1$ for \textsc{traffic$_{paid}$} to 13 for \textsc{bpic12$_{mean}$}. However, while for \textsc{sepsis$_{mean}$} and \textsc{BPIC12$_{mean}$} the number of $L^-$ traces violated by the model returned by \nd is relatively low (around $49$ and $4$, respectively), in case of the \textsc{traffic} log, \nd returns a model able to violate around $600$ traces in $L^-$. Moreover, \nd is able to obtain reasonable results also with the other real datasets. For the datasets related to the \textsc{prod} event log it returns slightly larger minimum models (including about $20$-$25$ constraints) able to to accept all traces in $L^+$ and to violate from around $40\%$ to $80\%$ of $L^-$ traces. In the case of \textsc{BPIC12$_median$} and \textsc{SEPSIS$_median$}, the models discovered with \nd are instead able to violate around $30\%$ of the traces in $L^-$. }
+The table shows that for the \textsc{cerv$_{compl}$} dataset, \nd is able to return models that satisfy the whole set of positive traces and violate the whole set of negative traces (the percentage of violated traces in $L^-$ is equal to 100\%) with a very low number of constraints (4). \btext{A similar result is obtained also with the \textsc{BPIC12$_{CANC}$} dataset (with a minimum model of a single constraint) and with the \textsc{Dreyers$_{mean}$} dataset (with a minimum model composed of $3$ constraints).} For the other datasets, the returned models are always able to satisfy all traces in $L^+$, however not all the negative traces are violated by the returned models. \btext{For some of the datasets, as for instance, the \textsc{Dreyers$_{reset}$} and the \textsc{Dreyers$_{median}$}, the percentage of violated traces is quite close to $100\%$ ($98.56\%$ and $96.94\%$, respectively), with relatively small models ($8$ and $14$ constraints, respectively). For other datasets, as the \textsc{BPIC12$_{mean}$}, \textsc{Sepsis$_{\phi1}$}, \textsc{Sepsis$_{mean}$}, \textsc{traffic$_{paid}$}, \textsc{traffic$_{mean}$} and \textsc{traffic$_{median}$}, the percentage of violated traces is relatively small ($4.25\%$ for \textsc{sepsis$_{mean}$} and less than $1\%$ for all the other datasets), as the number of constraints of the returned models (ranging from $1$ for \textsc{traffic$_{paid}$} to 13 for \textsc{bpic12$_{mean}$}, \textsc{traffic$_{mean}$} and \textsc{traffic$_{median}$}. However, while for \textsc{sepsis$_{mean}$} and \textsc{BPIC12$_{mean}$} the number of $L^-$ traces violated by the model returned by \nd is relatively low (around $49$ and $4$, respectively), in case of the \textsc{traffic} log, \nd returns a model able to violate around $600$ traces in $L^-$. Moreover, \nd is able to obtain reasonable results also with the other real datasets. For the datasets related to the \textsc{prod} event log it returns slightly larger minimum models (including about $21$-$30$ constraints) able to to accept all traces in $L^+$ and to violate from around $40\%$ to $80\%$ of $L^-$ traces. In the case of \textsc{BPIC12$_median$} and \textsc{SEPSIS$_median$}, the models discovered with \nd are instead able to violate around $30\%$ of the traces in $L^-$. }
 %In case of the datasets built by using the mean of the trace cycle time, the percentage of violated traces is relatively small ($4.25\%$ for \textsc{sepsis$_{mean}$} and $1.24\%$ for \textsc{bpic12$_{mean}$}), as the number of constraints of the returned models ($8$ for \textsc{sepsis$_{mean}$} and $12$ for \textsc{bpic12$_{mean}$}).
  %Nevertheless, \nd is able to obtain reasonable results with the real life datasets built with the median of the trace cycle time. Indeed, it is able to identify $14$ (resp. $22$-$23$) constraints able to accept all traces in $L^+$ and to cover about $27\%$ (resp. $37\%$) of the traces in $L^-$ for \textsc{sepsis$_{median}$} (resp. \textsc{bpic12$_{median}$}).
 % The difference in terms of results between the \textsc{cerv$_{compl}$} and the other datasets is not surprising. Indeed, while what characterizes positive and negative traces in the \textsc{cerv$_{compl}$} dataset depends upon the control flow (i.e., it depends on whether each execution complies with the cervical cancer screening protocol adopted by the screening center), when mean and median cycle time are used, the difference between positive and negative traces could likely not exclusively depend upon the control flow of the considered traces. 
@@ -346,7 +346,7 @@ Overall, the inability to identify a set of constraints that is able to fulfil a
 %(the size of the set of the positive traces is about 4 times, resp. 2 times, the size of the set of the negative traces in \textsc{sepsis$_{mean}$} and \textsc{BPIC12$_{mean}$}, respectively)
  %characterizing the high number of traces with a low or medium cycle time while excluding the ones with a very high cycle time can become hard. 
 
-The table also shows that \nd is overall very fast for small datasets \btext{with \subsetclos (e.g., less than 30 seconds for \textsc{cerv}, \textsc{dreyers}, \textsc{prod} and \textsc{sepsis})}, while it requires some more time for large ones (e.g., \textsc{bpic12} and \textsc{traffic}). While the time required for computing \textit{compatibles} and \textit{\sheriff} seems to be related to the size of the dataset, the time required for computing the optimizations \btext{especially the \minclos} seems to depend also on other characteristics of the datasets.
+The table also shows that \nd is overall very fast for small datasets \btext{with \subsetclos (e.g., less than 30 seconds for \textsc{cerv}, \\textsc{prod} and \textsc{sepsis}), while it requires some more time for the large ones (e.g., \textsc{bpic12} and \textsc{traffic}) and the ones with a large alphabet (e.g., \textsc{dreyers})}. While the time required for computing \textit{compatibles} and \textit{\sheriff} seems to be related to the size \btext{and complexity} of the dataset, the time required for computing the optimizations \btext{especially the \minclos} seems to depend also on other characteristics of the datasets.
 
 %We compared the obtained results with the ones obtained with state-of-the-art techniques for the discovery of declarative models starting (i) from  only positive traces; and (ii) from both positive and negative traces. 
 
@@ -370,7 +370,7 @@ As hypothesised, the optimisation mechanism in \nd is able to identify a small s
 			\textbf{Dataset} & \textbf{Model size} & \textbf{Violated L$^{-}$ trace \%}  \\ \midrule
       \btext{\textsc{bpic12$_{CANC}$}} & \btext{795} & \btext{100\%} \\ 			
       \textsc{bpic12$_{mean}$} & 515 & 0.91\% \\ 
-			\textsc{bpic12$_{median}$} & 532 & 32.7\% \\ \midrule 			
+			\textsc{bpic12$_{median}$} & 532 & \btext{32.55}\% \\ \midrule 			
 			\textsc{cerv$_{compl}$} & 323 & 100\% \\
 			\btext{\textsc{cerv$_{mean}$}} & \btext{6} & \btext{0\%}\\
 			\btext{\textsc{cerv$_{median}$}} & \btext{2} & \btext{0\%}\\ \midrule
