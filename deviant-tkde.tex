@@ -57,10 +57,6 @@
 % \makeatother
 
 
-\usepackage{listings}
-\lstdefinestyle{base}{
-moredelim=**[is][\color{blue}]{°}{°},
-}
 
 \usepackage{amsthm}
 
@@ -86,6 +82,15 @@ moredelim=**[is][\color{blue}]{°}{°},
 
 
 \usepackage{xspace}
+
+%%%%%%%%%%%%%%%% MODIFY HERE FOR BLUE CHANGES
+\newcommand{\blue}{blue}
+
+\usepackage{listings}
+\lstdefinestyle{base}{
+moredelim=**[is][\color{\blue}]{°}{°},
+}
+
 \newcommand{\nd}{\texttt{NegDis}\xspace}
 \newcommand{\declare}{\texttt{Declare}\xspace}
 \newcommand{\rum}{\texttt{RuM}\xspace}
@@ -95,7 +100,9 @@ moredelim=**[is][\color{blue}]{°}{°},
 \newcommand{\subsetclos}{\textsc{Subset}\xspace}
 \newcommand\dec[1]{$\mathsf{#1}$}
 \newcommand\para[1]{\textnormal{\textsf{#1}}}
-\newcommand\btext[1]{{\tcolor{blue}{#1}}}
+
+%%%%%%%%%%%%%%%% MODIFY HERE FOR BLUE CHANGES
+\newcommand\btext[1]{{\tcolor{\blue}{#1}}}
 \newcommand\paragrafo[1]{{\smallskip \noindent \textit{#1}.}}
 
 \newcommand{\ltl}{LTL\xspace}
