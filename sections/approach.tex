@@ -32,7 +32,7 @@ Note that this definition is consistent with that of subsumption between Declare
 %\theoremstyle{plain}
 \begin{example}{}
 %The constraint $\mathsf{INIT(a)}$ accepts only traces that start with $\mathsf{a}$. Hence, $\mathsf{a}$ exists in each one of those accepted traces. In other words, all those traces satisfy also the constraint $\mathsf{EXISTENCE(a)}$. However, the latter constraint accepts also traces that contains $\mathsf{a}$ even if they do not start with $\mathsf{a}$. This relation is valid irrespectively of the involved activity. In a sense, we could say that the template $\mathsf{EXISTENCE(X)}$ is \emph{more general} than $\mathsf{INIT(X)}$.
-\tcolor{blue}{The model $M=\{\mathsf{INIT(a)\}}$ accepts only traces that start with $\mathsf{a}$. Hence, $\mathsf{a}$ exists in each one of those accepted traces. In other words, all those traces also satisfy the model $M'=\{\mathsf{EXISTENCE(a)}\}$. However, the latter model also accepts traces that contain $\mathsf{a}$ even if they do not start with $\mathsf{a}$. This relation is valid irrespectively of the involved activity. In a sense, we could say that the template $\mathsf{EXISTENCE(X)}$ is \emph{more general} than $\mathsf{INIT(X)}$.}
+\tcolor{blue}{The model $M'=\{\mathsf{INIT(a)\}}$ accepts only traces that start with $\mathsf{a}$. Hence, $\mathsf{a}$ exists in each one of those accepted traces. In other words, all those traces also satisfy the model $M=\{\mathsf{EXISTENCE(a)}\}$. However, the latter model also accepts traces that contain $\mathsf{a}$ even if they do not start with $\mathsf{a}$ (i.e., $M \succ M'$). This relation is valid irrespectively of the involved activity. In a sense, we could say that the template $\mathsf{EXISTENCE(X)}$ is \emph{more general} than $\mathsf{INIT(X)}$.}
 \end{example}
 This idea is frequently expressed through the subsumption operator $\sqsupseteq$. Given two templates $d, d' \in D$, we say that $d$ \emph{subsumes} $d'$, i.e. $d$ \emph{is more general than} $d'$ (written $d\sqsupseteq d'$), if for any grounding of the involved parameters w.r.t. the activities in $A$, whenever a trace $t \in A^*$ is compliant with $d'$, it is also compliant with $d$ \cite{2017-DiCiccio} .
 
@@ -71,7 +71,7 @@ Unfortunately, the opposite implication does not hold, i.e. if we have $M, M'\su
 
 
 
-\paragrafo{Initial model} A wide body of research has been devoted to techniques to mine declarative process models that characterise a given event log (our positive traces). Our approach can leverage these techniques and refine their results by taking into account the negative examples as well. To this end, we consider a---possibly empty---\emph{initial model} $P$, i.e. a set of Declare constraints that are known to characterise the positive traces. For example, such set can be the expression of domain knowledge or the result of a state-of-the-art discovery algorithm previously applied to $L^+$. 
+\paragrafo{Initial model} A wide body of research has been devoted to techniques to mine declarative process models that characterise a given event log (our positive traces). Our approach can leverage these techniques and refine their results by taking into account the negative examples as well. To this end, we consider a---possibly empty---\emph{initial model} $P$, i.e. a set of Declare constraints that are known to characterise the positive traces. For example, such set can be the expression of domain knowledge or the result of a state-of-the-art discovery algorithm previously run on $L^+$. 
 %To apply our technique we only require that the constraints in $P$ are non-conflicting and all the positive traces are compliant with all the constraints in $P$. We are aware that often state-of-the-art approaches do not emit a model compliant with all the traces in the input log. In these cases, we consider as positive only the traces that are allowed by $P$.
 \tcolor{blue}{To apply our technique we only require that the constraints in $P$ are non-conflicting and all the positive traces are compliant with all the constraints in $P$}\footnote{\tcolor{blue}{We are aware that often state-of-the-art approaches do not emit a model compliant with all the traces in the input log. In these cases, we assume that the positive traces in $L^+$ are a subset of the original input including only the traces compliant with $P$.}}.
 %We are aware of the fact that often this is not guaranteed by state-of-the-art approaches; in these cases we assume that the positive traces are a subset $L'^+$ of the original $L^+$ including only the traces compliant with $P$; i.e.\ $L'^+ = \{ t\in L^+\mid t\models P\}$.
@@ -89,14 +89,13 @@ Given the initial model $P$, a \emph{candidate solution} for the discovery task 
   \item $\forall t\in L^+$ we have $t\models S$;\label{def:cand:sound}
   \item $\forall t\in L^-$ we have $t\not\models S$.
 \end{enumerate}
-\end{definition}
+\end{definition}%
 %\todo[inline]{ST: the third condition is too restrictive, since prevents solutions that exclude only part of $L^-$, also when this is due to the language bias induced by $L^+$. Possible solutions: i) drop it (doesn't make much sense); ii) substitute $L^-$ with the subset of traces that can be excluded by the language bias induced by $L^+$; iii) any other?
-
+%
 %One way of doing (ii) is to define $D[A]_{L^+} = \{ c \in D[A] \mid \forall t\in L^+$ $t\models c\}$ (the \emph{compatibles}) and $L'^- = \{t\in L^-\mid t\not\models D[A]_{L^+}\}$}
-
 \tcolor{blue}{Note that condition~\ref{def:cand:sound} in the definition above ensures that any candidate solution is consistent (i.e., there are no conflicting constraints) when ${L^+}$ is non-empty.}
 
-\paragrafo{Optimality criterion} Clearly, there can be several sets satisfying these conditions. They differ from the way they classify the unknown traces, which are not in $L^+$, nor in $L^-$. Therefore, we need to introduce some way to compare the multiple output models in order to identify the preferable ones.
+\paragrafo{Optimality criterion} Clearly, there can be several sets satisfying \textit{(i), (ii), (iii)}. They differ from the way they classify the unknown traces, which are not in $L^+$, nor in $L^-$. Therefore, we need to introduce some way to compare the multiple output models in order to identify the preferable ones.
 %Clearly, there can be several sets satisfying these conditions and we need to introduce a notion of \emph{fitness} to identify the preferred ones. 
 %
 In some context, \emph{generality} can be a measure of the quality of the solution, i.e. we want to identify the set that is less committing in terms of restricting the admitted traces. In some other context on the contrary, we might be interested in the identification of a more specific model. So besides allowing all traces in $L^+$ and forbidding all traces in $L^-$, the choice between a general or specific model, obviously affects the classification of the unknown traces. Alternatively, \emph{simplicity} is another criterion: one can be interested in the most \emph{simple} solution, i.e. the one that is presumed to be easier to understand irrespectively from the degree of generality/specificity it accomplishes.
@@ -105,11 +104,10 @@ In some context, \emph{generality} can be a measure of the quality of the soluti
 
 Let us focus on \emph{generality} for the moment. In this case, we are interested in the candidate solution $S$ (i.e., satisfying the properties of Definition \ref{def:cand}) such that there is no other candidate solution $S'\subseteq D[A]$  strictly more general than $S$ (i.e., $\nexists~ S'$ s.t. $S\prec S'$).
 %If we consider generality as the fitness measure then we focus on the minimal sets $S$ satisfying the above properties and s.t.\ there is no $S'\subseteq D[A]$ satisfying the properties and strictly more general than $S$ (that is $S\prec S'$).
-
-
+%
 Although testing for strict generality between two set of constraints is a decidable problem, its worst case complexity makes an exact algorithm unfeasible because, recalling definition \ref{def:generality}, it would require to asses the compliance of any trace $t \in A^*$ \tcolor{blue}{with the two models which are going to be compared}.
 For this reason, we propose an alternative method based on comparing the logical consequences that can be deducted from the models.
-
+%
 The method makes use of a set of deduction rules which account for the \emph{subsumption} between Declare templates. Our work integrates the rules introduced in \cite{2017-DiCiccio}, into a function, namely the \emph{deductive closure operator}, which satisfies the properties of extensivity, monotonicity, and idempotence.
 
 
@@ -156,10 +154,10 @@ Thanks to this property, the deductive closure operator can be used to compare D
 We cannot express any subset relation between $M$ and $M'$, thus making Remark \ref{re:subset-generality} inapplicable.
 Nonetheless, if we take into account their closure, we have:
 \begin{align*}
-	& cl(M)=\{\mathsf{EXISTENCE(a)}\}\quad \textnormal{and} \\
+	& cl(M)=\{\mathsf{EXISTENCE(a)}\}\quad \\
 	& cl(M')=\{\mathsf{INIT(a)}, \mathsf{EXISTENCE(a)}\}
 \end{align*}
-As $cl(M)$ is a subset of $cl(M')$, we conclude that $M$ is more general than $M'$.
+As $cl(M) \subseteq cl(M')$, we conclude that $M\succeq M'$.%$M$ is more general than $M'$.
 \end{example}
 %
 \noindent In other words, the closure operator (being based on the subsumption rules) captures the logical consequences deriving from the Declare semantics.
@@ -185,7 +183,7 @@ Due to the nature of the Declare language we cannot provide a complete calculus 
 			$\mathcal{Z}$ & set of models accepting all traces in $L^+$ and rejecting all traces in $L^-$\\
 		\bottomrule
 		\end{tabular}%}
-		\caption{Symbols}
+		\caption{\tcolor{blue}{Symbols}}
 		\label{tab:symbols}
 \end{table}
 
@@ -222,10 +220,10 @@ In this section we introduce the theoretical basis of our \nd approach.
 %  \item $L^-$ log traces labelled as negative. $L^- \subseteq A^*$
 %  \item $P$ initial model. $P\subseteq \{c\in D[A]\quad | \quad \forall t\in L^+,\, t\models c\}$
 %\end{itemize}
-
+%
 For the sake of modularity and easiness of experimenting with different hypotheses and parameters, we divide our approach into two clearly separate stages: the first which identifies the candidate constraints, and a second optimisation stage which selects the solutions. However, these two steps are merged into a single monolithic search-based approach. 
 
-Starting from the set of all constraints $D[A]$, the first stage aims at identifying all the constraints of $D[A]$ which accept all positive traces and reject at least a negative one. To this end, it first computes the set of constraints that accepts all traces in $L^+$, namely the set \emph{compatibles}. 
+Starting from the set of all constraints $D[A]$, the first stage aims at identifying all the constraints of $D[A]$ that accept all positive traces and reject at least a negative one. To this end, it first computes the set of constraints that accepts all traces in $L^+$, namely the set \emph{compatibles}. 
 \begin{equation}
 {compatibles(D[A], L^+)} = \{c\in D[A]~|~\forall t\in L^+,~ t\models c \} \\
 \end{equation}
@@ -255,11 +253,11 @@ Let $\mathcal{Z}$ be all the subsets of $\mathcal{C}$ excluding all negative tra
 Let $L^+=\{\mathsf{ab}\}$, $L^-=\{\mathsf{a, b, ba}\}$, and $D=\{\mathsf{EXISTENCE(X)},\mathsf{RESPONSE(Y,Z)}\}$.
 %
 The set of activities is $A=\{\ \mathsf{a}, \mathsf{b}\ \}$.
-The grounded set of constraints is then $D[A] = \{$ $\mathsf{EXISTENCE(a)}$, $\mathsf{EXISTENCE(b)}$, $\mathsf{RESPONSE(a,b)}$, $\mathsf{RESPONSE(b,a)}\ \}$.
-
+The grounded set of constraints is then $D[A] = \{$$\mathsf{EXISTENCE(a)}$, $\mathsf{EXISTENCE(b)}$, $\mathsf{RESPONSE(a,b)}$, $\mathsf{RESPONSE(b,a)}\}$.
+%
 The \textit{compatibles} set would be:
 \begin{align*}
-compatibles(D[A], L^+) =  \{\ & \mathsf{EXISTENCE(a)},\ \mathsf{EXISTENCE(b)},\\
+compatibles(D[A], L^+)\,{=}\,\{\ & \mathsf{EXISTENCE(a)},\mathsf{EXISTENCE(b)},\\
 &  \mathsf{RESPONSE(a,b)} \ \}	
 \end{align*}
 %
@@ -268,7 +266,7 @@ and the computation of the \textit{\sheriff} function finds:
  \begin{align*}
      &\textit{\sheriff}(\mathsf{a}) =\{\mathsf{EXISTENCE(b)},\ \mathsf{RESPONSE(a,b)}\} \\
      &\textit{\sheriff}(\mathsf{b}) =\{\mathsf{EXISTENCE(a)}\} \\
-     &\textit{sheriff}(\mathsf{ba})=\{\mathsf{RESPONSE(a,b)}\}
+     &\textit{\sheriff}(\mathsf{ba})=\{\mathsf{RESPONSE(a,b)}\}
  \end{align*}
 %
 \end{subequations}
@@ -356,7 +354,7 @@ Conversely, the opposite implication in Theorem 3.1 does not necessarily hold. I
 \label{subsec:impl}
 %To perform our experiments we decided to separate the implementation of the two stages by reusing as much as possible existing systems.
 
-The first stage is implemented via Algorithm \ref{algcand}, which starts by collecting the set $compatibles$ of the constraints that accept (are satisfied by) all the positive traces (Line \ref{algcand:candidates}). Subsequently, each negative trace is associated (by means of the function \textit{\sheriff}) with those constraints in $compatibles$ that reject (are violated by) a trace in $L^-$ (Line \ref{algcand:choices}). Notice that for some negative example, i.e. for some trace $t\in L^-$ we might have $\textit{\sheriff}(t)=\varnothing$ because the chosen language may not be expressive enough to find a constraint able to reject $t$ while admitting all traces of $L^+$. This situation might arise also in case $t$ belongs to both $L^+$ and $L^-$.
+The first stage is implemented via Algorithm \ref{algcand}, which starts by collecting the set $compatibles$ of the constraints that accept all the positive traces (Line \ref{algcand:candidates}). Subsequently, each negative trace is associated (by means of the function \textit{\sheriff}) with those constraints in $compatibles$ that reject a trace in $L^-$ (Line \ref{algcand:choices}). %Notice that for some negative example, i.e. for some trace $t\in L^-$ we might have $\textit{\sheriff}(t)=\varnothing$ because the chosen language may not be expressive enough to find a constraint able to reject $t$ while admitting all traces of $L^+$. This situation might arise also in case $t$ belongs to both $L^+$ and $L^-$.
 %
 
 \makeatletter
@@ -394,8 +392,7 @@ The second optimisation stage has been implemented using the \ac{ASP} system \te
 %
 For example the valid formula $\textsc{Init}(a)\land b\neq a\implies\textsc{Precedence}(a,b)$ that holds for any pair of activities $a, b$ can be written as the rule}
 \begin{lstlisting}[language=prolog, breaklines=true]
-precedence(A,B) :- init(A), activity(B), 
-		   A != B.
+precedence(A,B):-init(A),activity(B), A!=B.
 \end{lstlisting}
 \tcolor{blue}{using a specific predicate (\lstinline[language=prolog]$activity/1$) representing the set of all activities.}\footnote{\tcolor{blue}{By leveraging \textsc{Clingo} function symbols, Declare constraints are encoded as function terms; for example, the constraints derived are represented using the unary predicate \lstinline[language=prolog]$holds/1$: \lstinline[language=prolog,mathescape=true]|holds(precedence($a_1$,$a_2$))|.}}
 
@@ -464,7 +461,7 @@ The optimisation stage is described in Algorithm \ref{alg:select}. The required 
 \end{algorithm}
 
 The algorithm starts by computing a set $L'^-$ of all those negative traces that can be excluded by at least a constraint ($\textit{\sheriff}(t)\neq\varnothing$) and are still instead accepted by the initial model $P$ ($t\models P$). 
-Indeed, albeit from the theoretical point of view we assumed that for each trace $t \in L^-$ there exists at least one Declare constraint in $D[A]$ accepting all positive traces and discarding $t$, real cases might not fulfil this assumption. 
+Indeed, albeit from the theoretical point of view we assumed that for each trace $t \in L^-$ there exists at least one Declare constraint in $D[A]$ accepting all positive traces and discarding $t$, real cases might not fulfil this assumption because the chosen language might not be expressive enough to find a constraint able to reject $t$ while admitting all traces of $L^+$.
 %
 \tcolor{blue}{
 \begin{example}
@@ -478,7 +475,7 @@ The set $\mathcal{C}$ is then \tcolor{blue}{built }(Line \ref{alg:buildC}) by co
 
 Any such $S$ is then included in the solution set $\mathcal{Z}$ if the latter does not contain another solution $S'$ that is better than $S$ according to the custom optimality criterion expressed by the ${is\_better}$ operator (Line \ref{alg:isbetter}). Solutions $S'$ previously founded are kept into $\mathcal{Z}$ only if the newly found solution $S$ is not better than them (Line \ref{alg:previousAreOk}). Notice that both Line \ref{alg:isbetter} and \ref{alg:previousAreOk} make use of the function $is\_better$ in a negated form: this is due to the fact that, according to the chosen optimality criterion, sometimes it would not be possible to compare two solutions.
 
-Regarding the optimality criterion, for example we could consider \emph{generality}. In that case, ${is\_better}$ employs the criteria of Eq. \eqref{eq:most-gen} (for generality) and \eqref{eq:redun} (to avoid redundancy). Conversely, if we are interested in the most specific solution, ${is\_better}$ must implement Eq. \eqref{eq:most-spe} and \eqref{eq:redun}.
+If the chosen optimality criterion is \emph{generality}, ${is\_better}$ employs the criteria of Eq. \eqref{eq:most-gen} (for generality) and \eqref{eq:redun} (to avoid redundancy). Conversely, if we are interested in the most specific solution, ${is\_better}$ must implement Eq. \eqref{eq:most-spe} and \eqref{eq:redun}.
 Finally, when the optimality criterion is \emph{simplicity}, Eq. \eqref{eq:simpl1} and \eqref{eq:simpl2} must be used.
 %
 \tcolor{blue}{In our experiments we implemented the optimisation criteria using ASP \emph{weak constraints}~\cite{ASP:weak:2000}. Describing the underlying technique and precise formulation of the problem is outside the scope of this article; so the reader is referred to our code, available in~\cite{negdis:2021_5158528}, and~\cite{clingo:2019} for details on the usage of weak rules in \textsc{Clingo}. For example, conditions of Equations~\eqref{eq:simpl1} and \eqref{eq:simpl2} are implemented using two predicates \lstinline[language=prolog]$selected/1, holds/1$; representing, respectively, the selected constraints among the candidates and their deduction, with the optimisation statements:}
@@ -534,15 +531,16 @@ Consider the sets of positive and negative examples composed by only one trace e
 \item the alphabet of activities is just $A=\{\mathsf{a, b, c}\}$.
 \end{itemize}
 %
-Then, the set of ground constraints can be easily elicited: $D[A]=\{\mathsf{EXISTENCE(a)}$, $\mathsf{EXISTENCE(b)}$, $\mathsf{EXISTENCE(c)}$, $\mathsf{INIT(a)}$, $\mathsf{INIT(b)}$, $\mathsf{INIT(c)}\}$.
-
-If we want to learn the most general model, Algorithm \ref{algcand} elects the following compatible constraints:
+Then, the set of ground constraints can be easily elicited: $D[A]=\{\mathsf{EXISTENCE(a)}$, $\mathsf{EXISTENCE(b)}$, $\mathsf{EXISTENCE(c)}$, $\mathsf{INIT(a)}$, $\mathsf{INIT(b)}$, $\mathsf{INIT(c)}\}$. 
+%
+If we want to learn the most general model, Algorithm \ref{algcand} elects the following compatible constraints and emits $\textit{\sheriff}(\mathsf{ab})$:
 \begin{align*}
 	{compatibles}=\{ & \mathsf{EXISTENCE(a), EXISTENCE(b)},\\
-	& \mathsf{EXISTENCE(c), INIT(b)}\}
+	& \mathsf{EXISTENCE(c), INIT(b)}\}\\
+	\textit{\sheriff}(\mathsf{ab})=\{&\mathsf{EXISTENCE(c), INIT(b)}\}.
 \end{align*}
-\noindent and emits:
-$$\textit{\sheriff}(\mathsf{ab})=\{\mathsf{EXISTENCE(c), INIT(b)}\}.$$
+%\noindent and emits:
+%$$\textit{\sheriff}(\mathsf{ab})=\{\mathsf{EXISTENCE(c), INIT(b)}\}.$$
 
 In this simple case, the subsets satisfying the condition of Line \ref{alg:subsetS} in Algorithm \ref{alg:select} would be: 
 \begin{align*}
@@ -555,7 +553,7 @@ In this simple case, the subsets satisfying the condition of Line \ref{alg:subse
  ... &
 \end{align*}
 
-As we are interested in the most general models, both $S_1=$ $\{\ \mathsf{EXISTENCE(c)}\ \}$ and $S_2=\{\ \mathsf{INIT(b)}\ \}$ are optimal solutions. Note that these two solutions cannot be compared according to the definitions of generality because there exist traces (such as the unknown trace $\mathsf{b}$) compliant with $S_2$ and non-compliant with $S_1$ (i.e., there is no subset relation between ${C}_{S_1}$ and ${C}_{S_2}$).
+As we are interested in the most general models, both $S_1=$ $\{\ \mathsf{EXISTENCE(c)}\ \}$ and $S_2=\{\ \mathsf{INIT(b)}\ \}$ are optimal solutions. Note that these two solutions cannot be compared according to the definitions of generality because there exist traces (such as the unknown trace $\mathsf{b}$) compliant with $S_2$ and non-compliant with $S_1$ (i.e., there is no subset relation between $S_1$ and $S_2$).
 Obviously, the choice of one model over another influences the classification of all those unknown traces that---being not part of the input log---are not labelled as positive of negative.
 
 If we were interested in the most simple solution instead, $S_1=\{\ \mathsf{EXISTENCE(c)}\ \}$ would have been our choice, because its closure is the smaller in cardinality.
