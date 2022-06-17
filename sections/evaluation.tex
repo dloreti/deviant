@@ -10,7 +10,7 @@
 % Usually, an experimental evaluation of a process discovery algorithm would require to apply the proposed approach on one (or more) dataset, and to confront the learned model with those ones mined by other available approaches. However, our approach makes explicit use of information from traces labeled as ``negative'', while the totality of the approaches we could access have been designed to use positive traces only. Hence, confronting different approaches on different input data would not be fair.
 % NO, questa motivazine non va bene...
 
-One of the difficulties of evaluating process mining algorithms is that given a log, the underlying model might not be known before. As a consequence, it might be difficult to establish an \emph{ideal model} (a golden standard) to refer and confront with. In this regard, a number of metrics and evaluation indexes have been proposed in the past to evaluate how a discovered model fits a given log \cite{2015-Adriansyah,2014-Broucke,2018-Ponce}. However, those metrics might provide only a partial answer to the question of \tcolor{blue}{``how good'' the discovered model is}. 
+One of the difficulties of evaluating process mining algorithms is that given a log, the underlying model might not be known before. As a consequence, it might be difficult to establish an \emph{ideal model} (a golden standard) to refer and confront with. In this regard, a number of metrics and evaluation indexes have been proposed in the past to evaluate how a discovered model fits a given log \cite{2015-Adriansyah,2014-Broucke,2018-Ponce}. However, those metrics might provide only a partial answer to the question of \btext{``how good'' the discovered model is}. 
 %
 In the case of \nd, a further issue influences the evaluation process: the difficulty of performing a ``fair'' comparison with existing techniques because the majority of the methods we could access have been designed to use ``positive'' traces only.
 
@@ -60,7 +60,7 @@ The source code and the experiments are available in~\cite{negdis:2021_5158528}.
 % existence(0, 1, receive_positive_feedback)
 % existence(0, 1, receive_negative_feedback)
 
-The synthetic log has been generated starting from a Declare model, using a tool \cite{2020-Loreti} based on Abductive Logic Programming. The model has been inspired by the Loan Application process reported in \cite{DBLP:books/sp/DumasRMR18}. In our model, the process starts when the \emph{loan application} is received. Before \emph{assessing the eligibility}, the bank proceeds to \emph{appraise the property} of the customer, and to \emph{assess the loan risk}. Then, the bank can either \emph{reject the application} or \emph{send the acceptance pack} and, optionally, \emph{notify the approval} (if not rejected). During the process execution the bank can also \emph{receive positive} or \emph{negative feedback} (but not both), according to the experience of the loan requester. It is not expected, however, that the bank receives a \emph{negative feedback} if the \emph{acceptance pack} has been sent. Moreover, due to temporal optimisation, the bank requires that the \emph{\tcolor{blue}{appraisal }of the property} is done before \emph{assessing the loan risk}.
+The synthetic log has been generated starting from a Declare model, using a tool \cite{2020-Loreti} based on Abductive Logic Programming. The model has been inspired by the Loan Application process reported in \cite{DBLP:books/sp/DumasRMR18}. In our model, the process starts when the \emph{loan application} is received. Before \emph{assessing the eligibility}, the bank proceeds to \emph{appraise the property} of the customer, and to \emph{assess the loan risk}. Then, the bank can either \emph{reject the application} or \emph{send the acceptance pack} and, optionally, \emph{notify the approval} (if not rejected). During the process execution the bank can also \emph{receive positive} or \emph{negative feedback} (but not both), according to the experience of the loan requester. It is not expected, however, that the bank receives a \emph{negative feedback} if the \emph{acceptance pack} has been sent. Moreover, due to temporal optimisation, the bank requires that the \emph{\btext{appraisal }of the property} is done before \emph{assessing the loan risk}.
 To ease the understanding of the loan application process, a Declare model of the process is reported in Fig. \ref{fig:ex}. Moreover, all the activities have been constrained to either not be executed at all, or to be executed at most once: in Declare terminology, all the activities have been constrained to $\mathsf{absence2(X)}$.
 
 \begin{figure}[t]
@@ -80,9 +80,9 @@ To test \nd, besides positive traces, we generated also negative traces. In part
 %
 The resulting log consists of 64,000 positives traces, 25,600 traces that violate the constraint as in $(a)$, and 10,240 traces that violate the constraint as specified in $(b)$.
 %
-When fed with the positives traces and traces violating the constraint in $(a)$, \nd successfully manages to identify constraints that allow to clearly distinguish \tcolor{blue}{positive/negative }traces. Moreover, the discovered constraint coincides with the one we originally decided to violate during the generation phase. When confronted with the scenario $(b)$, \nd again successfully managed to identify a minimum model able to discriminate between positive and negative traces, and the identified constraint is indeed logically consistent with the constraint originally selected for the violation.
+When fed with the positives traces and traces violating the constraint in $(a)$, \nd successfully manages to identify constraints that allow to clearly distinguish \btext{positive/negative }traces. Moreover, the discovered constraint coincides with the one we originally decided to violate during the generation phase. When confronted with the scenario $(b)$, \nd again successfully managed to identify a minimum model able to discriminate between positive and negative traces, and the identified constraint is indeed logically consistent with the constraint originally selected for the violation.
 % In particular, it is worthy to notice that our approach derived 
-Table \ref{tab:syntResults} summarize the obtained results and reports the best selected model for each scenario. \tcolor{blue}{The Time column highlights how the most expensive task is the generation of the ${compatibles}$ set. This is indeed expected, as it requires to check all constraints in $D[A]$ against all traces in $L^+$.}
+Table \ref{tab:syntResults} summarize the obtained results and reports the best selected model for each scenario. \btext{The Time column highlights how the most expensive task is the generation of the ${compatibles}$ set. This is indeed expected, as it requires to check all constraints in $D[A]$ against all traces in $L^+$.}
 
 % source of this data:
 % file:///Users/federico/Google%20Drive/on-negative-traces/experiments/2020-07-14%20Federico/run_experiments_2020-07-30_130357_CEST.html
@@ -92,7 +92,7 @@ Table \ref{tab:syntResults} summarize the obtained results and reports the best 
 %\scalebox{.87}{
 \begin{tabular}{c c c c l l}
 \toprule
-Scenario & Positive Trace \# & Negative Trace \#  & Time & Originally Violated Constraint & \tcolor{blue}{Best } Discovered Model \\
+Scenario & Positive Trace \# & Negative Trace \#  & Time & Originally Violated Constraint & \btext{Best } Discovered Model \\
 \midrule
 $\multirow{4}{*}{(a)}$ & \multirow{4}{*}{$64\,000$} & \multirow{4}{*}{$25\,600$} & \bf{Total: \btext{\fpeval{13.96+7.85+1.12}s}}  \\
 & & & Compatibles:  \btext{13.96s} & \emph{precedence(assess\_loan\_risk,}  & \emph{precedence(assess\_loan\_risk,} \\
@@ -117,7 +117,7 @@ $\multirow{4}{*}{(b)}$ & \multirow{4}{*}{$64\,000$} & \multirow{4}{*}{$10\,240$}
 %\scalebox{.87}{
 %\begin{tabular}{c c c c l l}
 %\toprule
-%Scenario & Positive Trace \# & Negative Trace \#  & Time & Originally Violated Constraint & \tcolor{blue}{Best } Discovered Model \\
+%Scenario & Positive Trace \# & Negative Trace \#  & Time & Originally Violated Constraint & \btext{Best } Discovered Model \\
 %\midrule
 %$\multirow{4}{*}{(a)}$ & \multirow{4}{*}{64,000} & \multirow{4}{*}{25,600} & \bf{Total: \fpeval{81.78 + 1.94 + 109.74 + 3.32 + 15.165}s}  \\
 %& & & Compatibles:  \fpeval{81.78 + 1.94}s & \emph{precedence(assess\_loan\_risk,}  & \emph{precedence(assess\_loan\_risk,} \\
@@ -208,7 +208,7 @@ Each case logs events since the patient's registration in the emergency room unt
 %\textsc{bpic12} pertains to the application process for personal loans or overdrafts in a Dutch financial institute}. It merges three intertwined sub-processes. Also in this case, the traces have been labelled based on their cycle execution time. In the \textsc{bpic12$_{mean}$} dataset (resp. \textsc{bpic12$_{mean}$}), traces with a cycle time lower than the mean (resp. median) duration of the traces in the event log (\textasciitilde\xspace 8 days, resp. \textasciitilde\xspace 19 hours) have been labelled as positive; as negative otherwise. 
 
 
-%\tcolor{blue}{\textsc{bpic12} is a real-life event log from the Business Process Intelligence Challenge of 2012 ~\cite{BPIC2012}. It pertains to the application process for personal loans or overdrafts in a Dutch financial institute}. It merges three intertwined sub-processes. Also in this case, the traces have been labelled based on their cycle execution time. In the \textsc{bpic12$_{mean}$} dataset (resp. \textsc{bpic12$_{mean}$}), traces with a cycle time lower than the mean (resp. median) duration of the traces in the event log (\textasciitilde\xspace 8 days, resp. \textasciitilde\xspace 19 hours) have been labelled as positive; as negative otherwise. 
+%\btext{\textsc{bpic12} is a real-life event log from the Business Process Intelligence Challenge of 2012 ~\cite{BPIC2012}. It pertains to the application process for personal loans or overdrafts in a Dutch financial institute}. It merges three intertwined sub-processes. Also in this case, the traces have been labelled based on their cycle execution time. In the \textsc{bpic12$_{mean}$} dataset (resp. \textsc{bpic12$_{mean}$}), traces with a cycle time lower than the mean (resp. median) duration of the traces in the event log (\textasciitilde\xspace 8 days, resp. \textasciitilde\xspace 19 hours) have been labelled as positive; as negative otherwise. 
 
 
 
