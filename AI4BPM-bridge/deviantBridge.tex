@@ -1,0 +1,268 @@
+%File: anonymous-submission-latex-2023.tex
+\documentclass[letterpaper]{article} % DO NOT CHANGE THIS
+\usepackage[submission]{aaai23}  % DO NOT CHANGE THIS
+\usepackage{times}  % DO NOT CHANGE THIS
+\usepackage{helvet}  % DO NOT CHANGE THIS
+\usepackage{courier}  % DO NOT CHANGE THIS
+\usepackage[hyphens]{url}  % DO NOT CHANGE THIS
+\usepackage{graphicx} % DO NOT CHANGE THIS
+\urlstyle{rm} % DO NOT CHANGE THIS
+\def\UrlFont{\rm}  % DO NOT CHANGE THIS
+\usepackage{natbib}  % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\usepackage{caption} % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\frenchspacing  % DO NOT CHANGE THIS
+\setlength{\pdfpagewidth}{8.5in} % DO NOT CHANGE THIS
+\setlength{\pdfpageheight}{11in} % DO NOT CHANGE THIS
+%
+% These are recommended to typeset algorithms but not required. See the subsubsection on algorithms. Remove them if you don't have algorithms in your paper.
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{xspace}
+\usepackage{amssymb,amsmath,amsthm}
+\usepackage[inline,shortlabels]{enumitem}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\newcommand{\nd}{\texttt{NegDis}\xspace}
+\newcommand{\declare}{\texttt{Declare}\xspace}
+\newcommand{\sheriff}{sheriffs}
+\newcommand{\asprin}{\emph{ASPrin}\xspace}
+
+%
+% These are are recommended to typeset listings but not required. See the subsubsection on listing. Remove this block if you don't have listings in your paper.
+\usepackage{newfloat}
+\usepackage{listings}
+\DeclareCaptionStyle{ruled}{labelfont=normalfont,labelsep=colon,strut=off} % DO NOT CHANGE THIS
+\lstset{%
+	basicstyle={\footnotesize\ttfamily},% footnotesize acceptable for monospace
+	numbers=left,numberstyle=\footnotesize,xleftmargin=2em,% show line numbers, remove this entire line if you don't want the numbers.
+	aboveskip=0pt,belowskip=0pt,%
+	showstringspaces=false,tabsize=2,breaklines=true}
+\floatstyle{ruled}
+\newfloat{listing}{tb}{lst}{}
+\floatname{listing}{Listing}
+%
+% Keep the \pdfinfo as shown here. There's no need
+% for you to add the /Title and /Author tags.
+\pdfinfo{
+/TemplateVersion (2023.1)
+}
+
+% DISALLOWED PACKAGES
+% \usepackage{authblk} -- This package is specifically forbidden
+% \usepackage{balance} -- This package is specifically forbidden
+% \usepackage{color (if used in text)
+% \usepackage{CJK} -- This package is specifically forbidden
+% \usepackage{float} -- This package is specifically forbidden
+% \usepackage{flushend} -- This package is specifically forbidden
+% \usepackage{fontenc} -- This package is specifically forbidden
+% \usepackage{fullpage} -- This package is specifically forbidden
+% \usepackage{geometry} -- This package is specifically forbidden
+% \usepackage{grffile} -- This package is specifically forbidden
+% \usepackage{hyperref} -- This package is specifically forbidden
+% \usepackage{navigator} -- This package is specifically forbidden
+% (or any other package that embeds links such as navigator or hyperref)
+% \indentfirst} -- This package is specifically forbidden
+% \layout} -- This package is specifically forbidden
+% \multicol} -- This package is specifically forbidden
+% \nameref} -- This package is specifically forbidden
+% \usepackage{savetrees} -- This package is specifically forbidden
+% \usepackage{setspace} -- This package is specifically forbidden
+% \usepackage{stfloats} -- This package is specifically forbidden
+% \usepackage{tabu} -- This package is specifically forbidden
+% \usepackage{titlesec} -- This package is specifically forbidden
+% \usepackage{tocbibind} -- This package is specifically forbidden
+% \usepackage{ulem} -- This package is specifically forbidden
+% \usepackage{wrapfig} -- This package is specifically forbidden
+% DISALLOWED COMMANDS
+% \nocopyright -- Your paper will not be published if you use this command
+% \addtolength -- This command may not be used
+% \balance -- This command may not be used
+% \baselinestretch -- Your paper will not be published if you use this command
+% \clearpage -- No page breaks of any kind may be used for the final version of your paper
+% \columnsep -- This command may not be used
+% \newpage -- No page breaks of any kind may be used for the final version of your paper
+% \pagebreak -- No page breaks of any kind may be used for the final version of your paperr
+% \pagestyle -- This command may not be used
+% \tiny -- This is not an acceptable font size.
+% \vspace{- -- No negative value may be used in proximity of a caption, figure, table, section, subsection, subsubsection, or reference
+% \vskip{- -- No negative value may be used to alter spacing above or below a caption, figure, table, section, subsection, subsubsection, or reference
+
+\setcounter{secnumdepth}{0} %May be changed to 1 or 2 if section numbers are desired.
+
+% The file aaai23.sty is the style file for AAAI Press
+% proceedings, working notes, and technical reports.
+%
+
+% Title
+
+% Your title must be in mixed case, not sentence case.
+% That means all verbs (including short verbs like be, is, using,and go),
+% nouns, adverbs, adjectives should be capitalized, including both words in hyphenated terms, while
+% articles, conjunctions, and prepositions are lower case unless they
+% directly follow a colon or long dash
+\title{Binary Discovery of Declarative Business Processes with Preferences with ASP}
+\author{
+    %Authors
+    % All authors must be in the same font size and format.
+	Federico Chesani\textsuperscript{\rm 1}, 
+	Chiara Di Francescomarino\textsuperscript{\rm 2}, 
+	Chiara Ghidini\textsuperscript{\rm 3}, 
+	Daniela Loreti\textsuperscript{\rm 1}, 
+	Fabrizio Maria Maggi\textsuperscript{\rm 4}, 
+	Paola Mello\textsuperscript{\rm 1}, 
+	Marco Montali\textsuperscript{\rm 4}, Sergio Tessaris$^4$\\
+}
+\affiliations{
+    %Afiliations
+    \textsuperscript{\rm 1}DISI - University of Bologna, Italy\\
+	\textsuperscript{\rm 2}DISI - University of Trento, Italy\\
+	\textsuperscript{\rm 3}Fondazione Bruno Kessler, Trento, Italy\\
+	\textsuperscript{\rm 4}3Free University of Bozen/Bolzano, Italy
+%
+% See more examples next
+}
+
+%Example, Single Author, ->> remove \iffalse,\fi and place them surrounding AAAI title to use it
+\iffalse
+\title{My Publication Title --- Single Author}
+\author {
+    Author Name
+}
+\affiliations{
+    Affiliation\\
+    Affiliation Line 2\\
+    name@example.com
+}
+\fi
+
+\iffalse
+%Example, Multiple Authors, ->> remove \iffalse,\fi and place them surrounding AAAI title to use it
+\title{My Publication Title --- Multiple Authors}
+\author {
+    % Authors
+    First Author Name,\textsuperscript{\rm 1}
+    Second Author Name, \textsuperscript{\rm 2}
+    Third Author Name \textsuperscript{\rm 1}
+}
+\affiliations {
+    % Affiliations
+    \textsuperscript{\rm 1} Affiliation 1\\
+    \textsuperscript{\rm 2} Affiliation 2\\
+    firstAuthor@affiliation1.com, secondAuthor@affilation2.com, thirdAuthor@affiliation1.com
+}
+\fi
+
+
+% REMOVE THIS: bibentry
+% This is only needed to show inline citations in the guidelines document. You should not need it and can safely delete it.
+\usepackage{bibentry}
+% END REMOVE bibentry
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Process discovery techniques focus on learning a process model starting from a given set of logged traces. The majority of the discovery approaches, however, only consider one set of examples to learn from, i.e., the log itself. Some recent works on declarative process discovery, instead, advocated the usefulness of taking into account two different sets of traces (a.k.a.\ positive and negative examples), with the goal of learning a set of constraints that is able to discriminate which trace belongs to which set.
+In this paper we recall our recent work on the discovery of process models from positive and negative examples, with the goal of learning a set of declarative constraints that is able to discriminate which trace belongs to which set, also taking into account user preferences on  activities and constraint templates to be used to build the final set of constraints. The approach is grounded in a logic-based framework that provides a sound and formal meaning to the notion of expert preferences. 
+\end{abstract}
+
+\section{Introduction}
+
+\emph{Process discovery} is one of the most investigated process mining techniques \cite{2012-Aalst}. It deals with the automatic learning of a process model from a given set of logged traces, each one representing the digital footprint of the execution of a case.
+
+If we focus on the way process discovery techniques see the model-extraction task, we can divide them into two broad categories. 
+The first category is constituted by works that tackle the problem of process discovery with one-class supervised learning techniques (see, e.g., \cite{2010-Aalst,2004-Aalst,2007-Gunther,2003-Weijters,DBLP:conf/bpm/AalstMFG17}). These works are driven by the assumption that all available log traces are instances of the process to be discovered and constitute the wast majority of works in the process discovery spectrum. 
+The second category comprises works that intend model-extraction as a two-class supervised task, which is driven by the possibility of partitioning the log traces into two sets according to some business or domain-related criteria. Usually, these sets are referred to as \emph{positive} and \emph{negative} examples, and the goal is to learn a model that characterizes one set w.r.t.\ the other (see \cite{2009-Chesani,2009-Goedertier,2006-Maruster}). These works are traditionally less represented in the BPM community. Nonetheless, few recent works \cite{deviant-tkde,2018-Ponce,DBLP:conf/bpm/SlaatsDB21} have highlighted the importance of performing model-extraction as a two-class supervised task with different motivations: first, the actual existence of \emph{positive} and \emph{negative} examples in real use cases \cite{2018-Ponce,DBLP:conf/bpm/SlaatsDB21}; second, the need to balance \emph{accuracy} and \emph{recall} \cite{DBLP:conf/bpm/SlaatsDB21}; and third, the need to discover a particular process variant (e.g., the process characterizing ``fast'' traces) against the one that characterizes other variants, thus using the labels \emph{positive} and \emph{negative} to distinguish between two classes of examples \cite{deviant-tkde}.  
+Hereafter, we refer to miners of the first and second category as \emph{unary} and \emph{binary} miners, respectively. 
+
+In this paper we recall our recent work on the discovery of process models from positive and negative examples, with the goal of learning a set of declarative constraints that is able to discriminate which trace belongs to which set, also taking into account user preferences on activities and declarative constraint templates to be used to build the final process model. We believe that the grounding on positive and negative examples, which is typical of AI settings and of supervised machine learning (and Inductive Logic Programming in particular), together with the grounding of our approach in a logic-based framework that provides a sound and formal meaning to the notion of user preferences, provides a clear example of bridge between the needs of the BPM domain and the contribution that AI techniques can provide.   
+
+The contributions that we have provided are briefly listed in the following, and are contained in \cite{deviant-tkde} (the original framework); \cite{DBLP:conf/cilc/ChesaniFGLMMMPT22,DBLP:conf/edoc/ChesaniFGGLMMMT22} (the extension with user preferences); and \cite{DBLP:conf/lpnmr/ChesaniFGGLMMMT22} (the algorithmic and tool support):
+\begin{itemize}
+\item A novel discovery approach, \nd, based on the underlying logic semantics of Declare, which makes use of the information brought by the positive and negative example sets to produce declarative models.
+\item The adoption of a satisfiability-based technique to identify the models.
+\item The introduction of two types of user preferences on the declarative language used to express the model: the first one on the \declare patterns to be used in the discovery task, and the second one on the activities appearing in the output model. Moreover, we discuss also a third type of preference coming from the combination of the first two.
+\item Heuristics to select the preferred models according to input parameters dealing with (i) generalisation; (ii)  simplicity; and (iii) user preferences on the \declare language.
+\item The exploitation of Answer Set Programming so as to enable the combination of deduction rules within the optimisation algorithm exploited to identify optimal sets of constraints according to preference criteria. This is done in order to take into account not only the user preferences but also the implicit semantics of the formal language.
+\item An encoding of the process discovery problem using the ASPrin framework for qualitative and quantitative optimisation in ASP.
+\item An evaluation of the performance of \nd w.r.t. other relevant works in the same field.
+\end{itemize}
+
+
+\section{Discovering Business Processes from Positive \& Negative Traces}
+\label{sec:deviant}
+
+For lack of space we provide here only a description of the basic \nd binary miner~\cite{deviant-tkde}. Given two input sets of positive and negative examples, it aims at extracting a model accepting all positive traces and rejecting all negative ones. %negatives. 
+
+\nd starts from a certain \emph{language bias}: given a set of \declare templates $D$ and a set of activities $A$, we indicate with $D[A]$ the set of all possible groundings of templates in $D$ w.r.t. $A$, i.e., all the constraints that can be built using activities in $A$.
+
+We respectively denote with $L^+$ and $L^-$ the sets of positive and negative examples %, reported 
+in the input event log. \nd starts by considering a, possibly empty, initial model $P$, that is a set of \declare constraints known to characterize the examples in $L^+$. The goal of \nd is to refine $P$ taking into account both the positive and the negative examples.
+
+\begin{definition}{}\label{def:cand}
+Given the initial model $P$, a candidate solution for the discovery task is any set of constraints $S\subseteq D[A]$ s.t.
+\begin{enumerate*} [label=\textit{(\roman*)}]
+  \item $P\subseteq S$;
+  \item $\forall t\in L^+$ we have $t\models S$;
+  \item S maximizes the set $\{t\in L^-\mid t\not\models S\}$.
+\end{enumerate*}
+\end{definition}
+
+\declare templates can be organized into a hierarchy of \emph{subsumption} \cite{2017-DiCiccio} according to the logical implications derivable from their semantics. Consistently with this concept, we introduce the following definition of \emph{generality} relation between models.
+\begin{definition}{}\label{def:subs}
+A model $M\subseteq D[A]$ is more general than $M'\subseteq D[A]$ (written as $M \succeq M'$) when for any $t\in A^*$, $t\models M' \Rightarrow t\models M$ , and strictly more general (written as $M \succ M'$) if $M$ is more general than $M'$ and there exists $t'\in A^*$ s.t.\ $t'\not\models M'$ and $t'\models M$.
+\end{definition}
+
+\nd integrates the \emph{subsumption} rules introduced in \cite{2017-DiCiccio}, into the \emph{deductive closure operator}.
+
+%\theoremstyle{definition}\label{def:closure}
+\begin{definition}{}
+Given a set $R$ of subsumption rules, a deductive closure operator is a function $cl_R: \mathcal{P}(D[A])\rightarrow\mathcal{P}(D[A])$ that associates any set $M \in D[A]$ with all the constraints that can be logically derived from $M$ by applying one or more deduction rules in $R$.
+\end{definition}
+For brevity, in the rest of the paper, we will omit the set $R$ and we will simply write $cl(M)$ to indicate the deductive closure of $M$. The complete set of employed deduction rules is available in the source code~\cite{zenodo:experiments}.
+
+
+
+
+Conceptually, the \nd approach can be seen as a two-step procedure: in the first step, a set of candidate constraints is built, and then solutions are selected among subsets of candidates via an optimization algorithm.
+%
+The set of candidate constraints is composed of %by
+those in $D[A]$ that accept all positive examples and reject at least a negative one. To build this set, \nd constructs a \emph{compatibles} set, i.e., the set of constraints that accept all traces in $L^+$: 
+\begin{equation}
+{compatibles(D[A], L^+)} = \{c\in D[A]~|~\forall t\in L^+,~ t\models c \} \\
+\end{equation}
+%
+Then, it defines the \textit{\sheriff} function to associate to any trace $t$ in $L^-$ the constraints of \textit{compatibles} that reject %rejects 
+$t$:
+\begin{equation}
+{\textit{\sheriff}}(t) = \{c\in {compatibles}~|~t\not\models c\} \\
+\label{eq:sheriffs}
+\end{equation}
+%
+The \textit{\sheriff} function is used to construct the set of all candidate constraints from which a discovered model is derived, i.e., the set $\mathcal{C} = \bigcup_{t\in L^-} \textit{\sheriff}(t)$ of all the constraints in $D[A]$ accepting all positive traces and rejecting at least one negative trace. The solution space is therefore:
+\begin{equation}
+  \mathcal{Z}=\{M\in\mathcal{P}(\mathcal{C})\mid \forall t\in L^-~t\not\models M\cup P \text{ or } {\textit{\sheriff}}(t) = \emptyset \}
+\end{equation}
+%according to a certain domain-independent criterion. 
+Due to the fact that not all the pairs of negative and positive sets of traces can be perfectly separated using \declare~\cite{DBLP:conf/bpm/SlaatsDB21}, there can be traces in $L^-$ for which the ${\textit{\sheriff}}$ is empty, meaning that those traces cannot be excluded by any model that guarantees the acceptance of all the positive ones.
+
+The second step of \nd uses an optimization strategy to identify the solutions; in~\cite{deviant-tkde}, two different criteria were taken into account: \emph{generality} (or conversely, \emph{specificity}), and \emph{simplicity}.
+If the user is interested in the most general model, then \nd employs the closure operator $cl$ to select the models $S \in \mathcal{Z}$ with the less restrictive behavior.
+If the user wants the simplest model, \nd looks for the solutions with minimal closure size. In case of ties, the solution with the minimal size is preferred.
+
+\section{Concluding Remarks}
+The evaluation reported in \cite{deviant-tkde} shows that when compared to state-of-the-art techniques for the \emph{unary} discovery of \declare models, \nd is able to return a small number of constraints satisfying all traces in $L^+$ without decreasing the percentage of violated traces in $L^-$.  This is extended, in \cite{DBLP:conf/edoc/ChesaniFGGLMMMT22} to the evaluation of \emph{binary} discovery with preferences using \asprin, a general framework for computing optimal ASP models with preferences. Future works will include a wider evaluation, which will also involve end-users. This will enable the assessment of the potential benefits of involving users (through their preferences) in the loop of process discovery.  
+
+
+
+% Use \bibliography{yourbibfile} instead or the References section will not appear in your paper
+\bibliography{aaai23}
+
+\section{Acknowledgments}
+This work has been partially supported by the European Union’s H2020 projects HumaneAI-Net (g.a. 952026), StairwAI (g.a. 101017142), and TAILOR (g.a. 952215) and by MUR under PRIN project PINPOINT Prot.~2020FNEB27, CUP H23C22000280006 and H45E21000210001.
+
+
+\end{document}
